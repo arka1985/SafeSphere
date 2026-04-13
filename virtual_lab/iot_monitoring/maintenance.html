@@ -5,128 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predictive Maintenance | MH Intelligence</title>
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 2rem;
-            min-height: calc(100vh - 200px);
-            margin-bottom: 2rem;
-        }
-
-        .charts-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            height: 100%;
-        }
-
-        .chart-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .sidebar-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .health-display {
-            text-align: center;
-            padding: 3rem 2rem;
-        }
-
-        .health-ring {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 8px solid rgba(255, 255, 255, 0.05);
-            margin: 0 auto 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
-            transition: all 0.5s ease;
-        }
-
-        .health-value {
-            font-size: 3.5rem;
-            font-weight: 800;
-            line-height: 1;
-            color: var(--text-main);
-        }
-
-        .health-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-top: 0.5rem;
-        }
-
-        .ai-insight {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1.5rem;
-            border-left: 3px solid var(--neon-blue);
-            text-align: left;
-        }
-
-        .control-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .control-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .value-display {
-            font-family: monospace;
-            color: var(--neon-blue);
-        }
-
-        @media (max-width: 1200px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                height: auto;
-            }
-        }
-    </style>
 </head>
 
 <body>
-    <nav>
-        <a href="index.html" class="logo">
-            <div class="logo-icon">⚡</div>
-            MH Intelligence
-        </a>
-        <div class="nav-links">
-            <a href="index.html" class="nav-link">Hub</a>
-            <a href="warehouse.html" class="nav-link">Smart Warehouse</a>
-            <a href="quality.html" class="nav-link">AI Quality</a>
-            <a href="maintenance.html" class="nav-link active">Predictive Maint.</a>
-        </div>
-    </nav>
+    <!-- ═══ Animated Background ═══ -->
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+
+    <div class="lab-hub-container">
+        <header class="lab-header fade-up">
+            <a href="index.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to IoT Monitoring Hub
+            </a>
+            <h1 class="lab-title">Predictive <span class="accent">Maintenance</span></h1>
+            <p class="lab-subtitle">IoT Sensor Analytics & Machine Learning Health Modeling</p>
+        </header>
 
     <main class="container">
         <div class="dashboard-grid">
