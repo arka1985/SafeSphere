@@ -1,0 +1,10 @@
+--index-url https://download.pytorch.org/whl/cpu
+
+flet==0.28.3
+ultralytics==8.1.0
+opencv-python==4.8.1.78
+numpy<2.0
+torch==2.5.1
+torchvision==0.20.1
+
+

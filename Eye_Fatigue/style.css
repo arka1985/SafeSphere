@@ -1,0 +1,293 @@
+:root {
+    --bg-color: #0d0d12;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0b0;
+    --accent-color: #00f3ff;
+    --accent-glow: rgba(0, 243, 255, 0.4);
+    --danger-color: #ff004c;
+    --danger-glow: rgba(255, 0, 76, 0.6);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --font-main: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Background Gradients */
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(0, 243, 255, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+}
+
+.accent {
+    color: var(--accent-color);
+    text-shadow: 0 0 20px var(--accent-glow);
+}
+
+header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Glass Panel Utility */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 1.5rem;
+}
+
+/* Grid Layout */
+.monitor-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+}
+
+@media (min-width: 900px) {
+    .monitor-grid {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* Video Card */
+.video-card {
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    /* Let video fill */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    aspect-ratio: 16/9;
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.input_video {
+    display: none;
+    /* We use canvas for rendering or just overlays. Actually let's flip it. */
+    /* Often we hide the raw video and draw to canvas, OR show raw video and draw canvas on top.
+       Let's show video with canvas absolute on top. */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+    /* Mirror effect */
+}
+
+/* Wait, usually FaceMesh wants the video element to read from. Let's make video visible but mirrored. */
+.input_video {
+    display: block;
+}
+
+.output_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(-1);
+    /* Mirror overlay too */
+    pointer-events: none;
+}
+
+.status-indicator {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--glass-border);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #555;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #00ff66;
+    box-shadow: 0 0 10px #00ff66;
+}
+
+/* Stats Card */
+.stats-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.stats-card h2 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.stat-item .label {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.stat-item .value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.stat-item .unit {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-left: 0.2rem;
+}
+
+.state-normal {
+    color: var(--accent-color);
+}
+
+.state-closed {
+    color: var(--danger-color);
+}
+
+/* Glow Button */
+.glow-btn {
+    margin-top: auto;
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.glow-btn:hover {
+    background: var(--accent-color);
+    color: #000;
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    /* Push to bottom */
+    width: 100%;
+    text-align: center;
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Alert Overlay */
+#alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(255, 0, 76, 0.3) 0%, rgba(255, 0, 76, 0.8) 100%);
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s;
+}
+
+#alert-overlay.active {
+    opacity: 1;
+    animation: flash 0.5s infinite alternate;
+}
+
+@keyframes flash {
+    from {
+        opacity: 0.6;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.hidden {
+    display: none !important;
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eye Fatigue Guard | Premium AI Monitor</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- MediaPipe FaceMesh -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div id="alert-overlay" class="hidden"></div>
+
+    <main class="container">
+        <header>
+            <h1>Eye Fatigue <span class="accent">Guard</span></h1>
+            <p>AI-Powered Drowsiness Detection</p>
+        </header>
+
+        <div class="monitor-grid">
+            <div class="video-card glass-panel" id="video-container">
+                <div class="video-wrapper">
+                    <video class="input_video" playsinline width="640" height="480"></video>
+                    <canvas class="output_canvas" width="640" height="480"></canvas>
+                    <div class="status-indicator" id="status-indicator">
+                        <span class="dot"></span> <span id="status-text">Ready to Start</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-card glass-panel">
+                <h2>Real-time Analytics</h2>
+
+                <div class="stat-item">
+                    <span class="label">Blink Rate</span>
+                    <span class="value" id="blink-rate">--</span>
+                    <span class="unit">bpm</span>
+                </div>
+
+                <div class="stat-item">
+                    <span class="label">Eye State</span>
+                    <span class="value state-normal" id="eye-state">Open</span>
+                </div>
+
+                <div class="stat-item">
+                    <span class="label">Time Closed</span>
+                    <span class="value" id="closed-time">0.0</span>
+                    <span class="unit">s</span>
+                </div>
+
+                <button id="start-btn" class="glow-btn">Start Monitoring</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="glass-panel">
+        <p>Developed by:</p>
+        <p class="dev-name">Dr. Arkaprabha Sau</p>
+        <p class="dev-creds">MBBS, MD (Gold Medalist), PhD (Computer Science & Engineering),<br>
+            DPH, Dip. Geriatric Medicine, Certificate in Diabetes Management</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

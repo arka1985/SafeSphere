@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ErgoCalc - Premium RULA & REBA Assessment</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Using FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo-area">
+                <h1>Ergo<span class="highlight">Calc</span></h1>
+                <p class="subtitle">Advanced Ergonomic Assessment Tool</p>
+            </div>
+            <button id="home-btn" class="nav-btn hidden"><i class="fas fa-home"></i> Home</button>
+        </header>
+
+        <main class="content-area">
+
+            <!-- Landing Page -->
+            <section id="landing-page" class="active">
+                <div class="landing-content">
+                    <h2>Select Assessment Method</h2>
+                    <p>Choose the appropriate tool for your ergonomic evaluation.</p>
+
+                    <div class="selection-cards">
+                        <div class="selection-card" onclick="selectTool('rula')">
+                            <div class="card-icon rula-glow">
+                                <i class="fas fa-child-reaching"></i>
+                            </div>
+                            <h3>RULA</h3>
+                            <p>Rapid Upper Limb Assessment</p>
+                            <span class="card-action">Start Assessment <i class="fas fa-arrow-right"></i></span>
+                        </div>
+
+                        <div class="selection-card" onclick="selectTool('reba')">
+                            <div class="card-icon reba-glow">
+                                <i class="fas fa-person"></i>
+                            </div>
+                            <h3>REBA</h3>
+                            <p>Rapid Entire Body Assessment</p>
+                            <span class="card-action">Start Assessment <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Assessment Container (Hidden by default) -->
+            <div id="assessment-container" class="hidden">
+
+                <div class="user-details-form">
+                    <div class="input-group">
+                        <label for="assessor-name">Name</label>
+                        <input type="text" id="assessor-name" placeholder="Enter your name">
+                    </div>
+                    <div class="input-group">
+                        <label for="assessment-date">Date</label>
+                        <input type="date" id="assessment-date">
+                    </div>
+                </div>
+
+                <!-- RULA Section -->
+                <section id="rula" class="assessment-section">
+                    <div class="section-header">
+                        <div class="header-title">
+                            <h2><i class="fas fa-child-reaching"></i> RULA Assessment</h2>
+                            <span class="badge rula-badge">Upper Limb</span>
+                        </div>
+                        <p>Evaluate ergonomic risk for upper limb disorders.</p>
+                        <a href="RULA_2025.pdf" target="_blank" class="ref-link"><i class="fas fa-file-pdf"></i> View
+                            Reference PDF</a>
+                    </div>
+
+                    <div class="steps-container" id="rula-steps">
+                        <!-- Steps injected by JS -->
+                    </div>
+
+                    <div class="action-area">
+                        <button id="calculate-rula" class="action-btn glow-effect rula-btn">Calculate RULA
+                            Score</button>
+                        <button id="download-rula" class="action-btn secondary hidden"><i class="fas fa-download"></i>
+                            Download Report</button>
+                        <div id="rula-result" class="result-display hidden">
+                            <div class="score-circle">
+                                <span class="score-value" id="rula-score-value">-</span>
+                                <span class="score-label">Score</span>
+                            </div>
+                            <div class="result-details">
+                                <h3>Action Level <span id="rula-action-level">-</span></h3>
+                                <p id="rula-action-desc">Complete the assessment to see recommendations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- REBA Section -->
+                <section id="reba" class="assessment-section">
+                    <div class="section-header">
+                        <div class="header-title">
+                            <h2><i class="fas fa-person"></i> REBA Assessment</h2>
+                            <span class="badge reba-badge">Entire Body</span>
+                        </div>
+                        <p>Evaluate ergonomic risk for the entire body.</p>
+                        <a href="REBA_2025.pdf" target="_blank" class="ref-link"><i class="fas fa-file-pdf"></i> View
+                            Reference PDF</a>
+                    </div>
+
+                    <div class="steps-container" id="reba-steps">
+                        <!-- Steps injected by JS -->
+                    </div>
+
+                    <div class="action-area">
+                        <button id="calculate-reba" class="action-btn glow-effect reba-btn">Calculate REBA
+                            Score</button>
+                        <button id="download-reba" class="action-btn secondary hidden"><i class="fas fa-download"></i>
+                            Download Report</button>
+                        <div id="reba-result" class="result-display hidden">
+                            <div class="score-circle">
+                                <span class="score-value" id="reba-score-value">-</span>
+                                <span class="score-label">Score</span>
+                            </div>
+                            <div class="result-details">
+                                <h3>Action Level <span id="reba-action-level">-</span></h3>
+                                <p id="reba-action-desc">Complete the assessment to see recommendations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="developer-info">
+                    <p>Developed by:</p>
+                    <p class="dev-name">Dr. Arkaprabha Sau</p>
+                    <p class="dev-credentials">MBBS, MD (Gold Medalist), PhD (Computer Science & Engineering), DPH, Dip.
+                        Geriatric Medicine, Certificate in Diabetes Management</p>
+                </div>
+                <div class="references">
+                    <p><strong>References:</strong></p>
+                    <p>RULA: McAtamney, L., & Corlett, E. N. (1993). RULA: a survey method for the investigation of
+                        work-related upper limb disorders. <em>Applied Ergonomics</em>, 24(2), 91-99.</p>
+                    <p>REBA: Hignett, S., & McAtamney, L. (2000). Rapid Entire Body Assessment (REBA). <em>Applied
+                            Ergonomics</em>, 31(2), 201-205.</p>
+                    <p><a href="https://www.ohcow.on.ca/posts/reba-and-rula-worksheets/" target="_blank"
+                            style="color: var(--accent-primary);">OHCOW RULA & REBA Worksheets</a></p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="rula.js"></script>
+    <script src="reba.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

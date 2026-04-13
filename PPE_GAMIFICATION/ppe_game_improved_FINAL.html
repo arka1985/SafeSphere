@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPE Safety Challenge - Ultimate Gamification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-dark: #050505;
+            --glass-bg: rgba(20, 20, 20, 0.6);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            --text-main: #ffffff;
+            --text-secondary: #a0a0a0;
+
+            /* Neon Colors */
+            --neon-blue: #00f3ff;
+            --neon-green: #00ff9d;
+            --neon-pink: #ff00de;
+            --neon-yellow: #ffe600;
+
+            --glow-blue: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            --glow-green: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+            --glow-pink: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 222, 0.1) 0%, transparent 20%);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            margin-top: 0;
+            letter-spacing: 1px;
+        }
+
+        .game-title {
+            text-align: center;
+            font-size: 3em;
+            text-transform: uppercase;
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.3));
+        }
+
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 40px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Glassmorphism Cards */
+        .player-area,
+        .scoring-rules,
+        .awards-list,
+        .result-display,
+        .scoreboard,
+        .control-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
+        }
+
+        .hazard-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 16px;
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--neon-blue);
+            font-size: 18px;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            border-color: var(--neon-blue);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+        select option {
+            background: #1a1a1a;
+            color: white;
+            padding: 10px;
+        }
+
+        .ppe-selection h3 {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .ppe-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .ppe-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+        }
+
+        .ppe-item span {
+            font-size: 36px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .ppe-item div {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .ppe-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .ppe-item:hover span {
+            transform: scale(1.2);
+        }
+
+        .ppe-item.selected {
+            background: rgba(0, 255, 157, 0.1);
+            border-color: var(--neon-green);
+            box-shadow: var(--glow-green);
+        }
+
+        .ppe-item.selected span {
+            filter: drop-shadow(0 0 10px var(--neon-green));
+        }
+
+        /* Neon Buttons */
+        .btn-neon {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 2px solid var(--neon-blue);
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-blue);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-neon:hover {
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+        }
+
+        .btn-neon:hover::before {
+            left: 0;
+        }
+
+        .btn-neon:disabled {
+            border-color: #555;
+            color: #777;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .btn-neon:disabled::before {
+            display: none;
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--neon-pink);
+            border: 2px solid var(--neon-pink);
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(255, 0, 222, 0.2);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-reset:hover {
+            background: var(--neon-pink);
+            color: white;
+            box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink);
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 0 auto 40px;
+            max-width: 900px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .player-score {
+            text-align: center;
+        }
+
+        .score-value {
+            font-size: 3em;
+            font-weight: 800;
+            display: block;
+            line-height: 1;
+            margin-top: 10px;
+        }
+
+        #score1 {
+            color: var(--neon-blue);
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        #score2 {
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px rgba(255, 0, 222, 0.5);
+        }
+
+        .result-display {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 30px;
+            line-height: 1.6;
+            display: none;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .scoring-rules {
+            margin: 0 auto 30px;
+            max-width: 900px;
+            text-align: center;
+            background: rgba(0, 255, 157, 0.05);
+            border-color: rgba(0, 255, 157, 0.2);
+        }
+
+        .reward-message {
+            font-size: 24px;
+            text-align: center;
+            margin: 30px 0;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .awards-list {
+            margin: 40px auto;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        .awards-list ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .awards-list li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .awards-list li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.3);
+        }
+
+        .developer-credit {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(to top, #000, transparent);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .developer-credit h3 {
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0;
+        }
+
+        .developer-credit strong {
+            color: var(--neon-blue);
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .control-panel {
+            text-align: center;
+            margin-top: 40px;
+            background: transparent;
+            box-shadow: none;
+            border: none;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 243, 255, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 243, 255, 0);
+            }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="game-title">PPE Safety Challenge</h1>
+
+    <div class="scoring-rules">
+        <h3>📊 BBS Safety Rules & Scoring</h3>
+        <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px;">
+            <span style="color: var(--neon-green); font-weight: bold;">+2 Points <span
+                    style="color: #fff; font-weight: normal;">Correct Item</span></span>
+            <span style="color: var(--neon-pink); font-weight: bold;">-1 Point <span
+                    style="color: #fff; font-weight: normal;">Wrong/Missing</span></span>
+        </div>
+    </div>
+
+    <div class="scoreboard">
+        <div class="player-score">
+            <div style="color: var(--neon-blue)">EMPLOYEE 1</div>
+            <span id="score1" class="score-value">0</span>
+        </div>
+        <div style="font-size: 2em; color: rgba(255,255,255,0.2)">VS</div>
+        <div class="player-score">
+            <div style="color: var(--neon-pink)">EMPLOYEE 2</div>
+            <span id="score2" class="score-value">0</span>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <!-- Player 1 Area -->
+        <div class="player-area" id="player1">
+            <h2 style="color: var(--neon-blue)">👷 Employee 1</h2>
+            <div class="hazard-card">
+                <h3>⚠️ Identify Hazard Area:</h3>
+                <select id="hazard1">
+                    <option value="chemical">🧪 Chemical Spill</option>
+                    <option value="electrical">⚡ Electrical Work</option>
+                    <option value="construction">🏗️ Construction Site</option>
+                    <option value="heights">🧗 Working at Heights</option>
+                    <option value="welding">🔥 Welding Operation</option>
+                </select>
+            </div>
+            <div class="ppe-selection">
+                <h3>🛡️ Select Appropriate PPE:</h3>
+                <div class="ppe-options">
+                    <div class="ppe-item" data-value="Gloves"><span>🧤</span>
+                        <div>Gloves</div>
+                    </div>
+                    <div class="ppe-item" data-value="Goggles"><span>🥽</span>
+                        <div>Goggles</div>
+                    </div>
+                    <div class="ppe-item" data-value="Helmet"><span>⛑️</span>
+                        <div>Helmet</div>
+                    </div>
+                    <div class="ppe-item" data-value="Apron"><span>🥼</span>
+                        <div>Apron</div>
+                    </div>
+                    <div class="ppe-item" data-value="Boots"><span>🥾</span>
+                        <div>Boots</div>
+                    </div>
+                    <div class="ppe-item" data-value="Vest"><span>🦺</span>
+                        <div>Vest</div>
+                    </div>
+                    <div class="ppe-item" data-value="EarPlugs"><span>🔇</span>
+                        <div>Ear Plugs</div>
+                    </div>
+                    <div class="ppe-item" data-value="FaceShield"><span>🛡️</span>
+                        <div>Face Shield</div>
+                    </div>
+                    <div class="ppe-item" data-value="Mask"><span>😷</span>
+                        <div>Mask</div>
+                    </div>
+                    <div class="ppe-item" data-value="Harness"><span>🧗</span>
+                        <div>Harness</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-neon" onclick="submitSelection(1)">Submit Check</button>
+        </div>
+
+        <!-- Player 2 Area -->
+        <div class="player-area" id="player2">
+            <h2 style="color: var(--neon-pink)">👷 Employee 2</h2>
+            <div class="hazard-card">
+                <h3>⚠️ Identify Hazard Area:</h3>
+                <select id="hazard2">
+                    <option value="chemical">🧪 Chemical Spill</option>
+                    <option value="electrical">⚡ Electrical Work</option>
+                    <option value="construction">🏗️ Construction Site</option>
+                    <option value="heights">🧗 Working at Heights</option>
+                    <option value="welding">🔥 Welding Operation</option>
+                </select>
+            </div>
+            <div class="ppe-selection">
+                <h3>🛡️ Select Appropriate PPE:</h3>
+                <div class="ppe-options">
+                    <div class="ppe-item" data-value="Gloves"><span>🧤</span>
+                        <div>Gloves</div>
+                    </div>
+                    <div class="ppe-item" data-value="Goggles"><span>🥽</span>
+                        <div>Goggles</div>
+                    </div>
+                    <div class="ppe-item" data-value="Helmet"><span>⛑️</span>
+                        <div>Helmet</div>
+                    </div>
+                    <div class="ppe-item" data-value="Apron"><span>🥼</span>
+                        <div>Apron</div>
+                    </div>
+                    <div class="ppe-item" data-value="Boots"><span>🥾</span>
+                        <div>Boots</div>
+                    </div>
+                    <div class="ppe-item" data-value="Vest"><span>🦺</span>
+                        <div>Vest</div>
+                    </div>
+                    <div class="ppe-item" data-value="EarPlugs"><span>🔇</span>
+                        <div>Ear Plugs</div>
+                    </div>
+                    <div class="ppe-item" data-value="FaceShield"><span>🛡️</span>
+                        <div>Face Shield</div>
+                    </div>
+                    <div class="ppe-item" data-value="Mask"><span>😷</span>
+                        <div>Mask</div>
+                    </div>
+                    <div class="ppe-item" data-value="Harness"><span>🧗</span>
+                        <div>Harness</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-neon" onclick="submitSelection(2)">Submit Check</button>
+        </div>
+    </div>
+
+    <div class="reward-message" id="rewardMessage"></div>
+    <div class="result-display" id="result"></div>
+
+    <div class="awards-list">
+        <h3>🏆 Safety Awards Gallery</h3>
+        <ul id="awards">
+            <li>🥈 Silver Gloves</li>
+            <li>🥇 Golden Helmet</li>
+            <li>💎 Platinum Goggles</li>
+            <li>💠 Diamond Vest</li>
+            <li>👑 Safety King</li>
+        </ul>
+    </div>
+
+    <div class="control-panel">
+        <button class="btn-reset" onclick="resetGame()">🔄 Reset Game</button>
+    </div>
+
+    <footer class="developer-credit">
+        <h3>Developed by <strong>Dr. Arkaprabha Sau</strong>, MBBS, MD (Gold Medalist), DPH, Dip. Geriatric Medicine,
+            PhD (Computer Science & Engineering)</h3>
+    </footer>
+
+    <script>
+        const correctPPE = {
+            chemical: ['Gloves', 'Goggles', 'Apron', 'Boots', 'Mask'],
+            electrical: ['Helmet', 'Gloves', 'Boots', 'FaceShield'],
+            construction: ['Helmet', 'Vest', 'Boots', 'Goggles', 'EarPlugs'],
+            heights: ['Helmet', 'Harness', 'Boots', 'Gloves'],
+            welding: ['FaceShield', 'Gloves', 'Apron', 'Boots']
+        };
+
+        const initialRewards = [
+            "Silver Gloves 🥈",
+            "Golden Helmet 🥇",
+            "Platinum Goggles 💎",
+            "Diamond Vest 💠",
+            "Safety King 👑"
+        ];
+
+        let virtualPPERewards = [...initialRewards];
+        let scores = [0, 0];
+        let rewards = [[], []];
+        let submissions = [false, false];
+        let playerSelections = [[], []];
+
+        document.querySelectorAll('.ppe-item').forEach(item => {
+            item.addEventListener('click', function () {
+                this.classList.toggle('selected');
+            });
+        });
+
+        function submitSelection(player) {
+            const hazard = document.getElementById(`hazard${player}`).value;
+            // Get value from data attribute
+            const selected = Array.from(document.querySelectorAll(`#player${player} .selected`))
+                .map(item => item.getAttribute('data-value'));
+
+            playerSelections[player - 1] = { hazard, selected };
+            submissions[player - 1] = true;
+
+            const btn = document.querySelector(`#player${player} button`);
+            btn.disabled = true;
+            btn.innerHTML = "⏳ Waiting...";
+
+            if (submissions[0] && submissions[1]) {
+                evaluateRound();
+            }
+        }
+
+        function evaluateRound() {
+            const result = document.getElementById('result');
+            const rewardMessage = document.getElementById('rewardMessage');
+            let roundResults = [];
+
+            for (let i = 0; i < 2; i++) {
+                const { hazard, selected } = playerSelections[i];
+                const required = correctPPE[hazard];
+                const correct = selected.filter(item => required.includes(item));
+                const incorrect = selected.filter(item => !required.includes(item));
+                const missing = required.filter(item => !selected.includes(item));
+
+                const score = (correct.length * 2) - (incorrect.length + missing.length);
+                scores[i] += Math.max(0, score);
+
+                roundResults.push({
+                    player: i + 1,
+                    correct,
+                    incorrect,
+                    missing,
+                    score
+                });
+            }
+
+            // Update scores with animation
+            animateValue("score1", parseInt(document.getElementById('score1').textContent), scores[0], 1000);
+            animateValue("score2", parseInt(document.getElementById('score2').textContent), scores[1], 1000);
+
+            // Display results
+            result.style.display = 'block';
+            result.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div style="background: rgba(0, 243, 255, 0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(0, 243, 255, 0.2);">
+                        <h4 style="color: var(--neon-blue); margin-bottom: 15px;">Employee 1 Analysis</h4>
+                        <p>✅ Correct: <span style="color: var(--neon-green)">${roundResults[0].correct.join(', ') || 'None'}</span></p>
+                        <p>❌ Incorrect: <span style="color: var(--neon-pink)">${roundResults[0].incorrect.join(', ') || 'None'}</span></p>
+                        <p>⚠️ Missing: <span style="color: var(--neon-yellow)">${roundResults[0].missing.join(', ') || 'None'}</span></p>
+                    </div>
+                    <div style="background: rgba(255, 0, 222, 0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255, 0, 222, 0.2);">
+                        <h4 style="color: var(--neon-pink); margin-bottom: 15px;">Employee 2 Analysis</h4>
+                        <p>✅ Correct: <span style="color: var(--neon-green)">${roundResults[1].correct.join(', ') || 'None'}</span></p>
+                        <p>❌ Incorrect: <span style="color: var(--neon-pink)">${roundResults[1].incorrect.join(', ') || 'None'}</span></p>
+                        <p>⚠️ Missing: <span style="color: var(--neon-yellow)">${roundResults[1].missing.join(', ') || 'None'}</span></p>
+                    </div>
+                </div>
+            `;
+
+            // Determine winner
+            const winner = scores[0] > scores[1] ? 1 : scores[1] > scores[0] ? 2 : null;
+
+            if (winner && virtualPPERewards.length > 0) {
+                const reward = virtualPPERewards.shift();
+                rewards[winner - 1].push(reward);
+                rewardMessage.innerHTML = `
+                    <div style="animation: popIn 0.5s ease;">
+                        <div style="font-size: 1.2em; margin-bottom: 10px;">🎉 <strong>Employee ${winner}</strong> wins this round!</div>
+                        <div style="font-size: 2em; color: var(--neon-yellow); text-shadow: 0 0 20px var(--neon-yellow);">${reward}</div>
+                    </div>
+                `;
+            } else if (!winner) {
+                rewardMessage.innerHTML = "<span style='color: var(--text-secondary)'>It's a tie! No awards this round. Keep trying! 🤝</span>";
+            } else {
+                rewardMessage.innerHTML = `🎉 <strong>Employee ${winner}</strong> wins! All awards have been claimed!`;
+            }
+
+            // Update awards list
+            updateAwardsList();
+
+            // Reset logic
+            setTimeout(() => {
+                submissions = [false, false];
+                playerSelections = [[], []];
+                document.querySelectorAll('.ppe-item.selected').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                document.querySelectorAll('button.btn-neon').forEach(button => {
+                    button.disabled = false;
+                    button.innerHTML = "Submit Check";
+                });
+            }, 6000);
+        }
+
+        function resetGame() {
+            if (confirm("Are you sure you want to reset the entire game?")) {
+                scores = [0, 0];
+                rewards = [[], []];
+                virtualPPERewards = [...initialRewards];
+                submissions = [false, false];
+                playerSelections = [[], []];
+
+                document.getElementById('score1').textContent = '0';
+                document.getElementById('score2').textContent = '0';
+                document.getElementById('result').style.display = 'none';
+                document.getElementById('rewardMessage').innerHTML = '';
+
+                document.querySelectorAll('.ppe-item.selected').forEach(item => {
+                    item.classList.remove('selected');
+                });
+
+                document.querySelectorAll('button.btn-neon').forEach(button => {
+                    button.disabled = false;
+                    button.innerHTML = "Submit Check";
+                });
+
+                updateAwardsList();
+            }
+        }
+
+        function updateAwardsList() {
+            const awardsList = document.getElementById('awards');
+            awardsList.innerHTML = virtualPPERewards.map(award => `<li>${award}</li>`).join('');
+        }
+
+        function animateValue(id, start, end, duration) {
+            if (start === end) return;
+            const range = end - start;
+            let current = start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            const obj = document.getElementById(id);
+            const timer = setInterval(function () {
+                current += increment;
+                obj.innerHTML = current;
+                if (current == end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+    </script>
+</body>
+
+</html>

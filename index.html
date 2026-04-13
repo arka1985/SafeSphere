@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeSphere — Occupational Safety, Health, Environment & Sustainability</title>
+    <meta name="description"
+        content="SafeSphere is a comprehensive educational platform for Occupational Safety, Health, Environment (OSHE) and Sustainability awareness, training, and compliance tools.">
+    <meta name="keywords"
+        content="SafeSphere, OSHE, Occupational Health, Occupational Safety, Environment, Sustainability, OSH Calculator, Safety Training, Virtual Lab">
+    <meta name="author" content="Dr. Arkaprabha Sau">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+    <!-- ═══ Animated Background ═══ -->
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ═══ SafeSphere Bhashini Multilingual Widget (Top Right Circle) ═══ -->
+    <div class="bhashini-widget-wrapper bhashini-skip-translation">
+        <div class="bhashini-widget" id="bhashini-trigger" title="Translate — Bhashini">
+            <div class="bhashini-logo-text">अ<span>A</span></div>
+        </div>
+
+        <!-- Custom Glassmorphic Language Menu -->
+        <div class="bhashini-menu" id="bhashini-menu">
+            <div class="bhashini-menu__header">
+                <span class="bhashini-menu__title">Select Language</span>
+                <span class="bhashini-menu__source">Powered by Bhashini</span>
+            </div>
+            <div class="bhashini-menu__grid">
+                <button class="lang-option" data-lang="en">English</button>
+                <button class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+                <button class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+                <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                <button class="lang-option" data-lang="mr">मराठी (Marathi)</button>
+                <button class="lang-option" data-lang="ta">தமிழ் (Tamil)</button>
+                <button class="lang-option" data-lang="ur">اردو (Urdu)</button>
+                <button class="lang-option" data-lang="gu">ગુજરાતી (Gujarati)</button>
+                <button class="lang-option" data-lang="ml">മലയാളம் (Malayalam)</button>
+                <button class="lang-option" data-lang="kn">ಕನ್ನಡ (Kannada)</button>
+                <button class="lang-option" data-lang="or">ଓଡ଼ିଆ (Odia)</button>
+                <button class="lang-option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</button>
+                <button class="lang-option" data-lang="as">অসমীয়া (Assamese)</button>
+                <button class="lang-option" data-lang="mai">मैथिली (Maithili)</button>
+                <button class="lang-option" data-lang="sat">संताली (Santali)</button>
+                <button class="lang-option" data-lang="ks">کٲشُر (Kashmiri)</button>
+                <button class="lang-option" data-lang="ne">नेपाली (Nepali)</button>
+                <button class="lang-option" data-lang="kok">कोंकणी (Konkani)</button>
+                <button class="lang-option" data-lang="sd">سنڌي (Sindhi)</button>
+                <button class="lang-option" data-lang="doi">डोगरी (Dogri)</button>
+                <button class="lang-option" data-lang="mni">মৈতেইলোন (Manipuri)</button>
+                <button class="lang-option" data-lang="brx">बोडो (Bodo)</button>
+                <button class="lang-option" data-lang="sa">संस्कृतम् (Sanskrit)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Bhashini Bridge (Kept for Production) -->
+    <div id="bhashini-plugin-utility" class="bhashini-plugin-container"></div>
+    <script src="https://translation-plugin.bhashini.co.in/v3/website_translation_utility.js?v=1.3.1" language-icon-color="#10b981"></script>
+    <script src="main.js"></script>
+
+    <!-- ═══ App Container ═══ -->
+    <div class="app-container">
+
+        <!-- ═══ Header ═══ -->
+        <header class="site-header">
+            <div class="header-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                Open-Source SafeSphere Education Platform
+            </div>
+
+            <h1 class="site-title bhashini-skip-translation">SafeSphere</h1>
+
+            <p class="site-subtitle">
+                Comprehensive <span class="neon-highlight">Occupational Safety</span>,
+                <span class="neon-highlight--cyan">Health</span>,
+                <span class="neon-highlight--amber">Environment</span> &amp;
+                Sustainability — Awareness, Training &amp; Compliance Platform
+            </p>
+
+            <div class="desktop-notice">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                For best experience, open on a laptop / desktop
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="module-count">4</span>
+                    <span class="stat-label">Modules</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Scenarios</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">22+</span>
+                    <span class="stat-label">Languages (Bhashini)</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ═══ Active Modules ═══ -->
+        <div class="section-header">
+            <span class="section-header__line"></span>
+            <span class="section-header__title">⚡ Available Modules</span>
+            <span class="section-header__line" style="background: linear-gradient(to left, var(--glass-border), transparent);"></span>
+        </div>
+
+        <main class="modules-grid" id="modules-grid">
+
+            <!-- Module 1 — Virtual OSHE Lab -->
+            <a href="virtual_lab/index.html" class="module-card fade-up" id="module-virtual-lab">
+                <div class="module-card__icon-wrap icon-green">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7,2V4H8V18A4,4 0 0,0 12,22A4,4 0 0,0 16,18V4H17V2H7M11,16C10.4,16 10,15.6 10,15C10,14.4 10.4,14 11,14C11.6,14 12,14.4 12,15C12,15.6 11.6,16 11,16M13,12C12.4,12 12,11.6 12,11C12,10.4 12.4,10 13,10C13.6,10 14,10.4 14,11C14,11.6 13.6,12 13,12M14,7H10V4H14V7Z" />
+                    </svg>
+                </div>
+                <div class="module-card__title">Virtual SafeSphere Lab</div>
+                <p class="module-card__desc">Interactive virtual laboratory simulations for occupational safety drills, hazard identification, and emergency response training.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Coming Soon
+                </span>
+                <div class="module-card__arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+            </a>
+
+            <!-- Module 2 — OSH Calculators -->
+            <a href="calculators/index.html" class="module-card fade-up" id="module-calculators">
+                <div class="module-card__icon-wrap icon-cyan">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z" />
+                    </svg>
+                </div>
+                <div class="module-card__title">OSH Calculators</div>
+                <p class="module-card__desc">Suite of calculators — Noise Exposure (TWA/Dose), Heat Stress (WBGT), Ventilation Rate, Chemical Exposure (TLV), Illumination, and more.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Coming Soon
+                </span>
+                <div class="module-card__arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+            </a>
+
+            <!-- Module 3 — National Statutory Repository -->
+            <a href="national_laws/index.html" class="module-card fade-up" id="module-national-laws">
+                <div class="module-card__icon-wrap icon-amber">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                    </svg>
+                </div>
+                <div class="module-card__title">National Statutory Repository</div>
+                <p class="module-card__desc">Comprehensive database of Indian OSH legislation — Factories Act, BOCW Act, Mines Act, OSHCE Code 2020, and related rules &amp; notifications.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Coming Soon
+                </span>
+                <div class="module-card__arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+            </a>
+
+            <!-- Module 4 — International Rules & Regulations -->
+            <a href="international_rules/index.html" class="module-card fade-up" id="module-international-rules">
+                <div class="module-card__icon-wrap icon-blue">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.79 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                    </svg>
+                </div>
+                <div class="module-card__title">International Rules &amp; Regulations</div>
+                <p class="module-card__desc">ILO Conventions, ISO 45001, WHO guidelines, OSHA standards, EU OSH Directives, and global best practices for workplace safety.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Coming Soon
+                </span>
+                <div class="module-card__arrow">
+                    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </div>
+            </a>
+
+        </main>
+
+        <!-- ═══ Upcoming Modules ═══ -->
+        <div class="section-header">
+            <span class="section-header__line"></span>
+            <span class="section-header__title">🚀 More Modules Coming Soon</span>
+            <span class="section-header__line" style="background: linear-gradient(to left, var(--glass-border), transparent);"></span>
+        </div>
+
+        <div class="modules-grid">
+
+            <!-- Upcoming — Hazard Identification & Risk Assessment -->
+            <div class="module-card module-card--coming-soon fade-up" id="module-hira">
+                <div class="module-card__icon-wrap icon-rose">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16" />
+                    </svg>
+                </div>
+                <div class="module-card__title">HIRA — Hazard Identification &amp; Risk Assessment</div>
+                <p class="module-card__desc">Interactive tools for hazard mapping, risk matrix building, and control hierarchy analysis using real-world scenarios.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Planned
+                </span>
+            </div>
+
+            <!-- Upcoming — Safety Audit Checklists -->
+            <div class="module-card module-card--coming-soon fade-up" id="module-audit">
+                <div class="module-card__icon-wrap icon-lime">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9" />
+                    </svg>
+                </div>
+                <div class="module-card__title">Safety Audit &amp; Checklists</div>
+                <p class="module-card__desc">Ready-to-use checklists for workplace inspections, fire safety audits, PPE compliance, and accident investigation workflows.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Planned
+                </span>
+            </div>
+
+            <!-- Upcoming — Incident Reporting & Analytics -->
+            <div class="module-card module-card--coming-soon fade-up" id="module-incident">
+                <div class="module-card__icon-wrap icon-rose">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z" />
+                    </svg>
+                </div>
+                <div class="module-card__title">Incident Reporting &amp; Analytics</div>
+                <p class="module-card__desc">Digital incident reporting forms, near-miss tracking, root-cause analysis tools, and trend dashboards for proactive safety.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Planned
+                </span>
+            </div>
+
+            <!-- Upcoming — Environmental Monitoring -->
+            <div class="module-card module-card--coming-soon fade-up" id="module-env">
+                <div class="module-card__icon-wrap icon-green">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
+                    </svg>
+                </div>
+                <div class="module-card__title">Environmental Impact &amp; Sustainability</div>
+                <p class="module-card__desc">Carbon footprint calculators, waste management guides, EIA tools, and SDG-aligned sustainability metrics for organizations.</p>
+                <span class="module-card__tag tag-soon">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><circle cx="12" cy="12" r="5"/></svg>
+                    Planned
+                </span>
+            </div>
+
+        </div>
+
+    </div> <!-- end .app-container -->
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="dev-label">Developed By</div>
+            <div class="dev-name bhashini-skip-translation">Dr. Arkaprabha Sau</div>
+            <div class="dev-creds">
+                MBBS, MD (Gold Medalist), DPH, Dip. Geriatric Medicine, CCEBDM<br>
+                PhD (Computer Science &amp; Engineering)
+            </div>
+            <div class="disclaimer">
+                This is for educational purposes only. Researchers are requested to verify the results based on
+                standard procedures as per standard epidemiological textbooks. For any errors, bugs, or suggestions,
+                please email me at
+                <a href="mailto:arka.doctor@gmail.com" class="contact-link">arka.doctor@gmail.com</a>
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══ Particle Animation Script ═══ -->
+    <script>
+        // ---------- Floating Particles ----------
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const PARTICLE_COUNT = 60;
+            const COLORS = ['rgba(16,185,129,', 'rgba(6,182,212,', 'rgba(245,158,11,', 'rgba(59,130,246,'];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 2 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.4,
+                    dy: (Math.random() - 0.5) * 0.4,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    alpha: Math.random() * 0.5 + 0.1,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.02 + 0.005,
+                };
+            }
+
+            function init() {
+                resize();
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.pulse += p.pulseSpeed;
+                    const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + a + ')';
+                    ctx.fill();
+
+                    // glow
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + (a * 0.15) + ')';
+                    ctx.fill();
+
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -10) p.x = w + 10;
+                    if (p.x > w + 10) p.x = -10;
+                    if (p.y < -10) p.y = h + 10;
+                    if (p.y > h + 10) p.y = -10;
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+
+        // ---------- Intersection Observer for fade-up ----------
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -40px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // ---------- Module count auto-update ----------
+        const allModules = document.querySelectorAll('.module-card:not(.module-card--coming-soon)');
+        const comingSoon = document.querySelectorAll('.module-card--coming-soon');
+        const countEl = document.getElementById('module-count');
+        if (countEl) countEl.textContent = allModules.length + comingSoon.length;
+    </script>
+
+</body>
+
+</html>
