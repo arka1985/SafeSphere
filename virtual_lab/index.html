@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Lab Hub — SafeSphere SafeSphere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ═══ Animated Background ═══ -->
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ═══ Hub Container ═══ -->
+    <div class="lab-hub-container">
+
+        <header class="lab-header fade-up">
+            <a href="../index.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to SafeSphere Home
+            </a>
+            <h1 class="lab-title">Virtual SafeSphere Lab</h1>
+            <p class="lab-subtitle">Interactive simulations and AI-powered tools for Occupational Safety, Health, and
+                Ergonomics training.</p>
+        </header>
+
+        <main class="lab-grid">
+
+            <!-- Eye Fatigue Guard -->
+            <a href="eye_fatigue/index.html" class="lab-card fade-up" style="animation-delay: 0.1s;">
+                <div class="lab-icon icon-cyan">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <h3 class="card-title">Eye Fatigue Guard</h3>
+                <p class="card-desc">AI-powered drowsiness detection using MediaPipe. Monitors blink rate and eye
+                    closure in real-time to prevent workplace fatigue incidents.</p>
+                <div class="card-footer">
+                    <span class="lab-tag tag-ai">AI-Powered</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- AI Ergo Analysis -->
+            <a href="rula_reba_ai/index.html" class="lab-card fade-up" style="animation-delay: 0.2s;">
+                <div class="lab-icon icon-green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                </div>
+                <h3 class="card-title">AI Ergo Analysis</h3>
+                <p class="card-desc">Vision-based ergonomic assessment. Automatic posture analysis using RULA/REBA
+                    frameworks via camera input for real-time risk evaluation.</p>
+                <div class="card-footer">
+                    <span class="lab-tag tag-ai">AI-Powered</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Manual Ergonomic Calculator -->
+            <a href="rula_reba_manual/index.html" class="lab-card fade-up" style="animation-delay: 0.3s;">
+                <div class="lab-icon icon-amber">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z" />
+                    </svg>
+                </div>
+                <h3 class="card-title">ErgoCalc Pro</h3>
+                <p class="card-desc">Comprehensive manual RULA & REBA assessment tool. Step-by-step scoring with
+                    detailed reports and evidence-based ergonomic recommendations.</p>
+                <div class="card-footer">
+                    <span class="lab-tag tag-calc">Calculator</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- PPE Gamification -->
+            <a href="ppe_gamification/index.html" class="lab-card fade-up" style="animation-delay: 0.4s;">
+                <div class="lab-icon icon-rose">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <h3 class="card-title">PPE Training Game</h3>
+                <p class="card-desc">Interactive gamified experience for Personal Protective Equipment (PPE). Test
+                    hazard recognition and correct equipment selection in various scenarios.</p>
+                <div class="card-footer">
+                    <span class="lab-tag tag-game">Gamified</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- PPE AI Detection -->
+            <a href="ppe_ai/index.html" class="lab-card fade-up" style="animation-delay: 0.5s;">
+                <div class="lab-icon icon-cyan">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <h3 class="card-title">Real-time PPE Detection</h3>
+                <p class="card-desc">YOLO-based computer vision for workplace safety. Automatically detects Hard-hats,
+                    Vests, and Goggles to ensure site compliance and worker safety.</p>
+                <div class="card-footer">
+                    <span class="lab-tag tag-ai">AI-Powered</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="dev-name">Developed by Dr. Arkaprabha Sau</div>
+            <div class="disclaimer">Virtual Lab Environment — For Educational Purposes Only.</div>
+        </div>
+    </footer>
+
+    <!-- ═══ Particle Animation Script (Copied from index.html) ═══ -->
+    <script>
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const PARTICLE_COUNT = 40;
+            const COLORS = ['rgba(16,185,129,', 'rgba(6,182,212,', 'rgba(245,158,11,', 'rgba(59,130,246,'];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.5 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: (Math.random() - 0.5) * 0.3,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    alpha: Math.random() * 0.3 + 0.1,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.01 + 0.005,
+                };
+            }
+
+            function init() {
+                resize();
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.pulse += p.pulseSpeed;
+                    const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + a + ')';
+                    ctx.fill();
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -10) p.x = w + 10;
+                    if (p.x > w + 10) p.x = -10;
+                    if (p.y < -10) p.y = h + 10;
+                    if (p.y > h + 10) p.y = -10;
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+    </script>
+
+</body>
+
+</html>

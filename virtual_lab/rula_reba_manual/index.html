@@ -5,20 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ErgoCalc - Premium RULA & REBA Assessment</title>
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <!-- Using FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+    <!-- ═══ Animated Background ═══ -->
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+
     <div class="app-container">
-        <header class="main-header">
-            <div class="logo-area">
-                <h1>Ergo<span class="highlight">Calc</span></h1>
-                <p class="subtitle">Advanced Ergonomic Assessment Tool</p>
-            </div>
-            <button id="home-btn" class="nav-btn hidden"><i class="fas fa-home"></i> Home</button>
+        <header class="lab-header fade-up">
+            <a href="../index.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Virtual Lab Hub
+            </a>
+            <h1 class="lab-title">ErgoCalc <span class="highlight">Pro</span></h1>
+            <p class="lab-subtitle">Manual RULA & REBA Ergonomic Assessment</p>
         </header>
 
         <main class="content-area">

@@ -415,13 +415,35 @@
             animation: pulse 2s infinite;
         }
     </style>
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
+    <!-- ═══ Animated Background ═══ -->
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
 
-    <h1 class="game-title">PPE Safety Challenge</h1>
+    <div class="lab-hub-container" style="padding-top: 40px;">
+        <header class="lab-header fade-up">
+            <a href="../index.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Virtual Lab Hub
+            </a>
+            <h1 class="lab-title">PPE Safety <span class="highlight">Challenge</span></h1>
+            <p class="lab-subtitle">Gamified training for Personal Protective Equipment</p>
+        </header>
 
-    <div class="scoring-rules">
+        <div class="scoring-rules">
+    
         <h3>📊 BBS Safety Rules & Scoring</h3>
         <div style="display: flex; justify-content: center; gap: 30px; margin-top: 15px;">
             <span style="color: var(--neon-green); font-weight: bold;">+2 Points <span

@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- CSS -->
+    <link rel="stylesheet" href="../../main.css">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="style.css">
     <!-- MediaPipe FaceMesh -->
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
@@ -22,12 +24,27 @@
 
 <body>
 
+    <!-- ═══ Animated Background ═══ -->
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+
     <div id="alert-overlay" class="hidden"></div>
 
     <main class="container">
-        <header>
-            <h1>Eye Fatigue <span class="accent">Guard</span></h1>
-            <p>AI-Powered Drowsiness Detection</p>
+        <header class="lab-header fade-up">
+            <a href="../index.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Virtual Lab Hub
+            </a>
+            <h1 class="lab-title">Eye Fatigue <span class="accent">Guard</span></h1>
+            <p class="lab-subtitle">AI-Powered Drowsiness Detection Monitoring</p>
         </header>
 
         <div class="monitor-grid">

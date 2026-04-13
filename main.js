@@ -71,13 +71,16 @@ function triggerNativeTranslation(langCode) {
         // We first try to find a match in Bhashini's internal list if available.
         let langLabel = null;
         if (window.supportedTargetLangArr && Array.isArray(window.supportedTargetLangArr)) {
-            langLabel = window.supportedTargetLangArr.find(l => {
+            const matchedObj = window.supportedTargetLangArr.find(l => {
                 const normalizedCode = langCode.toLowerCase();
-                const normalizedLabel = l.toLowerCase();
-                return normalizedLabel.includes(normalizedCode) || 
+                const normalizedLabel = (l.label || "").toLowerCase();
+                const normalizedObjCode = (l.code || "").toLowerCase();
+                return normalizedObjCode === normalizedCode || 
+                       normalizedLabel.includes(normalizedCode) || 
                        (normalizedCode === 'hi' && normalizedLabel.includes('hindi')) ||
                        (normalizedCode === 'bn' && normalizedLabel.includes('bengali'));
             });
+            langLabel = matchedObj ? matchedObj.label : null;
         }
 
         // Fallback mapping if dynamic detection fails
