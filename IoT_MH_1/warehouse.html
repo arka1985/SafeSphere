@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Warehouse | MH Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .simulation-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            min-height: calc(100vh - 200px);
+            margin-bottom: 2rem;
+        }
+
+        .canvas-container {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .telemetry-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .telemetry-item label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .telemetry-value {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--neon-blue);
+            font-weight: 600;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 1024px) {
+            .simulation-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .canvas-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">⚡</div>
+            MH Intelligence
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Hub</a>
+            <a href="warehouse.html" class="nav-link active">Smart Warehouse</a>
+            <a href="quality.html" class="nav-link">AI Quality</a>
+            <a href="maintenance.html" class="nav-link">Predictive Maint.</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="simulation-grid">
+            <!-- Main Simulation Canvas -->
+            <div class="canvas-container" id="canvasContainer">
+                <canvas id="simCanvas"></canvas>
+            </div>
+
+            <!-- Sidebar Controls -->
+            <div class="sidebar">
+                <!-- Telemetry Panel -->
+                <div class="glass-panel">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3>📡 Live Telemetry</h3>
+                        <span class="badge badge-ok" id="statusBadge">Active</span>
+                    </div>
+
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">
+                            <label>AGV ID</label>
+                            <div class="telemetry-value">AGV-01</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <label>Battery</label>
+                            <div class="telemetry-value" id="batteryValue" style="color: var(--neon-green)">98%</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <label>Current Load</label>
+                            <div class="telemetry-value" id="loadValue">Empty</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <label>Grid Position</label>
+                            <div class="telemetry-value" id="posValue">0, 0</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <label>Status</label>
+                            <div class="telemetry-value" id="statusValue">IDLE</div>
+                        </div>
+                        <div class="telemetry-item">
+                            <label>Current Task</label>
+                            <div class="telemetry-value" id="taskValue" style="font-size: 0.9rem">Waiting...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Panel -->
+                <div class="glass-panel">
+                    <h3>🎮 Mission Control</h3>
+                    <p style="font-size: 0.9rem; margin: 1rem 0;">
+                        Click any cell on the grid to assign a destination. The A* algorithm will calculate the optimal
+                        path.
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <button class="btn btn-primary" onclick="resetSimulation()">
+                            Reset Simulation
+                        </button>
+                        <button class="btn btn-outline" id="toggleHeatmapBtn" onclick="toggleHeatmap()">
+                            Toggle Heatmap Overlay
+                        </button>
+                    </div>
+
+                    <div class="legend">
+                        <div class="legend-item"><span class="dot" style="background: var(--neon-blue)"></span> AGV
+                        </div>
+                        <div class="legend-item"><span class="dot" style="background: var(--neon-pink)"></span> Target
+                        </div>
+                        <div class="legend-item"><span class="dot" style="background: #444"></span> Wall</div>
+                        <div class="legend-item"><span class="dot" style="background: rgba(0, 255, 157, 0.5)"></span>
+                            Path</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="dev-profile">
+            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Engineered By</p>
+            <h3 class="dev-name">Dr. Arkaprabha Sau</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 500px; margin: 0 auto;">
+                MBBS, MD (Gold Medalist), PhD (CSE) • DPH, Dip. Geriatric Medicine
+            </p>
+        </div>
+    </footer>
+
+    <script src="warehouse.js"></script>
+</body>
+
+</html>

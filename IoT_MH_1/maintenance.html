@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Maintenance | MH Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            min-height: calc(100vh - 200px);
+            margin-bottom: 2rem;
+        }
+
+        .charts-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100%;
+        }
+
+        .chart-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .health-display {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .health-ring {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 8px solid rgba(255, 255, 255, 0.05);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+        }
+
+        .health-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            color: var(--text-main);
+        }
+
+        .health-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.5rem;
+        }
+
+        .ai-insight {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-left: 3px solid var(--neon-blue);
+            text-align: left;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .value-display {
+            font-family: monospace;
+            color: var(--neon-blue);
+        }
+
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">⚡</div>
+            MH Intelligence
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Hub</a>
+            <a href="warehouse.html" class="nav-link">Smart Warehouse</a>
+            <a href="quality.html" class="nav-link">AI Quality</a>
+            <a href="maintenance.html" class="nav-link active">Predictive Maint.</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="dashboard-grid">
+            <!-- Left Column: IoT Charts -->
+            <div class="charts-column">
+                <!-- Vibration Chart -->
+                <div class="glass-panel chart-panel">
+                    <div class="chart-header">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">📉</span>
+                            <div>
+                                <h3>Vibration Analysis</h3>
+                                <p style="font-size: 0.85rem; margin: 0;">Motor Axis X-Y Telemetry</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-ok" id="vibStatus">Normal</span>
+                    </div>
+                    <div style="flex: 1; position: relative; min-height: 200px;">
+                        <canvas id="vibChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Temperature Chart -->
+                <div class="glass-panel chart-panel">
+                    <div class="chart-header">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">🌡️</span>
+                            <div>
+                                <h3>Thermal Monitoring</h3>
+                                <p style="font-size: 0.85rem; margin: 0;">Main Bearing Core Temp</p>
+                            </div>
+                        </div>
+                        <span class="badge badge-ok" id="tempStatus">Normal</span>
+                    </div>
+                    <div style="flex: 1; position: relative; min-height: 200px;">
+                        <canvas id="tempChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: AI & Controls -->
+            <div class="sidebar-column">
+                <!-- AI Health Score -->
+                <div class="glass-panel health-display">
+                    <div class="health-ring" id="healthRing" style="border-color: var(--neon-green);">
+                        <span class="health-value" id="healthScore">100%</span>
+                        <span class="health-label">Health</span>
+                    </div>
+
+                    <div class="ai-insight">
+                        <h4 style="color: var(--neon-blue); font-size: 0.9rem; margin-bottom: 0.5rem;">AI DIAGNOSTIC
+                        </h4>
+                        <p id="predictionText" style="font-size: 0.9rem; color: var(--text-main);">
+                            System operating within optimal parameters. No anomalies detected.
+                        </p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem;">
+                        <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px;">
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Failure Prob.</div>
+                            <div id="probValue" style="font-size: 1.2rem; font-weight: 700; color: var(--neon-green);">
+                                0.1%</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.05); padding: 0.75rem; border-radius: 8px;">
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">Est. RUL</div>
+                            <div id="rulValue" style="font-size: 1.2rem; font-weight: 700;">> 1 Year</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Controls -->
+                <div class="glass-panel">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 1.5rem;">🛠️ Simulation Controls</h3>
+
+                    <div class="control-group">
+                        <div class="control-header">
+                            <span>Bearing Wear</span>
+                            <span class="value-display" id="wearValue">0%</span>
+                        </div>
+                        <input type="range" id="wearSlider" min="0" max="100" value="0">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-header">
+                            <span>Temperature Input</span>
+                            <span class="value-display" id="tempValue">45°C</span>
+                        </div>
+                        <input type="range" id="tempSlider" min="20" max="120" value="45">
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-header">
+                            <span>Vibration Input</span>
+                            <span class="value-display" id="vibValue">0.5 mm/s</span>
+                        </div>
+                        <input type="range" id="vibSlider" min="0" max="10" step="0.1" value="0.5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="dev-profile">
+            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Engineered By</p>
+            <h3 class="dev-name">Dr. Arkaprabha Sau</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 500px; margin: 0 auto;">
+                MBBS, MD (Gold Medalist), PhD (CSE) • DPH, Dip. Geriatric Medicine
+            </p>
+        </div>
+    </footer>
+
+    <script src="maintenance.js"></script>
+</body>
+
+</html>

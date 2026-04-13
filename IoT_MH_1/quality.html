@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Quality Control | MH Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load TensorFlow.js and COCO-SSD -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+    <style>
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            min-height: calc(100vh - 200px);
+            margin-bottom: 2rem;
+        }
+
+        .camera-feed {
+            position: relative;
+            background: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .hud-overlay {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            border: 1px solid var(--neon-blue);
+            display: flex;
+            gap: 3rem;
+        }
+
+        .hud-item {
+            text-align: center;
+        }
+
+        .hud-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .hud-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .bin-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .bin-card.active {
+            background: rgba(0, 243, 255, 0.1);
+            border-color: var(--neon-blue);
+            transform: scale(1.02);
+        }
+
+        .bin-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .bin-count {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-screen {
+            position: absolute;
+            inset: 0;
+            background: #000;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--neon-blue);
+        }
+
+        @media (max-width: 1024px) {
+            .vision-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .camera-feed {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">⚡</div>
+            MH Intelligence
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Hub</a>
+            <a href="warehouse.html" class="nav-link">Smart Warehouse</a>
+            <a href="quality.html" class="nav-link active">AI Quality</a>
+            <a href="maintenance.html" class="nav-link">Predictive Maint.</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="vision-grid">
+            <!-- Camera Feed -->
+            <div class="camera-feed">
+                <div class="loading-screen" id="loader">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👁️</div>
+                    <h2>Initializing Computer Vision...</h2>
+                    <p style="color: var(--text-muted)">Please allow camera access</p>
+                </div>
+                <video id="webcam" autoplay playsinline muted></video>
+                <canvas id="overlay"></canvas>
+
+                <div class="hud-overlay">
+                    <div class="hud-item">
+                        <div class="hud-label">Status</div>
+                        <div class="hud-value" style="color: var(--neon-green)">ACTIVE</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">Detected</div>
+                        <div class="hud-value" id="lastDetected">--</div>
+                    </div>
+                    <div class="hud-item">
+                        <div class="hud-label">Confidence</div>
+                        <div class="hud-value" id="confidenceVal">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sorting Bins -->
+            <div class="sidebar">
+                <div class="glass-panel">
+                    <h3>📦 Sorting Logic</h3>
+                    <p style="font-size: 0.9rem; margin: 1rem 0;">
+                        Objects detected by the AI are automatically categorized into virtual bins.
+                    </p>
+
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="bin-card" id="binA">
+                            <span class="bin-icon">📱</span>
+                            <div class="bin-count" id="countA">0</div>
+                            <div style="font-weight: 600;">Electronics</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted)">Phones, Remotes</div>
+                        </div>
+
+                        <div class="bin-card" id="binB">
+                            <span class="bin-icon">☕</span>
+                            <div class="bin-count" id="countB">0</div>
+                            <div style="font-weight: 600;">Kitchenware</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted)">Cups, Bottles, Bowls</div>
+                        </div>
+
+                        <div class="bin-card" id="binC">
+                            <span class="bin-icon">❓</span>
+                            <div class="bin-count" id="countC">0</div>
+                            <div style="font-weight: 600;">Others</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted)">Unclassified Items</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline" style="width: 100%; margin-top: 1.5rem;" onclick="resetCounts()">
+                        Reset Counters
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="dev-profile">
+            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Engineered By</p>
+            <h3 class="dev-name">Dr. Arkaprabha Sau</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 500px; margin: 0 auto;">
+                MBBS, MD (Gold Medalist), PhD (CSE) • DPH, Dip. Geriatric Medicine
+            </p>
+        </div>
+    </footer>
+
+    <script src="quality.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MH Intelligence Suite</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 6rem 0 4rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--neon-blue);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .feature-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.03), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card-actions {
+            margin-top: auto;
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">⚡</div>
+            MH Intelligence
+        </a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Hub</a>
+            <a href="warehouse.html" class="nav-link">Smart Warehouse</a>
+            <a href="quality.html" class="nav-link">AI Quality</a>
+            <a href="maintenance.html" class="nav-link">Predictive Maint.</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="hero">
+            <span class="hero-badge">Next-Gen Industry 4.0</span>
+            <h1>Intelligent Material Handling Solutions</h1>
+            <p>Experience the future of logistics with our integrated suite of AI-powered tools. From autonomous
+                pathfinding to predictive maintenance, we're redefining efficiency.</p>
+        </section>
+
+        <div class="grid-container">
+            <!-- Warehouse Card -->
+            <div class="glass-panel feature-card">
+                <div class="card-icon">🏭</div>
+                <div class="tags">
+                    <span class="tag">Pathfinding</span>
+                    <span class="tag">Digital Twin</span>
+                </div>
+                <h3>Smart Warehouse</h3>
+                <p>Real-time simulation of AGV logistics using A* algorithms. Visualize heatmaps, optimize routes, and
+                    monitor fleet telemetry in a live digital twin environment.</p>
+                <div class="card-actions">
+                    <a href="warehouse.html" class="btn btn-primary" style="width: 100%">Launch Simulation</a>
+                </div>
+            </div>
+
+            <!-- Quality Card -->
+            <div class="glass-panel feature-card">
+                <div class="card-icon">👁️</div>
+                <div class="tags">
+                    <span class="tag">Computer Vision</span>
+                    <span class="tag">TensorFlow.js</span>
+                </div>
+                <h3>AI Quality Control</h3>
+                <p>Automated visual inspection system. Uses your camera to detect, classify, and sort objects in
+                    real-time with high-precision machine learning models.</p>
+                <div class="card-actions">
+                    <a href="quality.html" class="btn btn-primary" style="width: 100%">Start Inspection</a>
+                </div>
+            </div>
+
+            <!-- Maintenance Card -->
+            <div class="glass-panel feature-card">
+                <div class="card-icon">⚙️</div>
+                <div class="tags">
+                    <span class="tag">IoT Sensors</span>
+                    <span class="tag">Predictive AI</span>
+                </div>
+                <h3>Predictive Maintenance</h3>
+                <p>Monitor asset health with simulated IoT sensors. Analyze vibration and temperature data to predict
+                    failures before they occur using advanced AI logic.</p>
+                <div class="card-actions">
+                    <a href="maintenance.html" class="btn btn-primary" style="width: 100%">Open Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="dev-profile">
+            <p style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem;">
+                Engineered By</p>
+            <h3 class="dev-name">Dr. Arkaprabha Sau</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 500px; margin: 0 auto;">
+                MBBS, MD (Gold Medalist), PhD (CSE) • DPH, Dip. Geriatric Medicine
+            </p>
+        </div>
+    </footer>
+</body>
+
+</html>
