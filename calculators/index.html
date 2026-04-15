@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSH Calculators | SafeSphere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../bhashini.css">
+</head>
+
+<body>
+
+    <div class="bg-aurora"></div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ═══ SafeSphere Bhashini Multilingual Widget ═══ -->
+    <div class="bhashini-widget-wrapper bhashini-skip-translation">
+        <div class="bhashini-widget" id="bhashini-trigger">
+            <div class="bhashini-logo-text">अ<span>A</span></div>
+        </div>
+
+        <div class="bhashini-menu" id="bhashini-menu">
+            <div class="bhashini-menu__header">
+                <span class="bhashini-menu__title">Select Language</span>
+                <span class="bhashini-menu__source">Powered by Bhashini AI</span>
+            </div>
+            <div class="bhashini-menu__grid">
+                <button class="lang-option active" data-lang="en">English</button>
+                <button class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+                <button class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+                <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                <button class="lang-option" data-lang="mr">मराठी (Marathi)</button>
+                <button class="lang-option" data-lang="ta">தமிழ் (Tamil)</button>
+                <button class="lang-option" data-lang="gu">ગુજરાતી (Gujarati)</button>
+                <button class="lang-option" data-lang="kn">కన్నడ (Kannada)</button>
+                <button class="lang-option" data-lang="ml">മലയാളം (Malayalam)</button>
+                <button class="lang-option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Bhashini Bridge -->
+    <div id="bhashini-plugin-utility" class="bhashini-plugin-container"></div>
+    <script src="https://translation-plugin.bhashini.co.in/v3/website_translation_utility.js?v=1.3.1"
+        language-icon-color="#10b981"></script>
+    <script src="../main.js"></script>
+
+    <div class="calc-hub-container">
+        <header class="calc-header">
+            <a href="../index.html" class="back-link">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to SafeSphere
+            </a>
+            <h1 class="calc-title">OSH Calculators</h1>
+            <p class="calc-subtitle">Technical assessment tools for occupational safety, health, and environmental
+                compliance monitoring.</p>
+        </header>
+
+        <main class="calc-grid">
+            <!-- ErgoCalc Pro -->
+            <a href="../virtual_lab/rula_reba_manual/index.html" class="calc-card fade-up" style="animation-delay: 0.1s;">
+                <div class="calc-icon" style="border-color: var(--accent-amber);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-amber)" stroke-width="2">
+                        <path
+                            d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z" />
+                    </svg>
+                </div>
+                <h3 class="card-title">ErgoCalc Pro</h3>
+                <p class="card-desc">Advanced manual RULA & REBA ergonomic assessment tool. Generate detailed risk
+                    reports and biomechanical posture recommendations.</p>
+                <div class="card-footer">
+                    <span class="calc-tag tag-active">Active</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Noise and HPD Calculator -->
+            <a href="hpd_calculator/index.html" class="calc-card fade-up" style="animation-delay: 0.2s;">
+                <div class="calc-icon" style="border-color: var(--accent-rose);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-rose)" stroke-width="2">
+                        <path d="M12 21c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm0-18C7.582 3 4 6.582 4 11s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z"/>
+                        <circle cx="12" cy="11" r="3"/>
+                        <path d="M19 11h2m-18 0h2"/>
+                    </svg>
+                </div>
+                <h3 class="card-title">Time Weighted Average Noise Calculator</h3>
+                <p class="card-desc">Advanced calculator for assessing hearing protector attenuation. Features OSHA 1910.95 and CSA Z94.2 compliance modes with de-rating factors.</p>
+                <div class="card-footer">
+                    <span class="calc-tag tag-active">Active</span>
+                    <div class="launch-btn">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Heat Stress (Placeholder) -->
+            <div class="calc-card fade-up" style="animation-delay: 0.3s; opacity: 0.6;">
+                <div class="calc-icon" style="border-color: var(--accent-rose);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-rose)" stroke-width="2">
+                        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z" />
+                    </svg>
+                </div>
+                <h3 class="card-title">Heat Stress (WBGT)</h3>
+                <p class="card-desc">Wet Bulb Globe Temperature index calculator for thermal comfort and heat-related
+                    illness prevention in industrial settings.</p>
+                <div class="card-footer">
+                    <span class="calc-tag tag-soon">Soon</span>
+                </div>
+            </div>
+
+            <!-- Ventilation (Placeholder) -->
+            <div class="calc-card fade-up" style="animation-delay: 0.4s; opacity: 0.6;">
+                <div class="calc-icon" style="border-color: var(--accent-cyan);">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2">
+                        <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2" />
+                    </svg>
+                </div>
+                <h3 class="card-title">Ventilation Rate</h3>
+                <p class="card-desc">Mechanical ventilation and air exchange rate calculator. Ensure compliance with ACGIH
+                    industrial ventilation standards for indoor air quality.</p>
+                <div class="card-footer">
+                    <span class="calc-tag tag-soon">Soon</span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Particle Animation Script -->
+    <script>
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const PARTICLE_COUNT = 40;
+            const COLORS = ['rgba(16,185,129,', 'rgba(6,182,212,', 'rgba(245,158,11,', 'rgba(59,130,246,'];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 1.5 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: (Math.random() - 0.5) * 0.3,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    alpha: Math.random() * 0.3 + 0.1,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.01 + 0.005,
+                };
+            }
+
+            function init() {
+                resize();
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.pulse += p.pulseSpeed;
+                    const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + a + ')';
+                    ctx.fill();
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -10) p.x = w + 10;
+                    if (p.x > w + 10) p.x = -10;
+                    if (p.y < -10) p.y = h + 10;
+                    if (p.y > h + 10) p.y = -10;
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+    </script>
+
+</body>
+
+</html>

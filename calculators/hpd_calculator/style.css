@@ -1,0 +1,278 @@
+:root {
+    --bg-deep: hsl(225, 50%, 3%);
+    --bg-card: hsla(225, 40%, 8%, 0.85);
+    --glass-border: hsla(0, 0%, 100%, 0.1);
+    
+    --accent-emerald: hsl(155, 100%, 55%);
+    --accent-cyber: hsl(190, 100%, 65%);
+    --accent-gold: hsl(42, 100%, 60%);
+    --accent-ruby: hsl(355, 100%, 65%);
+    --accent-dim: hsla(190, 100%, 65%, 0.15);
+    
+    --text-main: hsl(0, 0%, 98%);
+    --text-dim: hsl(215, 15%, 65%);
+    
+    --curr-theme: var(--accent-cyber);
+    --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+    font-family: 'Outfit', sans-serif; 
+    background: var(--bg-deep); 
+    color: var(--text-main); 
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+.bg-aurora {
+    position: fixed; inset: 0; z-index: -1;
+    background: radial-gradient(circle at 50% -20%, var(--accent-dim) 0%, transparent 60%);
+}
+#particles-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.25; pointer-events: none; }
+
+.app-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 25px;
+    position: relative;
+    z-index: 10;
+}
+
+/* ═══ Header ═══ */
+.calc-header { margin-bottom: 25px; }
+.hero-title { font-size: 1.8rem; font-weight: 900; letter-spacing: -0.8px; color: #fff; }
+.back-link { 
+    color: var(--text-dim); text-decoration: none; font-size: 0.8rem; 
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    transition: 0.3s;
+}
+.back-link:hover { color: var(--accent-cyber); text-shadow: 0 0 10px var(--accent-cyber); }
+
+/* ═══ Circular Dashboard (Premium Gauge) ═══ */
+.compliance-banner {
+    display: flex; align-items: center; gap: 35px; padding: 25px 40px;
+    border-radius: 28px; margin-bottom: 25px;
+    background: linear-gradient(135deg, hsla(225, 40%, 12%, 0.95), hsla(225, 40%, 6%, 0.95));
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.gauge-container { position: relative; width: 130px; height: 130px; flex-shrink: 0; }
+.circular-gauge { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.gauge-bg { fill: none; stroke: hsla(0,0%,100%,0.05); stroke-width: 8; }
+.gauge-fill {
+    fill: none; stroke: var(--curr-theme); stroke-width: 8; stroke-linecap: round;
+    stroke-dasharray: 283; stroke-dashoffset: 283; transition: var(--transition);
+    filter: drop-shadow(0 0 10px var(--curr-theme));
+}
+.gauge-content {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+#lex-val { font-size: 1.8rem; font-weight: 900; color: #fff; line-height: 1; }
+.gauge-content small { font-size: 0.6rem; color: var(--text-dim); text-transform: uppercase; margin-top: 4px; font-weight: 700; }
+
+.dashboard-metrics { flex: 1; }
+.dashboard-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+.dashboard-header h2 { font-size: 1.3rem; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+
+.limit-selector { display: flex; align-items: center; gap: 12px; }
+.limit-label { font-size: 0.75rem; color: var(--text-dim); font-weight: 600; }
+.toggle-group { display: flex; background: rgba(0,0,0,0.4); padding: 4px; border-radius: 12px; border: 1px solid var(--glass-border); }
+.limit-btn {
+    padding: 5px 12px; border: none; background: none; color: var(--text-dim);
+    font-size: 0.75rem; font-weight: 800; border-radius: 8px; cursor: pointer; transition: 0.3s;
+}
+.limit-btn.active { background: var(--curr-theme); color: #000; box-shadow: 0 0 15px var(--curr-theme); }
+
+.metrics-row { display: flex; gap: 40px; border-top: 1px solid var(--glass-border); padding-top: 15px; }
+.add-task-btn {
+    height: 28px; padding: 0 14px; border: none; border-radius: 6px;
+    background: var(--accent-cyber); color: #000; font-weight: 900;
+    font-size: 0.7rem; cursor: pointer; transition: 0.3s;
+    box-shadow: 0 4px 15px var(--accent-dim); display: inline-flex; align-items: center; justify-content: center;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+.add-task-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-cyber); }
+
+.remove-task-btn {
+    background: none; border: none; color: hsla(355, 100%, 65%, 0.4);
+    font-size: 1.8rem; cursor: pointer; line-height: 1; transition: 0.3s;
+    display: flex; align-items: center; justify-content: center;
+}
+.remove-task-btn:hover { color: var(--accent-ruby); transform: scale(1.2) rotate(90deg); }
+
+.mini-metric label { display: block; font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 4px; font-weight: 700; }
+.mini-metric span { font-size: 1.2rem; font-weight: 800; color: #fff; }
+
+/* ═══ Tab Navigation ═══ */
+.tab-nav { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+.tab-btn {
+    padding: 10px 18px; border: 1px solid var(--glass-border); background: var(--bg-card);
+    color: var(--text-dim); border-radius: 12px; font-weight: 700; font-size: 0.85rem;
+    cursor: pointer; transition: 0.3s;
+}
+.tab-btn:hover { border-color: var(--accent-cyber); color: #fff; }
+.tab-btn.active { background: var(--curr-theme); color: #000; box-shadow: 0 0 20px var(--accent-dim); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; animation: slideUpFade 0.5s ease backwards; }
+@keyframes slideUpFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ═══ Main Panels ═══ */
+.glass-panel {
+    background: var(--bg-card); border: 1px solid var(--glass-border);
+    border-radius: 24px; padding: 30px; position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.content-header { margin-bottom: 20px; display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.content-header h3 { font-size: 1.2rem; margin-bottom: 4px; color: #fff; }
+.content-header p { font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0; }
+
+/* ═══ Input Grids ═══ */
+.input-grid-main, .hpd-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 20px; }
+.duration-split { display: flex; gap: 15px; }
+
+input[type="number"], input[type="text"] {
+    width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border);
+    padding: 12px 16px; color: #fff; border-radius: 12px; font-family: inherit;
+    font-size: 1rem; transition: 0.3s;
+}
+input:focus { border-color: var(--curr-theme); outline: none; box-shadow: 0 0 10px var(--accent-dim); }
+
+.input-group label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--text-dim); margin-bottom: 8px; text-transform: uppercase; }
+
+/* Results */
+.calc-result-box {
+    background: rgba(255,255,255,0.03); padding: 20px; border-radius: 16px;
+    border: 1px solid var(--glass-border); margin-top: 25px;
+}
+
+/* ═══ HPD ADEQUACY MONITOR (Vibrant) ═══ */
+.adequacy-display { margin-top: 30px; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 20px; border: 1px solid var(--glass-border); }
+.adequacy-track-premium {
+    position: relative; height: 16px; border-radius: 8px; margin: 20px 0;
+    display: flex; overflow: hidden; background: #000; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+.track-segment.ovr { width: 20%; background: var(--accent-gold); opacity: 0.4; }
+.track-segment.acc { width: 20%; background: var(--accent-emerald); opacity: 0.4; }
+.track-segment.idl { width: 20%; background: var(--accent-emerald); box-shadow: 0 0 15px var(--accent-emerald); }
+/* The second .acc and .ins will also be 20% by using classes or nth-child if needed, 
+   but for simplicity let's just make all segments 20% */
+.track-segment { width: 20%; height: 100%; transition: 0.4s; }
+.track-segment.ins { background: var(--accent-ruby); }
+
+.adequacy-pointer {
+    position: absolute; top: -4px; left: 0%; transform: translateX(-50%);
+    width: 8px; height: 24px; background: #fff; border-radius: 4px;
+    box-shadow: 0 0 15px rgba(255,255,255,0.8); z-index: 10;
+    transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.track-labels { 
+    position: relative; font-size: 0.65rem; color: var(--text-dim); font-weight: 800; 
+}
+
+.adequacy-status-badge { } /* Placeholder */
+    padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 900;
+    text-transform: uppercase; letter-spacing: 1px; display: inline-block;
+}
+.status-badge.ideal { color: var(--accent-emerald); background: hsla(155, 100%, 55%, 0.1); border: 1px solid var(--accent-emerald); }
+.status-badge.over { color: var(--accent-gold); background: hsla(42, 100%, 60%, 0.1); border: 1px solid var(--accent-gold); }
+.status-badge.insufficient { color: var(--accent-ruby); background: hsla(355, 100%, 65%, 0.1); border: 1px solid var(--accent-ruby); }
+
+/* Protector Types */
+.protector-types { display: flex; gap: 12px; margin-top: 10px; }
+.p-type { flex: 1; cursor: pointer; position: relative; }
+.p-type input { position: absolute; opacity: 0; }
+.p-type span {
+    display: block; padding: 12px; text-align: center; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border);
+    font-size: 0.85rem; font-weight: 700; color: var(--text-dim); transition: 0.3s;
+}
+.p-type input:checked + span { background: var(--accent-dim); border-color: var(--accent-cyber); color: #fff; box-shadow: 0 0 15px var(--accent-dim); }
+
+/* ═══ Auditor Advice & Hardwares ═══ */
+.grid-layout { display: grid; grid-template-columns: 1fr 320px; gap: 25px; }
+.mini-title { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 800; border-bottom: 2px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 15px; }
+.advice-text { font-size: 0.95rem; color: #fff; font-weight: 600; line-height: 1.4; }
+.image-frame { margin-top: 20px; padding: 20px; background: #000; border-radius: 20px; border: 1px solid var(--glass-border); display: flex; justify-content: center; }
+.hardware-render { max-width: 100%; height: auto; border-radius: 12px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1)); }
+
+.mini-table { width: 100%; margin-top: 10px; border-collapse: collapse; }
+.mini-table td { padding: 6px 0; font-size: 0.75rem; color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.05); }
+.mini-table td:last-child { text-align: right; color: #fff; font-weight: 800; }
+
+/* ═══ Inline Formula ═══ */
+.inline-formula-note {
+    margin-top: 35px; padding: 20px; border-radius: 16px;
+    background: rgba(0,0,0,0.3); border-left: 4px solid var(--accent-cyber);
+}
+.inline-formula-note label { display: block; font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; font-weight: 900; margin-bottom: 10px; }
+.inline-formula-note code { font-family: 'Courier New', monospace; font-size: 1rem; color: #fff; }
+.formula-legend { font-size: 0.65rem; color: var(--text-dim); margin-top: 8px; font-weight: 700; }
+
+/* ═══ Detailed Report ═══ */
+.report-dashboard { background: #fff; color: #000; padding: 50px; border-radius: 32px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+.report-header h2 { font-size: 2rem; border-bottom: 4px solid #000; padding-bottom: 10px; margin-bottom: 5px; }
+.report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 30px; }
+.report-box { background: #f8fafc; padding: 25px; border-radius: 20px; border: 1px solid #e2e8f0; }
+.report-box h4 { margin-bottom: 15px; font-size: 0.9rem; text-transform: uppercase; color: #64748b; }
+.summary-flex { display: flex; flex-direction: column; gap: 10px; }
+
+/* STANDARDS SELECTOR */
+.standard-selector { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); }
+
+/* LOGIC EXPLORER */
+.logic-breakdown-container {
+    display: flex; flex-direction: column; gap: 8px; margin-top: 10px;
+}
+.logic-step {
+    background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.logic-step label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; margin-bottom: 0; font-weight: 800; }
+.logic-step span { font-family: 'Courier New', monospace; font-size: 0.95rem; font-weight: 700; color: var(--accent-cyber); }
+.logic-step.final { outline: 1px solid var(--accent-cyber); background: rgba(0,0,0,0.4); }
+.logic-step.final span { color: #fff; }
+
+.floating-print-btn {
+    position: fixed; bottom: 35px; right: 35px; width: 60px; height: 60px;
+    background: var(--curr-theme); color: #000; border: none; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); transition: 0.3s;
+}
+.floating-print-btn:hover { transform: scale(1.1) rotate(5deg); }
+
+@media (max-width: 950px) {
+    .grid-layout { grid-template-columns: 1fr; }
+    .compliance-banner { flex-direction: column; text-align: center; }
+}
+
+/* ═══ Compliance Checklist Styles ═══ */
+.checklist-category-card { background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 15px; border-radius: 16px; }
+.checklist-category-card h5 { font-size: 0.75rem; text-transform: uppercase; color: var(--accent-cyber); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+.check-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; cursor: pointer; font-size: 0.8rem; color: #fff; }
+.check-item input { margin-top: 3px; accent-color: var(--accent-cyber); }
+
+/* ═══ Professional Print Engine ═══ */
+@media print {
+    body { background: #fff !important; color: #000 !important; }
+    .app-container { max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
+    #printable-report { 
+        display: block !important; 
+        box-shadow: none !important; 
+        border: none !important; 
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .tab-content, .tab-nav, .no-print, .bg-aurora, #particles-canvas, .floating-print-btn, .calc-header, .compliance-banner { 
+        display: none !important; 
+    }
+    #tab-report { display: block !important; }
+    h2, h4, p, span, li, a { color: #000 !important; }
+    a { text-decoration: none !important; }
+    .signature-block { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 50px !important; margin-top: 60px !important; }
+    .report-legal { margin-top: 40px !important; border-top: 2px solid #000 !important; }
+}

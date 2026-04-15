@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../bhashini.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -22,6 +23,38 @@
         <div class="aurora-orb aurora-orb--amber"></div>
     </div>
     <canvas id="particles-canvas"></canvas>
+
+    <!-- ═══ SafeSphere Bhashini Multilingual Widget ═══ -->
+    <div class="bhashini-widget-wrapper bhashini-skip-translation">
+        <div class="bhashini-widget" id="bhashini-trigger">
+            <div class="bhashini-logo-text">अ<span>A</span></div>
+        </div>
+
+        <div class="bhashini-menu" id="bhashini-menu">
+            <div class="bhashini-menu__header">
+                <span class="bhashini-menu__title">Select Language</span>
+                <span class="bhashini-menu__source">Powered by Bhashini AI</span>
+            </div>
+            <div class="bhashini-menu__grid">
+                <button class="lang-option active" data-lang="en">English</button>
+                <button class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+                <button class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+                <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                <button class="lang-option" data-lang="mr">मराठी (Marathi)</button>
+                <button class="lang-option" data-lang="ta">தமிழ் (Tamil)</button>
+                <button class="lang-option" data-lang="gu">ગુજરાતી (Gujarati)</button>
+                <button class="lang-option" data-lang="kn">కన్నడ (Kannada)</button>
+                <button class="lang-option" data-lang="ml">മലയാളം (Malayalam)</button>
+                <button class="lang-option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Bhashini Bridge -->
+    <div id="bhashini-plugin-utility" class="bhashini-plugin-container"></div>
+    <script src="https://translation-plugin.bhashini.co.in/v3/website_translation_utility.js?v=1.3.1"
+        language-icon-color="#10b981"></script>
+    <script src="../main.js"></script>
 
     <!-- ═══ Hub Container ═══ -->
     <div class="lab-hub-container">
@@ -40,168 +73,228 @@
                 Ergonomics training.</p>
         </header>
 
-        <main class="lab-grid">
+        <main class="lab-hub-content">
 
-            <!-- Eye Fatigue Guard -->
-            <a href="eye_fatigue/index.html" class="lab-card fade-up" style="animation-delay: 0.1s;">
-                <div class="lab-icon icon-cyan">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                </div>
-                <h3 class="card-title">Eye Fatigue Guard</h3>
-                <p class="card-desc">AI-powered drowsiness detection using MediaPipe. Monitors blink rate and eye
-                    closure in real-time to prevent workplace fatigue incidents.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-ai">AI-Powered</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+            <!-- Section 1: Advanced Ergonomics -->
+            <section class="lab-section fade-up" style="animation-delay: 0.1s;">
+                <header class="section-header">
+                    <h2 class="section-title">Advanced Ergonomics</h2>
+                    <span class="section-badge">Biomechanics</span>
+                </header>
+                <div class="lab-grid">
+                    <!-- AI Ergo Analysis -->
+                    <a href="rula_reba_ai/index.html" class="lab-card">
+                        <div class="lab-icon icon-green">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">AI Ergo Analysis</h3>
+                        <p class="card-desc">Vision-based ergonomic assessment. Automatic posture analysis using
+                            RULA/REBA frameworks via camera input for real-time risk evaluation.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-ai">AI-Powered</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
 
-            <!-- AI Ergo Analysis -->
-            <a href="rula_reba_ai/index.html" class="lab-card fade-up" style="animation-delay: 0.2s;">
-                <div class="lab-icon icon-green">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                    </svg>
+                    <!-- New: Exoskeleton Assist -->
+                    <a href="../Industry5_Demos/exoskeleton.html" class="lab-card">
+                        <div class="lab-icon icon-cyan">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM12 8v8M12 16l-4 4M12 16l4 4M9 10l-2 2M15 10l2 2" />
+                                <path d="M5 10v4M19 10v4M8 18h8" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Exoskeleton Assist</h3>
+                        <p class="card-desc">Biomechanics simulation of lifting assist devices. Real-time strain analysis and muscle support optimization for heavy lifting.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-ergo">Ergonomics</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <h3 class="card-title">AI Ergo Analysis</h3>
-                <p class="card-desc">Vision-based ergonomic assessment. Automatic posture analysis using RULA/REBA
-                    frameworks via camera input for real-time risk evaluation.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-ai">AI-Powered</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+            </section>
 
-            <!-- Manual Ergonomic Calculator -->
-            <a href="rula_reba_manual/index.html" class="lab-card fade-up" style="animation-delay: 0.3s;">
-                <div class="lab-icon icon-amber">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M7,2H17A2,2 0 0,1 19,4V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V4A2,2 0 0,1 7,2M7,4V8H17V4H7M7,10V12H9V10H7M11,10V12H13V10H11M15,10V12H17V10H15M7,14V16H9V14H7M11,14V16H13V14H11M15,14V16H17V14H15M7,18V20H9V18H7M11,18V20H13V18H11M15,18V20H17V18H15Z" />
-                    </svg>
-                </div>
-                <h3 class="card-title">ErgoCalc Pro</h3>
-                <p class="card-desc">Comprehensive manual RULA & REBA assessment tool. Step-by-step scoring with
-                    detailed reports and evidence-based ergonomic recommendations.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-calc">Calculator</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+            <!-- Section 2: Safety AI & Monitoring -->
+            <section class="lab-section fade-up" style="animation-delay: 0.2s;">
+                <header class="section-header">
+                    <h2 class="section-title">Safety AI & Monitoring</h2>
+                    <span class="section-badge">Computer Vision</span>
+                </header>
+                <div class="lab-grid">
+                    <!-- Eye Fatigue Guard -->
+                    <a href="eye_fatigue/index.html" class="lab-card">
+                        <div class="lab-icon icon-cyan">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Eye Fatigue Guard</h3>
+                        <p class="card-desc">AI-powered drowsiness detection. Monitors blink rate and eye closure in
+                            real-time to prevent workplace fatigue incidents.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-ai">AI-Powered</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
 
-            <!-- PPE Gamification -->
-            <a href="ppe_gamification/index.html" class="lab-card fade-up" style="animation-delay: 0.4s;">
-                <div class="lab-icon icon-rose">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path
-                            d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                </div>
-                <h3 class="card-title">PPE Training Game</h3>
-                <p class="card-desc">Interactive gamified experience for Personal Protective Equipment (PPE). Test
-                    hazard recognition and correct equipment selection in various scenarios.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-game">Gamified</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+                    <!-- PPE AI Detection -->
+                    <a href="ppe_ai/index.html" class="lab-card">
+                        <div class="lab-icon icon-cyan">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Real-time PPE Detection</h3>
+                        <p class="card-desc">YOLO-based computer vision for workplace safety. Automatically detects
+                            Hard-hats, vests, and goggles to ensure site compliance.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-ai">AI-Powered</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
 
-            <!-- PPE AI Detection -->
-            <a href="ppe_ai/index.html" class="lab-card fade-up" style="animation-delay: 0.5s;">
-                <div class="lab-icon icon-cyan">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+                    <!-- New: Smart Zone Geofencing -->
+                    <a href="../Industry5_Demos/smart_zone.html" class="lab-card">
+                        <div class="lab-icon icon-amber">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="2"></circle>
+                                <path d="M12 7c2.76 0 5 2.24 5 5 0 1.5-.66 2.84-1.71 3.75" />
+                                <path d="M19.07 4.93c3.9 3.9 3.9 10.24 0 14.14" />
+                                <path d="M4.93 19.07c-3.9-3.9-3.9-10.24 0-14.14" />
+                                <path d="M8.71 15.75c-1.05-.91-1.71-2.25-1.71-3.75 0-2.76 2.24-5 5-5" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Smart Zone Safety</h3>
+                        <p class="card-desc">Next-gen proximity monitoring for industrial vehicles. Dynamic UWB geofencing with auto-braking and collision avoidance logic.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-iot">Safety IoT</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <h3 class="card-title">Real-time PPE Detection</h3>
-                <p class="card-desc">YOLO-based computer vision for workplace safety. Automatically detects Hard-hats,
-                    vests, and goggles to ensure site compliance and worker safety.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-ai">AI-Powered</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+            </section>
 
-            <!-- IoT & Digital Twin -->
-            <a href="iot_monitoring/index.html" class="lab-card fade-up" style="animation-delay: 0.6s;">
-                <div class="lab-icon icon-amber">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                        <circle cx="12" cy="12" r="3" stroke="currentColor"></circle>
-                    </svg>
-                </div>
-                <h3 class="card-title">IoT & Digital Twin</h3>
-                <p class="card-desc">Industry 4.0 monitoring suite. Featuring Smart Warehouse logistics, AI Quality Control, and Predictive Maintenance dashboards.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-ai">Digital Twin</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
-                </div>
-            </a>
+            <!-- Section 3: Industrial IoT & Digital Twin -->
+            <section class="lab-section fade-up" style="animation-delay: 0.3s;">
+                <header class="section-header">
+                    <h2 class="section-title">Industrial IoT & Digital Twin</h2>
+                    <span class="section-badge">Industry 4.0/5.0</span>
+                </header>
+                <div class="lab-grid">
+                    <!-- IoT & Digital Twin -->
+                    <a href="iot_monitoring/index.html" class="lab-card">
+                        <div class="lab-icon icon-amber">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                                <circle cx="12" cy="12" r="3" stroke="currentColor"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Smart Ops Dash</h3>
+                        <p class="card-desc">Industry 4.0 monitoring suite. Featuring Smart Warehouse logistics, AI Quality
+                            Control, and Predictive Maintenance dashboards.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-ai">Digital Twin</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
 
-            <!-- Acoustic & Noise Control -->
-            <a href="acoustic_lab/index.html" class="lab-card fade-up" style="animation-delay: 0.7s;">
-                <div class="lab-icon icon-rose">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"></path>
-                        <path d="M19 10v2a7 7 0 01-14 0v-2"></path>
-                        <line x1="12" y1="19" x2="12" y2="23"></line>
-                        <line x1="8" y1="23" x2="16" y2="23"></line>
-                    </svg>
+                    <!-- Acoustic & Noise Control -->
+                    <a href="acoustic_lab/index.html" class="lab-card">
+                        <div class="lab-icon icon-rose">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 01-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </div>
+                        <h3 class="card-title">Acoustic Lab</h3>
+                        <p class="card-desc">Interactive sound engineering. Explore active noise cancellation (ANC) through
+                            phase inversion and industrial weighting filters.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-ai">Signal Processing</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <h3 class="card-title">Acoustic & Noise Control</h3>
-                <p class="card-desc">Interactive sound engineering lab. Explore active noise cancellation (ANC) through
-                    phase inversion and compare industrial sound weighting filters.</p>
-                <div class="card-footer">
-                    <span class="lab-tag tag-ai">Signal Processing</span>
-                    <div class="launch-btn">
-                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                    </div>
+            </section>
+
+            <!-- Section 4: Safety Training -->
+            <section class="lab-section fade-up" style="animation-delay: 0.4s;">
+                <header class="section-header">
+                    <h2 class="section-title">Safety Training</h2>
+                    <span class="section-badge">Gamification</span>
+                </header>
+                <div class="lab-grid">
+                    <!-- PPE Gamification -->
+                    <a href="ppe_gamification/index.html" class="lab-card">
+                        <div class="lab-icon icon-rose">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                            </svg>
+                        </div>
+                        <h3 class="card-title">PPE Training Game</h3>
+                        <p class="card-desc">Interactive gamified experience for PPE. Test hazard recognition and correct
+                            equipment selection in various industrial scenarios.</p>
+                        <div class="card-footer">
+                            <span class="lab-tag tag-game">Gamified</span>
+                            <div class="launch-btn">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </section>
 
         </main>
 

@@ -18,7 +18,30 @@ body {
     min-height: 100vh;
 }
 
-.lab-hub-container {
+/* Background Aurora and Particles */
+.bg-aurora {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 90%, rgba(6, 182, 212, 0.05) 0%, transparent 40%);
+    overflow: hidden;
+}
+
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.calc-hub-container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 100px 20px 60px;
@@ -27,7 +50,7 @@ body {
 }
 
 /* Header */
-.lab-header {
+.calc-header {
     text-align: center;
     margin-bottom: 80px;
 }
@@ -52,7 +75,7 @@ body {
     transform: translateX(-4px);
 }
 
-.lab-title {
+.calc-title {
     font-size: 3.5rem;
     font-weight: 800;
     margin: 0;
@@ -62,7 +85,7 @@ body {
     letter-spacing: -0.02em;
 }
 
-.lab-subtitle {
+.calc-subtitle {
     color: var(--text-secondary);
     font-size: 1.25rem;
     margin-top: 16px;
@@ -72,13 +95,13 @@ body {
 }
 
 /* Grid */
-.lab-grid {
+.calc-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 30px;
 }
 
-.lab-card {
+.calc-card {
     background: var(--glass-bg);
     backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
@@ -93,7 +116,7 @@ body {
     flex-direction: column;
 }
 
-.lab-card::before {
+.calc-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -105,17 +128,17 @@ body {
     transition: opacity 0.4s ease;
 }
 
-.lab-card:hover {
+.calc-card:hover {
     transform: translateY(-8px);
     border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
-.lab-card:hover::before {
+.calc-card:hover::before {
     opacity: 1;
 }
 
-.lab-icon {
+.calc-icon {
     width: 56px;
     height: 56px;
     border-radius: 16px;
@@ -127,7 +150,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.lab-icon svg {
+.calc-icon svg {
     width: 28px;
     height: 28px;
 }
@@ -155,7 +178,7 @@ body {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.lab-tag {
+.calc-tag {
     font-size: 0.75rem;
     font-weight: 600;
     padding: 4px 12px;
@@ -163,44 +186,8 @@ body {
     text-transform: uppercase;
 }
 
-.tag-ai { background: rgba(6, 182, 212, 0.15); color: #22d3ee; }
-.tag-calc { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-.tag-game { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-.tag-iot { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-.tag-ergo { background: rgba(16, 185, 129, 0.15); color: #34d399; }
-
-/* Sections */
-.lab-section {
-    margin-bottom: 80px;
-}
-
-.section-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 32px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.section-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #fff;
-    margin: 0;
-    letter-spacing: -0.01em;
-}
-
-.section-badge {
-    font-size: 0.75rem;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
+.tag-active { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.tag-soon { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
 
 .launch-btn {
     width: 40px;
@@ -213,17 +200,11 @@ body {
     transition: all 0.3s ease;
 }
 
-.lab-card:hover .launch-btn {
+.calc-card:hover .launch-btn {
     background: var(--accent-cyan);
     color: #000;
     transform: rotate(-45deg);
 }
-
-/* Specific Colors */
-.icon-cyan svg { color: var(--accent-cyan); }
-.icon-green svg { color: var(--accent-green); }
-.icon-amber svg { color: var(--accent-amber); }
-.icon-rose svg { color: var(--accent-rose); }
 
 /* Animation */
 @keyframes fadeInUp {
@@ -237,6 +218,6 @@ body {
 }
 
 @media (max-width: 768px) {
-    .lab-title { font-size: 2.5rem; }
-    .lab-grid { grid-template-columns: 1fr; }
+    .calc-title { font-size: 2.5rem; }
+    .calc-grid { grid-template-columns: 1fr; }
 }

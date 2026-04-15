@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Statutory Repository — SafeSphere</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../bhashini.css">
+    <style>
+        /* ---------- Statutory Repository Specific Styles ---------- */
+        .repo-header {
+            text-align: left;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .repo-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-amber), #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition-smooth);
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+        }
+
+        .back-nav:hover {
+            color: var(--text-white);
+            background: var(--glass-bg-hover);
+            transform: translateX(-5px);
+        }
+
+        .hero-doc {
+            grid-column: 1 / -1;
+            background: linear-gradient(145deg, rgba(245, 158, 11, 0.1), rgba(0, 0, 0, 0));
+            border-color: rgba(245, 158, 11, 0.3);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 2rem;
+            padding: 2.5rem;
+        }
+
+        .hero-doc:hover {
+            border-color: var(--primary-amber);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+        }
+
+        .doc-icon-large {
+            width: 80px;
+            height: 80px;
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--primary-amber);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-icon-large svg {
+            width: 40px;
+            height: 40px;
+            fill: currentColor;
+        }
+
+        .doc-content h2 {
+            font-size: 1.6rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .btn-download {
+            background: var(--primary-amber);
+            color: #000;
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .btn-download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-download.pending {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            pointer-events: none;
+            border: 1px dashed var(--glass-border);
+        }
+
+        .state-selector-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+
+        .state-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: var(--text-white);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            appearance: none;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition-smooth);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.5rem center;
+            background-size: 1.2rem;
+        }
+
+        .state-select:hover {
+            border-color: var(--glass-border-hover);
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .state-select:focus {
+            border-color: var(--primary-amber);
+        }
+
+        .laws-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-doc {
+                grid-template-columns: 1fr;
+                text-align: center;
+                justify-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+    
+    <!-- ═══ SafeSphere Bhashini Multilingual Widget ═══ -->
+    <div class="bhashini-widget-wrapper bhashini-skip-translation">
+        <div class="bhashini-widget" id="bhashini-trigger" title="Translate — Bhashini">
+            <div class="bhashini-logo-text">अ<span>A</span></div>
+        </div>
+
+        <div class="bhashini-menu" id="bhashini-menu">
+            <div class="bhashini-menu__header">
+                <span class="bhashini-menu__title">Select Language</span>
+                <span class="bhashini-menu__source">Powered by Bhashini AI</span>
+            </div>
+            <div class="bhashini-menu__grid">
+                <button class="lang-option" data-lang="en">English</button>
+                <button class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+                <button class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+                <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                <button class="lang-option" data-lang="mr">मराठी (Marathi)</button>
+                <button class="lang-option" data-lang="ta">தமிழ் (Tamil)</button>
+                <button class="lang-option" data-lang="ur">اردو (Urdu)</button>
+                <button class="lang-option" data-lang="gu">ગુજરાતી (Gujarati)</button>
+                <button class="lang-option" data-lang="ml">മലയാളം (Malayalam)</button>
+                <button class="lang-option" data-lang="kn">ಕನ್ನಡ (Kannada)</button>
+                <button class="lang-option" data-lang="or">ଓଡ଼ିଆ (Odia)</button>
+                <button class="lang-option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</button>
+                <button class="lang-option" data-lang="as">অসমীয়া (Assamese)</button>
+                <button class="lang-option" data-lang="mai">मैथिली (Maithili)</button>
+                <button class="lang-option" data-lang="sat">संताली (Santali)</button>
+                <button class="lang-option" data-lang="ks">کٲشُر (Kashmiri)</button>
+                <button class="lang-option" data-lang="ne">नेपाली (Nepali)</button>
+                <button class="lang-option" data-lang="kok">कोंকণী (Konkani)</button>
+                <button class="lang-option" data-lang="sd">سنڌي (Sindhi)</button>
+                <button class="lang-option" data-lang="doi">डोगरी (Dogri)</button>
+                <button class="lang-option" data-lang="mni">মৈতেইলোন (Manipuri)</button>
+                <button class="lang-option" data-lang="brx">बोडो (Bodo)</button>
+                <button class="lang-option" data-lang="sa">संस्कृतम् (Sanskrit)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Bhashini Bridge -->
+    <div id="bhashini-plugin-utility" class="bhashini-plugin-container"></div>
+    <script src="https://translation-plugin.bhashini.co.in/v3/website_translation_utility.js?v=1.3.1"
+        language-icon-color="#10b981"></script>
+    <script src="../main.js"></script>
+
+    <div class="app-container">
+        
+        <header class="repo-header">
+            <a href="../index.html" class="back-nav">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to SafeSphere Hub
+            </a>
+            <h1 class="repo-title">National Statutory Repository</h1>
+            <p class="site-subtitle" style="margin-left:0;">Comprehensive legislative database for Indian Occupational Safety, Health, and Environmental regulations.</p>
+        </header>
+
+        <section class="laws-grid">
+            
+            <!-- Primary Act: OSHWC Code 2020 -->
+            <div class="module-card hero-doc fade-up">
+                <div class="doc-icon-large">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+                    </svg>
+                </div>
+                <div class="doc-content">
+                    <span class="module-card__tag tag-active" style="margin-bottom:0.8rem;">Primary Act</span>
+                    <h2>The OSHWC Code, 2020</h2>
+                    <p class="module-card__desc">Occupational Safety, Health and Working Conditions Code, 2020. The unified central act governing workplace safety across India.</p>
+                </div>
+                <a href="./OSHWCCODE2020.pdf" target="_blank" class="btn-download" style="text-decoration: none;">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                    View OSHWC Code PDF
+                </a>
+            </div>
+
+            <!-- Central Rules 2025 -->
+            <div class="module-card fade-up">
+                <div class="module-card__icon-wrap icon-cyan">
+                    <svg viewBox="0 0 24 24"><path d="M14,10H19.5L14,4.5V10M5,3H15L21,9V21A2,2 0 0,1 19,23H5C3.89,23 3,22.1 3,21V5C3,3.89 3.89,3 5,3M5,5V21H19V12H12V5H5M7,9H10V11H7V9M7,13H17V15H7V13M7,17H17V19H7V17Z"/></svg>
+                </div>
+                <div class="module-card__title">OSHWC (Central) Rules, 2025</div>
+                <p class="module-card__desc">Central government draft and notified rules providing procedural frameworks for the OSHWC Code implementation.</p>
+                <button class="btn-download pending">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M12 5v14M5 12h14"/>
+                    </svg>
+                    Upload Pending
+                </button>
+            </div>
+
+            <!-- Sections 23 & 24 Rules -->
+            <div class="module-card fade-up">
+                <div class="module-card__icon-wrap icon-lime">
+                    <svg viewBox="0 0 24 24"><path d="M3,13H15V15H3V13M3,17H15V19H3V17M3,9H21V11H3V9M3,5H21V7H3V5Z"/></svg>
+                </div>
+                <div class="module-card__title">PROVISIONS U/S 23 &amp; 24</div>
+                <p class="module-card__desc">Specific rules governing Health, Safety, and Working Conditions (Sec 23) and Welfare Facilities (Sec 24).</p>
+                <button class="btn-download pending">
+                    Upload Pending
+                </button>
+            </div>
+
+            <!-- Regulations -->
+            <div class="module-card fade-up">
+                <div class="module-card__icon-wrap icon-blue">
+                    <svg viewBox="0 0 24 24"><path d="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"/></svg>
+                </div>
+                <div class="module-card__title">Regulations</div>
+                <p class="module-card__desc">Technical and administrative regulations issued under the OSHWC framework for high-risk industries.</p>
+                <button class="btn-download pending">
+                    Upload Pending
+                </button>
+            </div>
+
+            <!-- Standards -->
+            <div class="module-card fade-up">
+                <div class="module-card__icon-wrap icon-green">
+                    <svg viewBox="0 0 24 24"><path d="M12,2L4.5,20.29L5.21,21L12,18L18.79,21L19.5,20.29L12,2Z"/></svg>
+                </div>
+                <div class="module-card__title">Safety Standards</div>
+                <p class="module-card__desc">Bureau of Indian Standards (BIS) and other national OSHE standards cross-referenced for compliance.</p>
+                <button class="btn-download pending">
+                    Upload Pending
+                </button>
+            </div>
+
+            <!-- State Rules Dropdown -->
+            <div class="module-card fade-up">
+                <div class="module-card__icon-wrap icon-amber">
+                    <svg viewBox="0 0 24 24"><path d="M15,20H9V12H4.1L12,4.1L19.9,12H15V20M22,12H17V22H7V12H2L12,2L22,12Z"/></svg>
+                </div>
+                <div class="module-card__title">Provincial / State Rules</div>
+                <p class="module-card__desc">State-specific rules notified by respective provincial governments under the 2020 Code.</p>
+                
+                <div class="state-selector-card">
+                    <select class="state-select" id="state-rules-dropdown">
+                        <option value="" selected disabled>Select State Jurisdiction...</option>
+                        <option value="central">Central Jurisdiction</option>
+                        <option value="mh">Maharashtra</option>
+                        <option value="gj">Gujarat</option>
+                        <option value="ka">Karnataka</option>
+                        <option value="tn">Tamil Nadu</option>
+                        <option value="wb">West Bengal</option>
+                        <option value="up">Uttar Pradesh</option>
+                    </select>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="dev-label">Developed By</div>
+            <div class="dev-name bhashini-skip-translation">Dr. Arkaprabha Sau</div>
+            <div class="dev-creds">
+                MBBS, MD (Gold Medalist), DPH, Dip. Geriatric Medicine, CCEBDM<br>
+                PhD (Computer Science &amp; Engineering)
+            </div>
+            <div class="disclaimer">
+                Documents hosted here are for educational and research purposes. Please verify against official gazette notifications. Access Date: 2026-04-14.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══ Scripts ═══ -->
+    <script>
+        // ---------- Floating Particles ----------
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const PARTICLE_COUNT = 40;
+            const COLORS = ['rgba(16,185,129,', 'rgba(6,182,212,', 'rgba(245,158,11,', 'rgba(59,130,246,'];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 2 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: (Math.random() - 0.5) * 0.3,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    alpha: Math.random() * 0.4 + 0.1,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.01 + 0.005,
+                };
+            }
+
+            function init() {
+                resize();
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.pulse += p.pulseSpeed;
+                    const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + a + ')';
+                    ctx.fill();
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -10) p.x = w + 10;
+                    if (p.x > w + 10) p.x = -10;
+                    if (p.y < -10) p.y = h + 10;
+                    if (p.y > h + 10) p.y = -10;
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+
+        // ---------- State Dropdown Interaction ----------
+        document.getElementById('state-rules-dropdown').addEventListener('change', function() {
+            if (this.value) {
+                alert('State-specific PDF repository for ' + this.options[this.selectedIndex].text + ' will be activated once files are uploaded to the server.');
+                this.value = ''; // Reset for placeholder behavior
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -90,7 +90,10 @@ function triggerNativeTranslation(langCode) {
                 'mr': 'Marathi (मराठी)', 'ta': 'Tamil (தமிழ்)', 'ur': 'Urdu (اردو)',
                 'gu': 'Gujarati (ગુજરાતી)', 'ml': 'Malayalam (മലയാളം)', 'kn': 'Kannada (ಕನ್ನಡ)',
                 'or': 'Odia (ଓଡ଼ିଆ)', 'pa': 'Punjabi (ਪੰਜਾਬੀ)', 'as': 'Assamese (অসমীয়া)',
-                'en': 'English'
+                'mai': 'Maithili (मैथिली)', 'sat': 'Santali (संताली)', 'ks': 'Kashmiri (کٲشُر)',
+                'ne': 'Nepali (नेपाली)', 'kok': 'Konkani (कोंकणी)', 'sd': 'Sindhi (سنڌي)',
+                'doi': 'Dogri (डोगरी)', 'mni': 'Manipuri (মৈতেইলোন)', 'brx': 'Bodo (बोडो)',
+                'sa': 'Sanskrit (संस्कृतम्)', 'en': 'English'
             };
             langLabel = langMap[langCode] || langCode;
         }

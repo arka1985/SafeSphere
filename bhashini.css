@@ -1,0 +1,154 @@
+/* ============================================================
+   Bhashini Multilingual Widget Styles (Final Fix)
+   Robust cross-page styles that hide official UI while 
+   preserving custom glassmorphic trigger.
+   ============================================================ */
+
+.bhashini-widget-wrapper {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 100000;
+}
+
+.bhashini-widget {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.4), rgba(6, 182, 212, 0.4));
+    border: 2px solid rgba(16, 185, 129, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.bhashini-widget:hover {
+    transform: scale(1.1) rotate(5deg);
+    border-color: #00ff9d;
+    box-shadow: 0 0 35px rgba(16, 185, 129, 0.5);
+}
+
+.bhashini-logo-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #00ff9d;
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.bhashini-logo-text span {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* Custom Dropdown Menu */
+.bhashini-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 250px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 18px;
+    padding: 1.2rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+    opacity: 0 !important; /* Forces hidden initially */
+    visibility: hidden !important;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.bhashini-menu.active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0);
+}
+
+.bhashini-menu__header {
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bhashini-menu__title {
+    display: block;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.bhashini-menu__source {
+    font-size: 0.7rem;
+    color: #00ff9d;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+
+.bhashini-menu__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.lang-option {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-radius: 10px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lang-option:hover, .lang-option.active {
+    background: rgba(16, 185, 129, 0.2);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+/* ============================================================
+   Aggressive UI Suppression for OFFICIAL Bhashini
+   Targeted to avoid blocking our custom widget.
+   ============================================================ */
+
+/* Hide everything injected by Bhashini internally */
+#bhashini-plugin-utility,
+#bhashini_utility_floating_button_v3,
+#bhashini-translation,
+#bhashini-plugin-container,
+.bhashini-target-language-list,
+.bhashini-translation-plugin,
+.bhashini-branding,
+.bhashini-feedback-button,
+.bhashini-feedback-modal,
+#preact-border-shadow-host,
+.bhashini-widget-wrapper:not(.bhashini-skip-translation) {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    position: fixed !important;
+    left: -9999px !important;
+    z-index: -99999 !important;
+}
+
+/* Ensure our specific wrapper IS shown */
+.bhashini-widget-wrapper.bhashini-skip-translation {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}

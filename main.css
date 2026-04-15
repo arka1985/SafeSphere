@@ -5,6 +5,7 @@
 
 /* ---------- Google Fonts ---------- */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import 'bhashini.css';
 
 /* ---------- Design Tokens ---------- */
 :root {
@@ -140,167 +141,7 @@ body {
 }
 
 /* ---------- SafeSphere Bhashini Widget (Top Right) ---------- */
-.bhashini-widget-wrapper {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 10000;
-}
-
-.bhashini-widget {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 182, 212, 0.25));
-    border: 2px solid rgba(16, 185, 129, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.1);
-    animation: bhashiniPulse 3s infinite ease-in-out;
-}
-
-.bhashini-widget:hover {
-    transform: scale(1.1) rotate(5deg);
-    border-color: var(--neon-green);
-    box-shadow: 0 0 40px rgba(16, 185, 129, 0.4), inset 0 0 20px rgba(16, 185, 129, 0.2);
-}
-
-.bhashini-logo-text {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--neon-green);
-    display: flex;
-    align-items: center;
-    gap: 1px;
-    letter-spacing: -1px;
-    filter: drop-shadow(0 0 6px rgba(16, 185, 129, 0.5));
-}
-
-.bhashini-logo-text span {
-    font-size: 1rem;
-    opacity: 0.8;
-    margin-top: 2px;
-}
-
-@keyframes bhashiniPulse {
-    0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.2), inset 0 0 15px rgba(16, 185, 129, 0.1); }
-    50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.4), inset 0 0 20px rgba(16, 185, 129, 0.2); }
-}
-
-/* Custom Dropdown Menu */
-.bhashini-menu {
-    position: absolute;
-    top: calc(100% + 12px);
-    right: 0;
-    width: 250px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border);
-    border-radius: 18px;
-    padding: 1.2rem;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px) scale(0.95);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: top right;
-}
-
-.bhashini-menu.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-}
-
-.bhashini-menu__header {
-    margin-bottom: 1.2rem;
-    padding-bottom: 0.8rem;
-    border-bottom: 1px solid var(--glass-border);
-}
-
-.bhashini-menu__title {
-    display: block;
-    color: var(--text-white);
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin-bottom: 0.2rem;
-}
-
-.bhashini-menu__source {
-    font-size: 0.75rem;
-    color: var(--neon-green);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-}
-
-.bhashini-menu__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-.bhashini-menu__grid::-webkit-scrollbar {
-    width: 4px;
-}
-
-.bhashini-menu__grid::-webkit-scrollbar-thumb {
-    background: var(--glass-border);
-    border-radius: 10px;
-}
-
-.lang-option {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    text-align: left;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid transparent;
-    border-radius: 12px;
-    color: var(--text-dim);
-    font-size: 0.95rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.lang-option:hover {
-    background: rgba(16, 185, 129, 0.1);
-    border-color: rgba(16, 185, 129, 0.3);
-    color: var(--text-white);
-    transform: translateX(5px);
-}
-
-.lang-option.active {
-    background: linear-gradient(to right, rgba(16, 185, 129, 0.2), transparent);
-    border-left: 3px solid var(--neon-green);
-    color: var(--text-white);
-}
-
-/* Hide native Bhashini utility but keep it in DOM for script logic */
-#bhashini-plugin-utility,
-#bhashini_utility_floating_button_v3,
-#bhashini-translation,
-.bhashini-target-language-list,
-.bhashini-translation-plugin,
-#bhashini-plugin-container {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    position: fixed !important;
-    bottom: -500px !important;
-    right: -500px !important;
-    visibility: hidden !important;
-    z-index: -1000 !important;
-}
+@import url('bhashini.css');
 
 /* ---------- Header ---------- */
 .site-header {
@@ -489,6 +330,7 @@ body {
     mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
 .module-card:hover::before {
