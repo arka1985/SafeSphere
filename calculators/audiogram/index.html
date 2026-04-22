@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="bhashini-skip-translation">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIHL Audiogram Creator | SafeSphere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../../bhashini.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="bg-aurora"></div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Bhashini Widget -->
+    <div class="bhashini-widget-wrapper bhashini-skip-translation">
+        <div class="bhashini-widget" id="bhashini-trigger">
+            <div class="bhashini-logo-text">अ<span>A</span></div>
+        </div>
+        <div class="bhashini-menu" id="bhashini-menu">
+            <div class="bhashini-menu__header">
+                <span class="bhashini-menu__title">Select Language</span>
+                <span class="bhashini-menu__source">Powered by Bhashini AI</span>
+            </div>
+            <div class="bhashini-menu__grid">
+                <button class="lang-option active" data-lang="en">English</button>
+                <button class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+                <button class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+                <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                <button class="lang-option" data-lang="mr">मराठी (Marathi)</button>
+                <button class="lang-option" data-lang="ta">தமிழ் (Tamil)</button>
+                <button class="lang-option" data-lang="gu">ગુજરાતી (Gujarati)</button>
+                <button class="lang-option" data-lang="kn">కన్నడ (Kannada)</button>
+                <button class="lang-option" data-lang="ml">മലയാളം (Malayalam)</button>
+                <button class="lang-option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../main.js"></script>
+
+    <div class="app-container">
+        <header class="calc-header">
+            <div class="nav-top">
+                <a href="../index.html" class="back-link">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>Advisor Hub</span>
+                </a>
+            </div>
+            <h1 class="hero-title">NIHL Audiogram Creator</h1>
+            <p class="hero-subtitle">Professional clinical-grade audiogram plotting and hearing impairment assessment.</p>
+        </header>
+
+        <main class="calc-main">
+            <div class="grid-layout">
+                <!-- Left: Controls -->
+                <div class="glass-panel controls-panel">
+                    <div class="control-section">
+                        <label class="section-label">1. Select Ear</label>
+                        <div class="ear-toggle">
+                            <button id="btn-right" class="ear-btn active" onclick="setEar('right')">
+                                <span class="ear-label">Right Ear</span>
+                                <span class="ear-symbol">O</span>
+                            </button>
+                            <button id="btn-left" class="ear-btn" onclick="setEar('left')">
+                                <span class="ear-label">Left Ear</span>
+                                <span class="ear-symbol">X</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <label class="section-label">2. Plot Thresholds</label>
+                        <div class="freq-input-grid">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <div class="control-section">
+                        <label class="section-label">3. Options</label>
+                        <div class="option-row">
+                            <span class="option-text">Include 4k Hz in PTA</span>
+                            <label class="switch">
+                                <input type="checkbox" id="pta4k-toggle" onchange="calculateResults()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <button class="action-btn" onclick="clearData()">Clear All Data</button>
+                    </div>
+                </div>
+
+                <!-- Right: Chart & Results -->
+                <div class="display-column">
+                    <div class="glass-panel chart-panel">
+                        <div class="chart-container">
+                            <canvas id="audiogramChart"></canvas>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item"><span class="legend-dot red"></span> Right Ear (O)</div>
+                            <div class="legend-item"><span class="legend-dot blue"></span> Left Ear (X)</div>
+                        </div>
+                    </div>
+
+                    <div class="results-grid">
+                        <div class="glass-panel result-card">
+                            <h4 class="mini-title">Assessment Summary</h4>
+                            <div class="pta-summary">
+                                <div class="pta-item">
+                                    <span class="pta-label">PTA (Right)</span>
+                                    <span id="pta-val-right" class="pta-value">20 dB</span>
+                                </div>
+                                <div class="pta-item">
+                                    <span class="pta-label">PTA (Left)</span>
+                                    <span id="pta-val-left" class="pta-value">20 dB</span>
+                                </div>
+                            </div>
+                            <div class="status-indicator" id="status-desc">Normal Hearing</div>
+                        </div>
+
+                        <div class="glass-panel result-card impairment-card">
+                            <h4 class="mini-title">Hearing Impairment %</h4>
+                            <div class="impairment-value" id="bhi-val">0.0%</div>
+                            <p class="impairment-desc">Binaural Hearing Handicap based on ISO/AAO Standard.</p>
+                            <div class="monaural-split">
+                                <div>R: <span id="mon-r">0%</span></div>
+                                <div>L: <span id="mon-l">0%</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Methodology Modal/Section -->
+            <section class="glass-panel methodology-details">
+                <h3>Calculation Methodology</h3>
+                <div class="methods-grid">
+                    <div class="method-card">
+                        <h5>PTA (Pure Tone Average)</h5>
+                        <p>Mean of thresholds at 500Hz, 1kHz, and 2kHz.</p>
+                    </div>
+                    <div class="method-card">
+                        <h5>Monaural Impairment</h5>
+                        <p>% Loss = (PTA - 25) × 1.5</p>
+                        <small>Calculated per ear (Floor: 0%, Ceiling: 100%)</small>
+                    </div>
+                    <div class="method-card">
+                        <h5>Binaural Handicap</h5>
+                        <p>% = [(Better Ear % × 5) + Worse Ear %] / 6</p>
+                        <small>Weighted index for total hearing disability.</small>
+                    </div>
+                </div>
+
+                <div class="visual-asset glass-panel" style="margin-top: 30px; padding: 10px; overflow: hidden;">
+                    <img src="audiogram_creator_asset_1776884239018.png" alt="Audiogram Creator Illustration" style="width: 100%; border-radius: 16px; opacity: 0.9;">
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Particle background logic
+        (function() {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+            function createParticle() {
+                return {
+                    x: Math.random() * w, y: Math.random() * h, r: Math.random() * 1.5 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.3, dy: (Math.random() - 0.5) * 0.3,
+                    color: 'rgba(245, 158, 11,', alpha: Math.random() * 0.3 + 0.1, pulse: Math.random() * Math.PI * 2, pulseSpeed: Math.random() * 0.01 + 0.005
+                };
+            }
+            function init() { resize(); particles = []; for(let i=0; i<40; i++) particles.push(createParticle()); }
+            function draw() {
+                ctx.clearRect(0,0,w,h);
+                particles.forEach(p => {
+                    p.pulse += p.pulseSpeed;
+                    const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                    ctx.fillStyle = p.color + a + ')'; ctx.fill();
+                    p.x += p.dx; p.y += p.dy;
+                    if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
+                    if(p.y < -10) p.y = h+10; if(p.y > h+10) p.y = -10;
+                });
+                requestAnimationFrame(draw);
+            }
+            window.addEventListener('resize', resize);
+            init(); draw();
+        })();
+    </script>
+</body>
+</html>
