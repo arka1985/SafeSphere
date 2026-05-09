@@ -229,7 +229,13 @@
                 </svg>
                 Back to SafeSphere Hub
             </a>
-            <h1 class="chat-title">SafeWork AI</h1>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
+                <h1 class="chat-title">SafeWork AI</h1>
+                <button id="reset-key-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: 0.3s;">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    Update API Key
+                </button>
+            </div>
             <p class="site-subtitle" style="margin-left:0;">Serverless AI Agent — Ask anything about the Indian OSH legislation, Factory Acts, and Central Rules.</p>
         </header>
 
@@ -289,12 +295,20 @@
         const apiModal = document.getElementById('api-modal');
         const apiKeyInput = document.getElementById('api-key-input');
         const saveKeyBtn = document.getElementById('save-key-btn');
+        const resetKeyBtn = document.getElementById('reset-key-btn');
 
         // Configuration
         let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
         let knowledgeContext = []; 
         let chatContext = []; 
         let embedder;
+
+        // Reset API Key handler
+        resetKeyBtn.addEventListener('click', () => {
+            apiModal.classList.remove('hidden');
+            apiKeyInput.value = API_KEY;
+            apiKeyInput.focus();
+        });
 
         // Initialize Local Embedding Model
         async function initAI() {
@@ -438,7 +452,14 @@
 
                 if (!chatResponse.ok) {
                     const errData = await chatResponse.json();
-                    throw new Error(errData.error?.message || 'Chat API Error');
+                    const errMsg = errData.error?.message || 'Chat API Error';
+                    
+                    // If key is invalid or leaked, show modal
+                    if (errMsg.includes('key') || chatResponse.status === 403 || chatResponse.status === 401) {
+                        apiModal.classList.remove('hidden');
+                    }
+                    
+                    throw new Error(errMsg);
                 }
 
                 const chatData = await chatResponse.json();
