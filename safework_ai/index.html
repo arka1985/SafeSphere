@@ -366,6 +366,25 @@
                                 style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white;">
                         </div>
 
+                        <div id="setup-guide" style="font-size: 0.85rem; color: #94a3b8; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                            <div id="guide-groq" class="hidden">
+                                <p style="margin: 0 0 0.5rem 0;">Get a lightning-fast free key:</p>
+                                <a href="https://console.groq.com/keys" target="_blank" style="color: #10b981; font-weight: 600; text-decoration: none;">→ Get Groq API Key</a>
+                            </div>
+                            <div id="guide-gemini">
+                                <p style="margin: 0 0 0.5rem 0;">Get a high-intelligence free key:</p>
+                                <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #10b981; font-weight: 600; text-decoration: none;">→ Get Google AI Key</a>
+                            </div>
+                            <div id="guide-ollama" class="hidden">
+                                <p style="margin: 0 0 0.5rem 0; font-weight: 700; color: #fff;">Ollama Setup (Local):</p>
+                                <ol style="margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                                    <li>Install <a href="https://ollama.com" target="_blank" style="color: #10b981;">Ollama</a></li>
+                                    <li>Run <code>ollama run llama3</code></li>
+                                    <li>Set <code>$env:OLLAMA_ORIGINS="*"</code> in PowerShell before starting Ollama to allow browser access.</li>
+                                </ol>
+                            </div>
+                        </div>
+
                         <button id="save-key-btn"
                             style="width: 100%; padding: 1.1rem; border-radius: 16px; border: none; background: #10b981; color: white; font-weight: 800; cursor: pointer;">Save
                             & Initialize Engine</button>
@@ -453,6 +472,17 @@
                     }
                 }
             }
+
+            aiProvider.onchange = () => {
+                const val = aiProvider.value;
+                document.getElementById('api-key-container').classList.toggle('hidden', val === 'ollama');
+                document.getElementById('guide-groq').classList.toggle('hidden', val !== 'groq');
+                document.getElementById('guide-gemini').classList.toggle('hidden', val !== 'gemini');
+                document.getElementById('guide-ollama').classList.toggle('hidden', val !== 'ollama');
+            };
+
+            // Trigger initial state
+            aiProvider.dispatchEvent(new Event('change'));
 
             saveKeyBtn.onclick = () => {
                 localStorage.setItem('SAFEWORK_AI_KEY', apiKeyInput.value.trim());
