@@ -401,20 +401,22 @@
                 </button>
             </div>
         </div>
-
-    </div>
-
-    <!-- Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="knowledge.js"></script>
-    
-    <!-- Local Embedding Engine (Transformers.js) -->
+    <!-- Master Application Script -->
     <script type="module">
         import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-        
-        // Skip local model checks
         env.allowLocalModels = false;
 
+        // --- GLOBAL STATE ---
+        const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
+        const trialKey = atob(obfuscatedKey);
+
+        let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
+        let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
+        let knowledgeContext = [];
+        let chatContext = [];
+        let embedder = null;
+
+        // --- UI REFERENCES ---
         const chatHistory = document.getElementById('chat-history');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
@@ -428,19 +430,11 @@
         const apiKeyContainer = document.getElementById('api-key-container');
         const ollamaContainer = document.getElementById('ollama-container');
         const keyLink = document.getElementById('key-link');
+        const trialContactSection = document.getElementById('trial-contact-section');
 
-        // Configuration
-        let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
-        let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
-        let knowledgeContext = []; 
-        let chatContext = []; 
-        let embedder;
-
-        const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
-        const trialKey = atob(obfuscatedKey);
-
-        // --- BOOT LOCK ---
-        function checkConfig() {
+        // --- INITIALIZATION (BOOT) ---
+        function bootSafeWork() {
+            // Force modal status based on key presence
             if (API_KEY || PROVIDER === 'ollama') {
                 apiModal.classList.add('hidden');
                 apiModal.style.display = 'none';
@@ -449,70 +443,16 @@
                 apiModal.style.display = 'flex';
                 initOverlay.classList.add('hidden');
             }
-            
-            // Sync UI values
+
+            // Sync UI inputs
             aiProvider.value = PROVIDER;
             aiProvider.dispatchEvent(new Event('change'));
             apiKeyInput.value = (API_KEY === trialKey) ? "thankyou" : API_KEY;
+
+            // Start AI Engine
+            initAI();
         }
 
-        // Initialize UI immediately
-        checkConfig();
-
-        // Provider change handler
-        aiProvider.addEventListener('change', () => {
-            if (aiProvider.value === 'ollama') {
-                apiKeyContainer.classList.add('hidden');
-                ollamaContainer.classList.remove('hidden');
-            } else {
-                apiKeyContainer.classList.remove('hidden');
-                ollamaContainer.classList.add('hidden');
-                const trialContactSection = document.getElementById('trial-contact-section');
-                if (aiProvider.value === 'groq') {
-                    keyLink.href = "https://console.groq.com/keys";
-                    keyLink.innerHTML = 'Get your free API key here <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
-                    trialContactSection.style.display = 'block';
-                } else if (aiProvider.value === 'gemini') {
-                    keyLink.href = "https://aistudio.google.com/app/apikey";
-                    keyLink.innerHTML = 'Get your free Gemini key here <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
-                    trialContactSection.style.display = 'block';
-                } else if (aiProvider.value === 'openrouter') {
-                    keyLink.href = "https://openrouter.ai/keys";
-                    keyLink.innerHTML = 'Get your OpenRouter key here <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
-                    trialContactSection.style.display = 'block';
-                }
-            }
-            apiKeyInput.placeholder = "";
-        });
-
-        // OS Switcher for Ollama Guide
-        window.switchOS = function(os) {
-            document.querySelectorAll('.os-guide').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`os-${os}`).classList.remove('hidden');
-            
-            // Update button styles
-            ['win', 'mac', 'linux'].forEach(id => {
-                const btn = document.getElementById(`btn-${id}`);
-                if (id === os) {
-                    btn.style.background = '#334155';
-                    btn.style.color = 'white';
-                } else {
-                    btn.style.background = 'transparent';
-                    btn.style.color = '#94a3b8';
-                }
-            });
-        };
-
-        // Reset API Key handler
-        resetKeyBtn.addEventListener('click', () => {
-            apiModal.classList.remove('hidden');
-            aiProvider.value = PROVIDER;
-            apiKeyInput.value = API_KEY;
-            aiProvider.dispatchEvent(new Event('change'));
-            apiModal.style.display = 'flex';
-        });
-
-        // Initialize Local Embedding Model
         async function initAI() {
             try {
                 initStatus.textContent = "Loading Semantic Search Engine (~22MB)...";
@@ -521,18 +461,14 @@
                 loadKnowledge();
             } catch (err) {
                 console.error("AI Init Error:", err);
-                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading AI engine. Check your connection.</span>`;
+                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading AI engine.</span>`;
             }
         }
 
-        // Load the knowledge text on startup
         async function loadKnowledge() {
             try {
                 if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
                     knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
-                    console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
-                    
-                    // Only unlock chat UI if we have a key
                     if (API_KEY || PROVIDER === 'ollama') {
                         initOverlay.classList.add('hidden');
                         chatInput.disabled = false;
@@ -540,27 +476,38 @@
                         chatInput.focus();
                     }
                 } else {
-                    initStatus.textContent = "Loading National Statutory Repository...";
                     setTimeout(loadKnowledge, 1000);
                 }
             } catch (err) {
-                console.error("AI Init Error:", err);
-                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading AI engine.</span>`;
+                console.error("Knowledge Loading Error:", err);
             }
         }
 
-        // Save Configuration
+        // --- EVENT HANDLERS ---
+        aiProvider.addEventListener('change', () => {
+            const isOllama = aiProvider.value === 'ollama';
+            apiKeyContainer.classList.toggle('hidden', isOllama);
+            ollamaContainer.classList.toggle('hidden', !isOllama);
+            trialContactSection.style.display = isOllama ? 'none' : 'block';
+
+            if (!isOllama) {
+                const links = {
+                    groq: { href: "https://console.groq.com/keys", text: "Get your free API key here" },
+                    gemini: { href: "https://aistudio.google.com/app/apikey", text: "Get your free Gemini key here" },
+                    openrouter: { href: "https://openrouter.ai/keys", text: "Get your OpenRouter key here" }
+                };
+                const config = links[aiProvider.value];
+                keyLink.href = config.href;
+                keyLink.innerHTML = `${config.text} <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
+            }
+        });
+
         saveKeyBtn.addEventListener('click', () => {
-            const provider = aiProvider.value;
             let key = apiKeyInput.value.trim();
+            const provider = aiProvider.value;
 
-            // --- SECRET PASSCODE LOGIC ---
-            const secretPass = "thankyou";
-            const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU="; 
-
-            if (key.toLowerCase() === secretPass.toLowerCase()) {
-                key = atob(obfuscatedKey);
-                console.log("Trial Passcode Accepted");
+            if (key.toLowerCase() === "thankyou") {
+                key = trialKey;
             }
 
             if (provider !== 'ollama' && !key) {
@@ -568,96 +515,51 @@
                 return;
             }
 
-            // FORCE SAVE TO MEMORY
             localStorage.setItem('SAFEWORK_AI_KEY', key);
             localStorage.setItem('SAFEWORK_AI_PROVIDER', provider);
             
-            // UI Feedback
-            saveKeyBtn.innerHTML = "Initializing Engine...";
-            saveKeyBtn.style.background = "#059669";
-            
-            // RELOAD TO APPLY
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
+            saveKeyBtn.innerHTML = "Saving...";
+            setTimeout(() => window.location.reload(), 500);
         });
 
-        function scrollToBottom() {
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
+        resetKeyBtn.addEventListener('click', () => {
+            apiModal.classList.remove('hidden');
+            apiModal.style.display = 'flex';
+        });
 
-        function addUserMessage(text) {
-            const div = document.createElement('div');
-            div.className = 'message user';
-            div.textContent = text;
-            chatHistory.appendChild(div);
-            scrollToBottom();
-        }
-
-        function addBotMessage(htmlContent) {
-            const div = document.createElement('div');
-            div.className = 'message bot';
-            div.innerHTML = htmlContent;
-            chatHistory.appendChild(div);
-            scrollToBottom();
-            return div;
-        }
-
-        // Vector Math: Dot Product
-        function dotProduct(a, b) {
-            let sum = 0;
-            for (let i = 0; i < a.length; i++) {
-                sum += a[i] * b[i];
-            }
-            return sum;
-        }
-
+        // --- CHAT CORE ---
         async function handleSend() {
             const text = chatInput.value.trim();
-            // Refetch current key to avoid "Ghost" resets
-            const currentKey = localStorage.getItem('SAFEWORK_AI_KEY') || API_KEY;
-            
-            if (!text || (!currentKey && PROVIDER !== 'ollama') || !embedder) {
-                if (!currentKey && PROVIDER !== 'ollama') {
-                    apiModal.classList.remove('hidden');
-                    apiModal.style.display = 'flex';
-                }
-                return;
-            }
+            const activeKey = localStorage.getItem('SAFEWORK_AI_KEY') || API_KEY;
+
+            if (!text || (!activeKey && PROVIDER !== 'ollama') || !embedder) return;
 
             chatInput.value = '';
             chatInput.disabled = true;
             sendBtn.disabled = true;
 
-            addUserMessage(text);
-            const loadingMsg = addBotMessage('<div class="loading-dots"><span></span><span></span><span></span></div>');
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user';
+            userDiv.textContent = text;
+            chatHistory.appendChild(userDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+
+            const botDiv = document.createElement('div');
+            botDiv.className = 'message bot';
+            botDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+            chatHistory.appendChild(botDiv);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
 
             try {
-                // 1. Get Embedding for the query (LOCALLY!)
-                const output = await embedder(text, { pooling: 'mean', normalize: true });
-                const queryVector = Array.from(output.data);
-
-                // 2. Local Semantic Search
+                const queryVector = await embedder(text, { pooling: 'mean', normalize: true });
                 const scoredChunks = knowledgeContext.map(chunk => ({
                     ...chunk,
-                    score: dotProduct(queryVector, chunk.embedding)
-                }));
+                    score: dotProduct(Array.from(queryVector.data), chunk.embedding)
+                })).sort((a, b) => b.score - a.score);
 
-                scoredChunks.sort((a, b) => b.score - a.score);
-                const topChunks = scoredChunks.slice(0, PROVIDER === 'ollama' ? 5 : 25); // Increased to 25 for Cloud Providers
+                const topChunks = scoredChunks.slice(0, PROVIDER === 'ollama' ? 5 : 25);
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
-                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. \n\nCORE INSTRUCTION:\n1. For LEGAL or OSH queries: Use the provided SNIPPETS to answer accurately. Provide FULL lists. Always cite the Source.\n2. For SOCIAL/FEEDBACK queries (e.g. 'good', 'thanks', 'hello'): Respond politely and briefly as a professional assistant. DO NOT use snippets or hallucinate legal advice for social comments.\n\nRELEVANT SNIPPETS:\n" + searchContext;
-
-                let answerText = "";
-
-                if (PROVIDER === 'groq') {
-                    // --- GROQ API ---
-                    const currentHistory = chatContext.map(m => ({
-                        role: m.role === 'model' ? 'assistant' : m.role,
-                        content: m.parts[0].text
-                    }));
-                    currentHistory.push({ role: "user", content: text });
                     
                     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                         method: "POST",
