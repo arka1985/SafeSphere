@@ -453,23 +453,23 @@
         }
 
         async function loadKnowledge() {
-            try {
-                // Look for KNOWLEDGE_BASE_EMBEDDINGS which is defined in knowledge.js
-                if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' && KNOWLEDGE_BASE_EMBEDDINGS.length > 0) {
-                    knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
-                    console.log("Data Loaded.");
-                    
-                    if (API_KEY || PROVIDER === 'ollama') {
-                        initOverlay.classList.add('hidden');
-                        chatInput.disabled = false;
-                        sendBtn.disabled = false;
-                        chatInput.focus();
-                    }
-                } else {
-                    setTimeout(loadKnowledge, 500);
+            console.log("Checking Legal Repository...");
+            if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' && KNOWLEDGE_BASE_EMBEDDINGS.length > 0) {
+                knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
+                console.log("Repository Found. Unlocking UI...");
+                
+                // FORCE UNLOCK
+                initOverlay.classList.add('hidden');
+                apiModal.classList.add('hidden');
+                apiModal.style.display = 'none';
+                
+                if (API_KEY || PROVIDER === 'ollama') {
+                    chatInput.disabled = false;
+                    sendBtn.disabled = false;
+                    chatInput.focus();
                 }
-            } catch (err) {
-                console.error("Knowledge Loading Error:", err);
+            } else {
+                setTimeout(loadKnowledge, 500);
             }
         }
 
