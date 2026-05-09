@@ -355,7 +355,7 @@
                             <select id="ai-provider"
                                 style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white;">
                                 <option value="groq">Groq Cloud (Fastest - Free Tier)</option>
-                                <option value="gemini">Google Gemini 1.5 Flash</option>
+                                <option value="gemini">Google Gemini 2.5 Flash</option>
                                 <option value="ollama">Ollama (Local)</option>
                             </select>
                         </div>
@@ -495,6 +495,7 @@ STRICT PROTOCOLS:
 3. CITATION MANDATORY: Start every provision-based point with the exact Section/Rule number (e.g., "Section 12: ...").
 4. ABSENCE OF DATA: If the <STATUTORY_DATA> does not contain the answer, your ONLY response is: "I apologize, but my current legal repository does not contain a specific provision for this query." Do NOT offer generic safety advice.
 5. CONTEXT FOCUS: Focus on the current user query. Previous history is for context only.
+6. NO TRUNCATION: Provide full, comprehensive lists of all relevant provisions. Do NOT truncate or summarize if a detailed list is required. Provide the complete text for each point.
 
 <STATUTORY_DATA>
 ${searchContext}
@@ -517,7 +518,7 @@ Current Match Confidence: ${Math.round(topMatchScore * 100)}%${confidenceTag}`;
                                 model: "llama-3.1-8b-instant",
                                 messages: [{ role: "system", content: systemText }, ...recentHistory],
                                 temperature: 0,
-                                max_tokens: 3000 // Triple the limit to prevent truncation
+                                max_tokens: 5000 // Increased to prevent list truncation
                             })
                         });
                         const data = await response.json();
@@ -526,7 +527,7 @@ Current Match Confidence: ${Math.round(topMatchScore * 100)}%${confidenceTag}`;
                         answerText = data.choices[0].message.content;
 
                     } else if (PROVIDER === 'gemini') {
-                        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+                        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
                         // FIX: Include current query in Gemini contents
                         const currentContents = [...chatContext, { role: "user", parts: [{ text: text }] }];
                         
@@ -536,7 +537,7 @@ Current Match Confidence: ${Math.round(topMatchScore * 100)}%${confidenceTag}`;
                             body: JSON.stringify({
                                 "system_instruction": { "parts": [{ "text": systemText }] },
                                 "contents": currentContents,
-                                "generationConfig": { "temperature": 0, "maxOutputTokens": 4000 }
+                                "generationConfig": { "temperature": 0, "maxOutputTokens": 8192 }
                             })
                         });
                         const data = await response.json();
