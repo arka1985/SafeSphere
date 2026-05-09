@@ -270,15 +270,22 @@
 
     </div>
 
-    <!-- Parse markdown for nice formatting of AI answers -->
+    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="knowledge.js"></script>
     
-    <script>
+    <!-- Local Embedding Engine (Transformers.js) -->
+    <script type="module">
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+        
+        // Skip local model checks
+        env.allowLocalModels = false;
+
         const chatHistory = document.getElementById('chat-history');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const initOverlay = document.getElementById('init-overlay');
+        const initStatus = document.getElementById('init-status');
         const apiModal = document.getElementById('api-modal');
         const apiKeyInput = document.getElementById('api-key-input');
         const saveKeyBtn = document.getElementById('save-key-btn');
@@ -287,13 +294,27 @@
         let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
         let knowledgeContext = []; 
         let chatContext = []; 
+        let embedder;
+
+        // Initialize Local Embedding Model
+        async function initAI() {
+            try {
+                initStatus.textContent = "Loading Semantic Search Engine (~22MB)...";
+                embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                console.log("Embedding model loaded.");
+                loadKnowledge();
+            } catch (err) {
+                console.error("AI Init Error:", err);
+                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading AI engine. Check your connection.</span>`;
+            }
+        }
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
             // Check for API key FIRST
             if (!API_KEY) {
                 apiModal.classList.remove('hidden');
-                initOverlay.classList.add('hidden'); // Hide the loading spinner while setting up key
+                initOverlay.classList.add('hidden');
             }
 
             try {
@@ -308,12 +329,12 @@
                     }
                     console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
                 } else {
-                    console.warn("Knowledge base index is still being generated...");
-                    // We don't throw here, just wait for it.
+                    initStatus.textContent = "Waiting for Knowledge Base Index...";
+                    setTimeout(loadKnowledge, 2000); // Retry until knowledge.js is ready
                 }
             } catch (err) {
                 console.error(err);
-                document.getElementById('init-status').innerHTML = `<span style="color: #ef4444;">Error loading knowledge base.</span>`;
+                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading knowledge base.</span>`;
             }
         }
 
@@ -323,14 +344,16 @@
                 localStorage.setItem('SAFEWORK_AI_KEY', key);
                 API_KEY = key;
                 apiModal.classList.add('hidden');
-                initOverlay.classList.add('hidden');
-                chatInput.disabled = false;
-                sendBtn.disabled = false;
-                chatInput.focus();
+                if (knowledgeContext.length > 0 && embedder) {
+                    initOverlay.classList.add('hidden');
+                    chatInput.disabled = false;
+                    sendBtn.disabled = false;
+                    chatInput.focus();
+                } else {
+                    initOverlay.classList.remove('hidden');
+                }
             }
         });
-
-        window.addEventListener('DOMContentLoaded', loadKnowledge);
 
         function scrollToBottom() {
             chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -353,7 +376,7 @@
             return div;
         }
 
-        // Vector Math: Dot Product (embeddings are normalized by default in Gemini)
+        // Vector Math: Dot Product
         function dotProduct(a, b) {
             let sum = 0;
             for (let i = 0; i < a.length; i++) {
@@ -364,7 +387,7 @@
 
         async function handleSend() {
             const text = chatInput.value.trim();
-            if (!text) return;
+            if (!text || !API_KEY || !embedder) return;
 
             chatInput.value = '';
             chatInput.disabled = true;
@@ -374,20 +397,9 @@
             const loadingMsg = addBotMessage('<div class="loading-dots"><span></span><span></span><span></span></div>');
 
             try {
-                // 1. Get Embedding for the query
-                const embedUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2:embedContent?key=${API_KEY}`;
-                const embedResponse = await fetch(embedUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        "model": "models/gemini-embedding-2",
-                        "content": { "parts": [{ "text": text }] }
-                    })
-                });
-
-                if (!embedResponse.ok) throw new Error("Embedding API failed");
-                const embedData = await embedResponse.json();
-                const queryVector = embedData.embedding.values;
+                // 1. Get Embedding for the query (LOCALLY!)
+                const output = await embedder(text, { pooling: 'mean', normalize: true });
+                const queryVector = Array.from(output.data);
 
                 // 2. Local Semantic Search
                 const scoredChunks = knowledgeContext.map(chunk => ({
@@ -395,17 +407,13 @@
                     score: dotProduct(queryVector, chunk.embedding)
                 }));
 
-                // Sort by score and take top 5
                 scoredChunks.sort((a, b) => b.score - a.score);
                 const topChunks = scoredChunks.slice(0, 5);
-
-                // Construct Context from search results
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
-                // 3. Call Chat API with reduced context (keeping it FREE and under limits)
+                // 3. Call Chat API
                 const chatUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
                 
-                // Add current query to chat context
                 const currentHistory = [...chatContext, {
                     "role": "user",
                     "parts": [{"text": text}]
@@ -438,12 +446,9 @@
                 
                 if (chatData.candidates && chatData.candidates[0].content.parts[0].text) {
                     const answerText = chatData.candidates[0].content.parts[0].text;
-                    
-                    // Maintain persistent history
                     chatContext.push({ "role": "user", "parts": [{"text": text}] });
                     chatContext.push({ "role": "model", "parts": [{"text": answerText}] });
-                    if (chatContext.length > 10) chatContext = chatContext.slice(-10); // Keep last 5 turns
-
+                    if (chatContext.length > 10) chatContext = chatContext.slice(-10);
                     addBotMessage(marked.parse(answerText));
                 } else {
                     addBotMessage("Sorry, I could not generate a response.");
@@ -451,8 +456,8 @@
 
             } catch (error) {
                 console.error('Error:', error);
-                chatHistory.removeChild(loadingMsg);
-                addBotMessage(`<span style="color: #fca5a5;">Error: ${error.message}. Please try again later.</span>`);
+                if (loadingMsg.parentNode) chatHistory.removeChild(loadingMsg);
+                addBotMessage(`<span style="color: #fca5a5;">Error: ${error.message}.</span>`);
             } finally {
                 chatInput.disabled = false;
                 sendBtn.disabled = false;
@@ -460,10 +465,12 @@
             }
         }
 
+        // Global key listeners
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
         sendBtn.addEventListener('click', handleSend);
-        chatInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') handleSend();
-        });
+
+        // Start Init
+        initAI();
 
         // Initial fade-up animation logic
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -40px 0px' };
