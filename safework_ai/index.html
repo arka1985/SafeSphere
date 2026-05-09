@@ -385,19 +385,34 @@
                             </div>
                             <div id="guide-ollama" class="hidden">
                                 <p style="margin: 0 0 0.8rem 0; font-weight: 600; color: #10b981;">Ollama (Local) Setup:</p>
-                                <div style="font-size: 0.75rem; margin-bottom: 0.8rem; color: #f59e0b; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); padding: 0.6rem; border-radius: 8px;">
-                                    ⚠️ <b>LIMITATION:</b> Local models depend on your hardware (RAM/GPU) and are generally slower than cloud providers.
+                                <div style="font-size: 0.7rem; margin-bottom: 0.8rem; color: #f59e0b; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); padding: 0.5rem; border-radius: 8px;">
+                                    ⚠️ <b>LIMITATION:</b> Speed depends on your RAM/GPU.
                                 </div>
-                                <ol style="margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <li>Install <a href="https://ollama.com" target="_blank" style="color: #34d399; text-decoration: underline;">ollama.com</a></li>
-                                    <li>Run <code>ollama run llama3</code> in terminal.</li>
-                                    <li><strong>CORS Setup (Crucial):</strong>
-                                        <div style="margin-top: 0.3rem; font-size: 0.7rem; color: #94a3b8;">
-                                            • <b>Windows:</b> Set <code>$env:OLLAMA_ORIGINS="*"</code> in PowerShell, then restart Ollama.<br>
-                                            • <b>Mac/Linux:</b> <code>launchctl setenv OLLAMA_ORIGINS "*"</code> or run <code>OLLAMA_ORIGINS="*" ollama serve</code>
-                                        </div>
-                                    </li>
-                                </ol>
+                                <div style="display: flex; gap: 0.3rem; margin-bottom: 0.8rem;">
+                                    <button onclick="window.setOS('win')" class="os-btn active" id="btn-win" style="flex:1; padding: 0.4rem; font-size: 0.7rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; cursor: pointer;">Windows</button>
+                                    <button onclick="window.setOS('mac')" class="os-btn" id="btn-mac" style="flex:1; padding: 0.4rem; font-size: 0.7rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; cursor: pointer;">Mac</button>
+                                    <button onclick="window.setOS('lin')" class="os-btn" id="btn-lin" style="flex:1; padding: 0.4rem; font-size: 0.7rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; cursor: pointer;">Linux</button>
+                                </div>
+                                <div id="os-win" class="os-guide">
+                                    <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                                        <li>Install <a href="https://ollama.com" target="_blank" style="color: #10b981;">ollama.com</a></li>
+                                        <li>Run <code>ollama run llama3</code></li>
+                                        <li>Set <code>$env:OLLAMA_ORIGINS="*"</code> in PS, then restart.</li>
+                                    </ol>
+                                </div>
+                                <div id="os-mac" class="os-guide hidden">
+                                    <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                                        <li>Install Ollama for Mac.</li>
+                                        <li>Run <code>ollama run llama3</code></li>
+                                        <li>Terminal: <code>launchctl setenv OLLAMA_ORIGINS "*"</code></li>
+                                    </ol>
+                                </div>
+                                <div id="os-lin" class="os-guide hidden">
+                                    <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                                        <li><code>curl -fsSL https://ollama.com/install.sh | sh</code></li>
+                                        <li><code>OLLAMA_ORIGINS="*" ollama serve</code></li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
 
@@ -405,7 +420,7 @@
                             <p style="font-size: 0.8rem; color: #94a3b8; margin: 0 0 0.4rem 0;">Unable to generate an API key?</p>
                             <a href="https://wa.me/918981568707" target="_blank" style="color: #10b981; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.75 14.03c-.25.13-1.47.73-1.69.81-.23.08-.39.12-.56-.12-.17-.25-.64-.81-.78-.97-.14-.17-.29-.19-.53-.06-.25.13-1.04.38-1.98 1.22-.73.65-1.22 1.46-1.37 1.71-.14.25-.02.39.11.51.11.11.25.29.37.43.12.14.17.25.25.41.08.17.04.31-.02.43-.06.12-.56 1.34-.76 1.84-.2.48-.4.41-.56.4-.15 0-.32-.01-.5-.01-.17 0-.46.06-.7.33-.24.25-.92.9-.92 2.2 0 1.3.94 2.56 1.08 2.73.14.17 1.86 2.84 4.51 3.98.63.27 1.12.43 1.51.55.63.2 1.21.17 1.67.11.51-.06 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.25-.17-.5-.3z"/></svg>
-                                WhatsApp Developer
+                                WhatsApp Developer (+91 89815 68707)
                             </a>
                             <a href="#" id="show-qr-btn" style="color: #94a3b8; font-size: 0.75rem; text-decoration: underline; margin-top: 0.6rem; display: block;">Or click to scan QR Code</a>
                             
@@ -517,6 +532,13 @@
 
             // Trigger initial state
             aiProvider.dispatchEvent(new Event('change'));
+
+            window.setOS = (os) => {
+                document.querySelectorAll('.os-guide').forEach(g => g.classList.add('hidden'));
+                document.querySelectorAll('.os-btn').forEach(b => b.style.background = 'rgba(255,255,255,0.05)');
+                document.getElementById(`os-${os}`).classList.remove('hidden');
+                document.getElementById(`btn-${os}`).style.background = '#10b981';
+            };
 
             document.getElementById('show-qr-btn').onclick = (e) => {
                 e.preventDefault();
