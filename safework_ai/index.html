@@ -253,8 +253,8 @@
             </div>
 
             <!-- API Key Configuration Modal -->
-            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); width: 100vw; height: 100vh;">
-                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; text-align: left; max-width: 480px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 1rem;">
+            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); width: 100vw; height: 100vh; overflow: hidden;">
+                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; text-align: left; max-width: 480px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 1rem; scrollbar-width: thin; scrollbar-color: #475569 #1e293b;">
                     <h3 style="margin: 0 0 0.5rem 0; font-size: 1.75rem; text-align: center; color: #fff; font-weight: 700;">AI Engine Setup</h3>
                     
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
@@ -269,7 +269,7 @@
                     <!-- Key Config -->
                     <div id="api-key-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
                         <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">API Key:</label>
-                        <input type="password" id="api-key-input" placeholder="Paste your key here..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; font-size: 0.95rem; outline: none;">
+                        <input type="password" id="api-key-input" placeholder="" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; font-size: 0.95rem; outline: none;">
                         <div style="background: rgba(34, 211, 238, 0.1); padding: 0.75rem; border-radius: 10px; border: 1px solid rgba(34, 211, 238, 0.2);">
                             <a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: #67e8f9; text-decoration: underline; font-size: 0.8rem; font-weight: 600;">Get your free key here →</a>
                         </div>
@@ -361,7 +361,7 @@
                 apiKeyContainer.classList.remove('hidden');
                 ollamaContainer.classList.add('hidden');
                 keyLink.href = val === 'groq' ? "https://console.groq.com/keys" : "https://aistudio.google.com/app/apikey";
-                apiKeyInput.placeholder = val === 'groq' ? "Paste Groq API Key (gsk_...)" : "Paste Gemini API Key...";
+                apiKeyInput.placeholder = "";
             }
         });
 
