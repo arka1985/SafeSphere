@@ -501,10 +501,10 @@
                 }));
 
                 scoredChunks.sort((a, b) => b.score - a.score);
-                const topChunks = scoredChunks.slice(0, 5);
+                const topChunks = scoredChunks.slice(0, 10); // Increased depth to capture full lists
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
-                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide comprehensive, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nGuidelines:\n1. Provide detailed explanations, not just short summaries.\n2. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n3. Use markdown formatting (bold, lists, tables) to make the answer highly readable.\n4. If the information is not in the snippets, clearly state that the repository does not contain that specific detail.\n\nRELEVANT SNIPPETS:\n" + searchContext;
+                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide EXHAUSTIVE, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nCRITICAL RULES:\n1. If a user asks for a LIST (e.g., Notifiable Diseases, Duties, or Penalties), you MUST provide the FULL list found in the snippets. Do not summarize or truncate.\n2. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n3. Use markdown formatting (bold, lists, tables) to make the answer professional and readable.\n4. If the information is missing or incomplete in the snippets, explicitly state that you are providing only the available information from the repository.\n\nRELEVANT SNIPPETS:\n" + searchContext;
 
                 let answerText = "";
 
