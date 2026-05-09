@@ -661,6 +661,7 @@
 
                 } else if (PROVIDER === 'ollama') {
                     // --- OLLAMA LOCAL ---
+                    console.log("Attempting to connect to local Ollama at http://localhost:11434...");
                     const chatUrl = `http://localhost:11434/api/chat`;
                     const currentHistory = chatContext.map(m => ({
                         role: m.role === 'model' ? 'assistant' : m.role,
@@ -668,18 +669,31 @@
                     }));
                     currentHistory.push({ role: "user", content: text });
 
-                    const response = await fetch(chatUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            "model": "llama3",
-                            "messages": [{ role: "system", content: systemText }, ...currentHistory],
-                            "stream": false
-                        })
-                    });
-                    if (!response.ok) throw new Error('Ollama Error. Make sure Ollama is running and OLLAMA_ORIGINS="*" is set.');
-                    const data = await response.json();
-                    answerText = data.message.content;
+                    try {
+                        const response = await fetch(chatUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                "model": "llama3",
+                                "messages": [{ role: "system", content: systemText }, ...currentHistory],
+                                "stream": false
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            const errBody = await response.text();
+                            throw new Error(`Ollama Server Error (${response.status}): ${errBody}`);
+                        }
+                        
+                        const data = await response.json();
+                        answerText = data.message.content;
+                    } catch (fetchErr) {
+                        console.error("Ollama Fetch Detailed Error:", fetchErr);
+                        if (fetchErr.message.includes('Failed to fetch')) {
+                            throw new Error('Could not connect to Ollama. <br><br><strong>Fix:</strong><br>1. Ensure Ollama is running.<br>2. You MUST set OLLAMA_ORIGINS="*" in your CMD before starting (see Setup Guide).');
+                        }
+                        throw fetchErr;
+                    }
                 }
 
                 chatHistory.removeChild(loadingMsg);
