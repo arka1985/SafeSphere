@@ -657,7 +657,7 @@ Current Match Confidence: ${Math.round(topMatchScore * 100)}%${confidenceTag}`;
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 model: "llama3",
-                                messages: [{ role: "system", content: systemText }, ...currentHistory],
+                                messages: [{ role: "system", content: systemText }, ...recentHistory],
                                 stream: false
                             })
                         });
