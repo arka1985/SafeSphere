@@ -266,20 +266,20 @@
 
         // Configuration
         const API_KEY = 'AIzaSyBuwMklEd50b-Ul20vvabN_LEwMMsRM1TM'; // Provided by user
-        let knowledgeContext = "";
-        let chatContext = []; // Store previous messages
+        let knowledgeContext = []; // Stores the embedded chunks
+        let chatContext = []; // Store previous messages for chat flow
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
             try {
-                if (typeof KNOWLEDGE_BASE_TEXT !== 'undefined') {
-                    knowledgeContext = KNOWLEDGE_BASE_TEXT;
+                if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
+                    knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
                     // Hide overlay and enable input
                     initOverlay.classList.add('hidden');
                     chatInput.disabled = false;
                     sendBtn.disabled = false;
                     chatInput.focus();
-                    console.log("Knowledge base loaded. Size:", knowledgeContext.length, "chars");
+                    console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
                 } else {
                     throw new Error("Knowledge base variable not found");
                 }
@@ -301,12 +301,6 @@
             div.textContent = text;
             chatHistory.appendChild(div);
             scrollToBottom();
-            
-            // Add to conversation history
-            chatContext.push({
-                "role": "user",
-                "parts": [{"text": text}]
-            });
         }
 
         function addBotMessage(htmlContent) {
@@ -316,6 +310,15 @@
             chatHistory.appendChild(div);
             scrollToBottom();
             return div;
+        }
+
+        // Vector Math: Dot Product (embeddings are normalized by default in Gemini)
+        function dotProduct(a, b) {
+            let sum = 0;
+            for (let i = 0; i < a.length; i++) {
+                sum += a[i] * b[i];
+            }
+            return sum;
         }
 
         async function handleSend() {
@@ -330,44 +333,76 @@
             const loadingMsg = addBotMessage('<div class="loading-dots"><span></span><span></span><span></span></div>');
 
             try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+                // 1. Get Embedding for the query
+                const embedUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2:embedContent?key=${API_KEY}`;
+                const embedResponse = await fetch(embedUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "model": "models/gemini-embedding-2",
+                        "content": { "parts": [{ "text": text }] }
+                    })
+                });
+
+                if (!embedResponse.ok) throw new Error("Embedding API failed");
+                const embedData = await embedResponse.json();
+                const queryVector = embedData.embedding.values;
+
+                // 2. Local Semantic Search
+                const scoredChunks = knowledgeContext.map(chunk => ({
+                    ...chunk,
+                    score: dotProduct(queryVector, chunk.embedding)
+                }));
+
+                // Sort by score and take top 5
+                scoredChunks.sort((a, b) => b.score - a.score);
+                const topChunks = scoredChunks.slice(0, 5);
+
+                // Construct Context from search results
+                const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
+
+                // 3. Call Chat API with reduced context (keeping it FREE and under limits)
+                const chatUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
                 
-                // Construct the payload with system instructions
+                // Add current query to chat context
+                const currentHistory = [...chatContext, {
+                    "role": "user",
+                    "parts": [{"text": text}]
+                }];
+
                 const payload = {
                     "system_instruction": {
                         "parts": [
                             {
-                                "text": "You are SafeWork AI, a highly professional expert assistant on Indian Occupational Safety and Health legislation. Use the provided National Statutory Repository knowledge to answer questions accurately. Be concise and format your response beautifully using markdown. If the answer is not in the text, inform the user you cannot find it in the repository.\n\n--- REPOSITORY DATA ---\n" + knowledgeContext
+                                "text": "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Use the following RELEVANT SNIPPETS from the Statutory Repository to answer the question. Be concise and use markdown formatting.\n\nSNIPPETS:\n" + searchContext
                             }
                         ]
                     },
-                    "contents": chatContext
+                    "contents": currentHistory
                 };
 
-                const response = await fetch(url, {
+                const chatResponse = await fetch(chatUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) {
-                    const errData = await response.json();
-                    throw new Error(errData.error?.message || 'API Error');
+                if (!chatResponse.ok) {
+                    const errData = await chatResponse.json();
+                    throw new Error(errData.error?.message || 'Chat API Error');
                 }
 
-                const data = await response.json();
-                
+                const chatData = await chatResponse.json();
                 chatHistory.removeChild(loadingMsg);
                 
-                if (data.candidates && data.candidates[0].content.parts[0].text) {
-                    const answerText = data.candidates[0].content.parts[0].text;
-                    // Add AI answer to chat history array
-                    chatContext.push({
-                        "role": "model",
-                        "parts": [{"text": answerText}]
-                    });
+                if (chatData.candidates && chatData.candidates[0].content.parts[0].text) {
+                    const answerText = chatData.candidates[0].content.parts[0].text;
                     
-                    // Display answer (parsed with marked.js for formatting)
+                    // Maintain persistent history
+                    chatContext.push({ "role": "user", "parts": [{"text": text}] });
+                    chatContext.push({ "role": "model", "parts": [{"text": answerText}] });
+                    if (chatContext.length > 10) chatContext = chatContext.slice(-10); // Keep last 5 turns
+
                     addBotMessage(marked.parse(answerText));
                 } else {
                     addBotMessage("Sorry, I could not generate a response.");
