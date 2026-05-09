@@ -504,19 +504,23 @@
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
-            // SYNC UI with the current provider state
-            aiProvider.value = PROVIDER;
-            aiProvider.dispatchEvent(new Event('change'));
-            
+            // IMMEDIATE CONFIG CHECK
             const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
-            apiKeyInput.value = (API_KEY === atob(obfuscatedKey)) ? "thankyou" : API_KEY;
+            const trialKey = atob(obfuscatedKey);
 
-            // Check for Config FIRST
-            if (!API_KEY && PROVIDER !== 'ollama') {
+            if (API_KEY || PROVIDER === 'ollama') {
+                apiModal.classList.add('hidden');
+                apiModal.style.display = 'none';
+            } else {
                 apiModal.classList.remove('hidden');
                 apiModal.style.display = 'flex';
                 initOverlay.classList.add('hidden');
             }
+
+            // SYNC UI
+            aiProvider.value = PROVIDER;
+            aiProvider.dispatchEvent(new Event('change'));
+            apiKeyInput.value = (API_KEY === trialKey) ? "thankyou" : API_KEY;
 
             try {
                 if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
