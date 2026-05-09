@@ -284,17 +284,20 @@
                         <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                             <div>
                                 <strong style="color: white; display: block;">1. Install Ollama</strong>
-                                <span>Download from <a href="https://ollama.com" target="_blank" style="color: #67e8f9; text-decoration: underline;">ollama.com</a> and run the installer.</span>
+                                <span>Download from <a href="https://ollama.com" target="_blank" style="color: #67e8f9; text-decoration: underline;">ollama.com</a>.</span>
                             </div>
                             <div>
                                 <strong style="color: white; display: block;">2. Download Model</strong>
-                                <span>Open terminal/powershell and run:<br><code style="color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 6px; display: block; margin-top: 4px;">ollama run llama3</code></span>
+                                <span>Run in terminal: <code style="color: #fbbf24;">ollama run llama3</code></span>
                             </div>
                             <div>
-                                <strong style="color: white; display: block;">3. Enable Browser Access (CRITICAL)</strong>
-                                <span>Close Ollama. In terminal, run this then restart Ollama:<br><code style="color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 6px; display: block; margin-top: 4px;">$env:OLLAMA_ORIGINS="*"; ollama serve</code></span>
+                                <strong style="color: white; display: block;">3. Enable Browser Access (REQUIRED)</strong>
+                                <div style="margin-top: 0.4rem; font-size: 0.75rem;">
+                                    <div style="margin-bottom: 0.4rem;"><strong>Windows:</strong> Close Ollama from Taskbar, then run:<br><code style="background: #000; color: #fbbf24; padding: 2px 4px;">$env:OLLAMA_ORIGINS="*"; ollama serve</code></div>
+                                    <div style="margin-bottom: 0.4rem;"><strong>Mac/Linux:</strong> Close Ollama, then run:<br><code style="background: #000; color: #fbbf24; padding: 2px 4px;">OLLAMA_ORIGINS="*" ollama serve</code></div>
+                                    <div style="margin-bottom: 0.4rem;"><strong>Linux (Service):</strong> Run <code style="background: #000; color: #fbbf24; padding: 2px 4px;">sudo systemctl edit ollama.service</code> and add:<br><code style="background: #000; color: #fbbf24; padding: 2px 4px;">Environment="OLLAMA_ORIGINS=*"</code> then restart.</div>
+                                </div>
                             </div>
-                            <p style="font-size: 0.75rem; font-style: italic; color: #94a3b8; margin-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.1); pt: 0.5rem;">Once running, this website will talk directly to your computer at localhost:11434.</p>
                         </div>
                     </div>
 
