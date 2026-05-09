@@ -230,7 +230,12 @@
             border-radius: 8px;
             font-size: 0.85rem;
             color: var(--text-dim);
+            transition: 0.3s;
         }
+
+        .sources-box.high { border-left-color: #10b981; }
+        .sources-box.med { border-left-color: #f59e0b; }
+        .sources-box.low { border-left-color: #ef4444; }
 
         .sources-box strong {
             color: var(--primary-cyan);
@@ -478,18 +483,23 @@
                     // Structured Context
                     const searchContext = scoredChunks.slice(0, 10).map(c => `<PROVISION source="${c.source}">\n${c.text}\n</PROVISION>`).join("\n");
                     
-                    const systemText = `You are SafeWork AI, a Senior Indian OSH Compliance Expert. 
-Your task is to answer legal queries based ONLY on the provided Statutory Data.
+                    const topMatchScore = scoredChunks.length > 0 ? scoredChunks[0].score : 0;
+                    const confidenceTag = topMatchScore < 0.4 ? " [LOW CONFIDENCE]" : "";
 
-STRICT OPERATING PROCEDURES:
-1. Use ONLY the data within <STATUTORY_DATA> tags.
-2. CITATION: Always mention the Section/Rule/Schedule found in the provision.
-3. NO HALLUCINATION: If the data does not contain the specific answer, say: "I apologize, but my current legal repository does not contain a specific provision for this query."
-4. NO GENERAL ADVICE: Do not give general safety tips. Give strictly legal answers.
+                    const systemText = `You are SafeWork AI, an elite OSH Compliance auditor. 
+Your SOLE purpose is to provide legal answers based on the statutory repository provided below.
+
+STRICT PROTOCOLS:
+1. SOURCE ONLY: Use ONLY the text within <STATUTORY_DATA>. 
+2. NO EXTERNAL KNOWLEDGE: Even if you know the answer from external safety standards, if it is not in the <STATUTORY_DATA>, you must state that it's not in the repository.
+3. CITATION MANDATORY: Start every provision-based point with the exact Section/Rule number (e.g., "Section 12: ...").
+4. ABSENCE OF DATA: If the <STATUTORY_DATA> does not contain the answer, your ONLY response is: "I apologize, but my current legal repository does not contain a specific provision for this query." Do NOT offer generic safety advice.
+5. CONTEXT FOCUS: Focus on the current user query. Previous history is for context only.
 
 <STATUTORY_DATA>
 ${searchContext}
-</STATUTORY_DATA>`;
+</STATUTORY_DATA>
+Current Match Confidence: ${Math.round(topMatchScore * 100)}%${confidenceTag}`;
 
                     let response;
                     let answerText = "";
@@ -517,12 +527,15 @@ ${searchContext}
 
                     } else if (PROVIDER === 'gemini') {
                         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+                        // FIX: Include current query in Gemini contents
+                        const currentContents = [...chatContext, { role: "user", parts: [{ text: text }] }];
+                        
                         response = await fetch(url, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 "system_instruction": { "parts": [{ "text": systemText }] },
-                                "contents": chatContext.length > 0 ? chatContext : [{ role: "user", parts: [{ text: text }] }],
+                                "contents": currentContents,
                                 "generationConfig": { "temperature": 0, "maxOutputTokens": 4000 }
                             })
                         });
@@ -551,8 +564,14 @@ ${searchContext}
                     // Format response with sources for transparency
                     let finalAnswer = answerText;
                     if (scoredChunks.length > 0) {
+                        const topScore = Math.round(scoredChunks[0].score * 100);
+                        const statusClass = topScore > 60 ? 'high' : (topScore > 40 ? 'med' : 'low');
                         const topSources = scoredChunks.slice(0, 3).map(c => `<li>${c.source || 'Provision'} (Match: ${Math.round(c.score * 100)}%)</li>`).join("");
-                        finalAnswer += `\n\n<div class="sources-box"><strong>Sources Consulted:</strong><ul>${topSources}</ul></div>`;
+                        
+                        finalAnswer += `\n\n<div class="sources-box ${statusClass}">
+                            <strong>Sources Consulted (Confidence: ${topScore}%):</strong>
+                            <ul>${topSources}</ul>
+                        </div>`;
                     }
                     
                     addMessage(finalAnswer, 'bot');
