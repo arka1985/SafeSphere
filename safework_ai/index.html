@@ -253,13 +253,13 @@
             </div>
 
             <!-- API Key Configuration Modal -->
-            <div id="api-modal" class="hidden" style="position: absolute; inset: 0; background: rgba(10, 15, 26, 0.95); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1.5rem; border-radius: inherit; backdrop-filter: blur(15px);">
-                <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 24px; text-align: left; max-width: 450px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-                    <h3 style="margin-bottom: 1.5rem; font-size: 1.6rem; text-align: center; color: #fff;">AI Engine Setup</h3>
+            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); width: 100vw; height: 100vh;">
+                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; text-align: left; max-width: 480px; width: 90%; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 1rem;">
+                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.75rem; text-align: center; color: #fff; font-weight: 700;">AI Engine Setup</h3>
                     
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 0.6rem; font-weight: 500;">Select AI Intelligence Provider:</label>
-                        <select id="ai-provider" style="width: 100%; padding: 0.9rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.8); color: white; cursor: pointer; font-family: inherit; font-size: 0.95rem; outline: none; transition: 0.3s;">
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">AI Provider:</label>
+                        <select id="ai-provider" style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; cursor: pointer; font-size: 0.95rem; outline: none;">
                             <option value="groq">Groq Cloud (Fastest - Free)</option>
                             <option value="gemini">Google Gemini 1.5 Flash (Free)</option>
                             <option value="ollama">Ollama (Local - Private & Offline)</option>
@@ -267,31 +267,26 @@
                     </div>
 
                     <!-- Key Config -->
-                    <div id="api-key-container">
-                        <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 0.6rem; font-weight: 500;">Enter API Key:</label>
-                        <input type="password" id="api-key-input" placeholder="Paste your key here..." style="width: 100%; padding: 0.9rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.8); color: white; margin-bottom: 0.8rem; font-family: inherit; font-size: 0.95rem;">
-                        <div id="key-hint-box" style="background: rgba(34, 211, 238, 0.1); padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(34, 211, 238, 0.2);">
-                            <p style="font-size: 0.8rem; color: #67e8f9; margin: 0;">
-                                <span><a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: inherit; text-decoration: underline; font-weight: 600;">Get your free key here →</a></span>
-                            </p>
+                    <div id="api-key-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 600;">API Key:</label>
+                        <input type="password" id="api-key-input" placeholder="Paste your key here..." style="width: 100%; padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; font-size: 0.95rem; outline: none;">
+                        <div style="background: rgba(34, 211, 238, 0.1); padding: 0.75rem; border-radius: 10px; border: 1px solid rgba(34, 211, 238, 0.2);">
+                            <a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: #67e8f9; text-decoration: underline; font-size: 0.8rem; font-weight: 600;">Get your free key here →</a>
                         </div>
                     </div>
 
                     <!-- Ollama Config -->
-                    <div id="ollama-container" class="hidden">
-                        <div style="background: rgba(148, 163, 184, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.2); font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
-                            <p style="font-weight: 600; color: white; margin-bottom: 0.5rem;">How to run Ollama locally:</p>
-                            <ol style="padding-left: 1.2rem; margin: 0;">
-                                <li>Download & Install from <a href="https://ollama.com" target="_blank" style="color: var(--accent-cyan);">ollama.com</a></li>
-                                <li>Run <code style="color: white; background: #000; padding: 2px 4px; border-radius: 4px;">ollama run llama3</code> in your terminal</li>
-                                <li>Set environment variable: <code style="color: white; background: #000; padding: 2px 4px; border-radius: 4px;">OLLAMA_ORIGINS="*"</code> to allow browser access</li>
-                                <li>Ensure Ollama is running at <code style="color: white;">localhost:11434</code></li>
-                            </ol>
-                        </div>
+                    <div id="ollama-container" class="hidden" style="background: rgba(148, 163, 184, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.2); font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+                        <p style="font-weight: 600; color: white; margin: 0 0 0.5rem 0;">Ollama Setup Guide:</p>
+                        <ol style="padding-left: 1.2rem; margin: 0;">
+                            <li>Download: <a href="https://ollama.com" target="_blank" style="color: #67e8f9;">ollama.com</a></li>
+                            <li>Run: <code style="color: #fff; background: #000; padding: 2px 4px;">ollama run llama3</code></li>
+                            <li>Allow browser: <code style="color: #fff; background: #000; padding: 2px 4px;">OLLAMA_ORIGINS="*"</code></li>
+                        </ol>
                     </div>
 
-                    <button id="save-key-btn" style="width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #10b981; color: white; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 1.5rem;">Initialize AI Engine</button>
-                    <p style="text-align: center; margin-top: 1rem; font-size: 0.75rem; color: #64748b;">Keys are stored locally in your browser.</p>
+                    <button id="save-key-btn" style="width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #10b981; color: white; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 0.5rem; font-size: 1rem;">Save & Initialize</button>
+                    <p style="text-align: center; margin: 0.5rem 0 0 0; font-size: 0.75rem; color: #64748b;">Keys are saved locally in your browser.</p>
                 </div>
             </div>
 
