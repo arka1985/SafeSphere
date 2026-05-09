@@ -564,33 +564,32 @@
                 }));
 
                 scoredChunks.sort((a, b) => b.score - a.score);
-                const topChunks = scoredChunks.slice(0, 30); // Overdrive Mode: Increased to 30 snippets
+                const topChunks = scoredChunks.slice(0, 15); // Optimized: Reduced from 30 to 15 to stay under Groq TPM limits
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
-                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide EXHAUSTIVE, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nCRITICAL RULES:\n1. If a user asks for a LIST (e.g., Notifiable Diseases, Duties, or Penalties), you MUST provide the FULL list found in the snippets. Do not summarize or truncate.\n2. If a list is numbered (e.g. 1 to 29), ensure you list EVERY single item found. Do not stop at item 6 or 10.\n3. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n4. Use markdown formatting (bold, lists, tables) to make the answer professional and readable.\n\nRELEVANT SNIPPETS:\n" + searchContext;
+                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Use the provided SNIPPETS to answer accurately. \n\nCRITICAL RULES:\n1. If a user asks for a LIST, provide the FULL list found in the snippets.\n2. Always cite the Source.\n\nRELEVANT SNIPPETS:\n" + searchContext;
 
                 let answerText = "";
 
                 if (PROVIDER === 'groq') {
                     // --- GROQ API ---
-                    const chatUrl = `https://api.groq.com/openai/v1/chat/completions`;
                     const currentHistory = chatContext.map(m => ({
                         role: m.role === 'model' ? 'assistant' : m.role,
                         content: m.parts[0].text
                     }));
                     currentHistory.push({ role: "user", content: text });
-
-                    const response = await fetch(chatUrl, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${API_KEY}`
-                        },
+                    
+                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                        method: "POST",
+                        headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            "model": "llama-3.3-70b-versatile",
-                            "messages": [{ role: "system", content: systemText }, ...currentHistory],
-                            "temperature": 0.4,
-                            "max_tokens": 4096
+                            model: "llama-3.3-70b-versatile",
+                            messages: [
+                                { role: "system", content: systemText },
+                                ...currentHistory
+                            ],
+                            max_tokens: 2048, // Balanced limit to avoid TPM exhaustion
+                            temperature: 0.1
                         })
                     });
                     if (!response.ok) throw new Error((await response.json()).error?.message || 'Groq Error');
