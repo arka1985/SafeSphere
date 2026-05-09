@@ -477,10 +477,11 @@
 
                     const searchContext = scoredChunks.slice(0, 8).map(c => `[SOURCE: ${c.source || 'Statutory Code'}]\n${c.text}`).join("\n\n---\n\n");
                     const systemText = `You are SafeWork AI, an Indian OSH Expert.
-STRICT RULE: Answer ONLY using the provided STATUTORY CONTEXT. 
-1. Cite Section/Rule numbers if present.
-2. If the context doesn't have the answer, say: "I cannot find a specific provision for this in the OSHWC Code 2020."
-3. Do not hallucinate or use outside knowledge.
+STRICT RULES:
+1. Answer ONLY using the provided STATUTORY CONTEXT. 
+2. PROVIDE FULL LISTS. Do not truncate, summarize, or say "etc."
+3. Cite Section/Rule numbers if present.
+4. If not found, say: "Provision not found in OSHWC 2020."
 
 STATUTORY CONTEXT:
 ${searchContext}`;
@@ -501,7 +502,7 @@ ${searchContext}`;
                                 model: "llama-3.1-8b-instant",
                                 messages: [{ role: "system", content: systemText }, ...recentHistory],
                                 temperature: 0,
-                                max_tokens: 1024
+                                max_tokens: 3000 // Triple the limit to prevent truncation
                             })
                         });
                         const data = await response.json();
