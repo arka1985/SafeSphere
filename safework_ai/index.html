@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeWork AI — SafeSphere</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../bhashini.css">
+    <style>
+        .article-header {
+            text-align: left;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .article-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-cyan), #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition-smooth);
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+        }
+
+        .back-nav:hover {
+            color: var(--text-white);
+            background: var(--glass-bg-hover);
+            transform: translateX(-5px);
+        }
+
+        .article-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            margin-top: 2rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .article-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    
+    <div class="app-container">
+        
+        <header class="article-header">
+            <a href="../index.html" class="back-nav">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to SafeSphere Hub
+            </a>
+            <h1 class="article-title">SafeWork AI</h1>
+            <p class="site-subtitle" style="margin-left:0;">Guide to developing your Occupational Safety and Health (OSH) AI assistant.</p>
+        </header>
+
+        <section class="article-content fade-up">
+            <p>To develop your Occupational Safety and Health (OSH) AI assistant using <a href="https://antigravity.dev/?utm_source=chatgpt.com" target="_blank">Antigravity</a> or any AI-assisted coding platform, you should first understand that you are not “training” a new AI model from scratch. Instead, you will build a Retrieval-Augmented Generation (RAG) application, where a powerful Large Language Model (LLM) such as GPT reads and answers questions from your uploaded PDF documents. The overall system works by extracting text from your OSH PDFs, splitting the content into smaller chunks, converting those chunks into numerical embeddings using an embedding model, storing them in a vector database, and then retrieving the most relevant chunks whenever a user asks a question. These retrieved chunks are then sent along with the user’s query to the LLM, which generates an answer grounded in your documents. This approach is significantly easier, cheaper, faster, and more accurate for document-based question answering than attempting to fine-tune an LLM.</p>
+
+            <p>Begin by installing Python, VS Code, and Git on your computer. Create a project folder such as “OSH_AI_ASSISTANT” and inside it create a “data” folder where you will place all your PDFs, such as DGFASLI manuals, heat stress guidelines, occupational disease references, Factory Act documents, AFIH notes, or any OSH-related material. Then create a Python virtual environment and install the required libraries including Streamlit, LangChain, ChromaDB, PyPDF, sentence-transformers, OpenAI, and tiktoken. After that, create an OpenAI account through <a href="https://platform.openai.com/?utm_source=chatgpt.com" target="_blank">OpenAI Platform</a>, add billing, and generate an API key that will allow your application to access GPT models and embedding services. Your app will use this API key to communicate with the LLM.</p>
+
+            <p>The next stage is document ingestion and vector database creation. Create a Python script that reads all PDFs from the “data” folder using PyPDFLoader from LangChain. The script should extract the text from each page and split it into smaller chunks using a RecursiveCharacterTextSplitter, typically with chunk sizes around 500 characters and some overlap between chunks to preserve context. Then use an embedding model such as “sentence-transformers/all-MiniLM-L6-v2” or OpenAI embeddings to convert these chunks into vectors. Store the vectors inside a vector database such as ChromaDB or Qdrant. This database becomes the searchable knowledge base of your AI assistant. When users later ask questions, the application performs similarity search on this vector database to retrieve the most relevant text passages from your documents.</p>
+
+            <p>Once the database is prepared, build the web application layer. The easiest beginner-friendly frontend is <a href="https://streamlit.io/?utm_source=chatgpt.com" target="_blank">Streamlit</a> because it allows you to create a functional chatbot interface with minimal coding. Create a main application file where the Streamlit UI displays a title, a text input box for user questions, and a button to submit queries. When the user asks a question, your app should query the vector database using similarity search to retrieve the top matching chunks from the PDFs. These retrieved passages are combined into a context prompt that is sent to the OpenAI GPT model through the API. The prompt should instruct the model to answer only from the provided OSH context and avoid hallucinating information outside the documents. The model’s response is then displayed back to the user in the Streamlit interface. You should also display metadata such as PDF name and page number so users can verify the source of the answer, which is particularly important in occupational health and regulatory applications.</p>
+
+            <p>After confirming that the system works locally, the next step is deployment so that anyone can use the assistant online. Create a GitHub repository using <a href="https://github.com/?utm_source=chatgpt.com" target="_blank">GitHub</a> and upload your entire project including the application code, requirements.txt file, and database generation scripts. Then use a cloud hosting platform such as <a href="https://render.com/?utm_source=chatgpt.com" target="_blank">Render</a>, <a href="https://railway.app/?utm_source=chatgpt.com" target="_blank">Railway</a>, or <a href="https://huggingface.co/spaces?utm_source=chatgpt.com" target="_blank">Hugging Face Spaces</a> to deploy the application. Connect the hosting platform to your GitHub repository, specify the build command to install dependencies from requirements.txt, and configure the start command to run the Streamlit app. Add your OpenAI API key as an environment variable rather than hardcoding it into the application for security. Once deployed, the platform will generate a public URL where users can access your OSH AI assistant from any browser.</p>
+
+            <p>As your system matures, you can gradually add advanced features such as user authentication, multilingual support for Hindi and Bengali, conversational memory, PDF upload functionality for administrators, voice interaction, citation highlighting, analytics dashboards, and integration with your existing occupational health projects such as smart helmets, heat stress monitoring, and digital twin systems. You can also integrate specialized knowledge from DGFASLI, ILO, OSHA, Factory Act regulations, pneumoconiosis manuals, and AFIH training materials to create a highly specialized OSH knowledge platform. Initially, however, your primary goal should be to build a stable and accurate RAG-based application rather than attempting fine-tuning or custom model training. This architecture is already used by many professional AI document assistants because it is scalable, maintainable, and highly effective for domain-specific question answering.</p>
+        </section>
+
+    </div>
+
+    <script>
+        // Intersect observer for fade up
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -40px 0px' };
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    fadeObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            fadeObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
