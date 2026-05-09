@@ -605,10 +605,10 @@ Current Match Confidence: ${Math.round(topMatchScore * 100)}%${confidenceTag}`;
 
                     removeLoadingIndicator(loadingId);
                     
-                    // Format response with sources for transparency
+                    // Format response with sources for transparency - Only show if confidence is meaningful (>35%)
                     let finalAnswer = answerText;
-                    if (scoredChunks.length > 0) {
-                        const topScore = Math.round(scoredChunks[0].score * 100);
+                    if (scoredChunks.length > 0 && topMatchScore > 0.35) {
+                        const topScore = Math.round(topMatchScore * 100);
                         const statusClass = topScore > 60 ? 'high' : (topScore > 40 ? 'med' : 'low');
                         const topSources = scoredChunks.slice(0, 3).map(c => `<li>${c.source || 'Provision'} (Match: ${Math.round(c.score * 100)}%)</li>`).join("");
                         
