@@ -409,10 +409,7 @@
     </div>
 
     <!-- Master Application Script -->
-    <script type="module">
-        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
-        env.allowLocalModels = false;
-
+    <script>
         // --- GLOBAL STATE ---
         const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
         const trialKey = atob(obfuscatedKey);
@@ -423,7 +420,7 @@
         let chatContext = [];
         let embedder = null;
 
-        // --- UI REFERENCES ---
+        // UI REFERENCES
         const chatHistory = document.getElementById('chat-history');
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
@@ -439,29 +436,12 @@
         const keyLink = document.getElementById('key-link');
         const trialContactSection = document.getElementById('trial-contact-section');
 
-        // --- INITIALIZATION (BOOT) ---
-        function bootSafeWork() {
-            // Force modal status based on key presence
-            if (API_KEY || PROVIDER === 'ollama') {
-                apiModal.classList.add('hidden');
-                apiModal.style.display = 'none';
-            } else {
-                apiModal.classList.remove('hidden');
-                apiModal.style.display = 'flex';
-                initOverlay.classList.add('hidden');
-            }
-
-            // Sync UI inputs
-            aiProvider.value = PROVIDER;
-            aiProvider.dispatchEvent(new Event('change'));
-            apiKeyInput.value = (API_KEY === trialKey) ? "thankyou" : API_KEY;
-
-            // Start AI Engine
-            initAI();
-        }
-
+        // --- INITIALIZATION ---
         async function initAI() {
             try {
+                const { pipeline, env } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
+                env.allowLocalModels = false;
+                
                 initStatus.textContent = "Loading Semantic Search Engine (~22MB)...";
                 embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
                 console.log("Embedding model loaded.");
@@ -474,24 +454,22 @@
 
         async function loadKnowledge() {
             try {
-                // Check window scope for the variable loaded by knowledge.js
-                if (window.KNOWLEDGE_BASE_EMBEDDINGS && window.KNOWLEDGE_BASE_EMBEDDINGS.length > 0) {
-                    knowledgeContext = window.KNOWLEDGE_BASE_EMBEDDINGS;
-                    console.log("Knowledge Base Locked & Loaded. Chunks:", knowledgeContext.length);
+                // Look for KNOWLEDGE_BASE_EMBEDDINGS which is defined in knowledge.js
+                if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' && KNOWLEDGE_BASE_EMBEDDINGS.length > 0) {
+                    knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
+                    console.log("Data Loaded.");
                     
                     if (API_KEY || PROVIDER === 'ollama') {
                         initOverlay.classList.add('hidden');
                         chatInput.disabled = false;
                         sendBtn.disabled = false;
                         chatInput.focus();
-                        console.log("Chat Ready.");
                     }
                 } else {
-                    // Try again very quickly
                     setTimeout(loadKnowledge, 500);
                 }
             } catch (err) {
-                console.error("Critical Knowledge Loading Error:", err);
+                console.error("Knowledge Loading Error:", err);
             }
         }
 
