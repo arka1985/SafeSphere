@@ -409,19 +409,45 @@
                         response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
                             method: "POST",
                             headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-                            body: JSON.stringify({ model: "llama3-8b-8192", messages: [{ role: "system", content: systemText }, ...currentHistory] })
+                            body: JSON.stringify({
+                                model: "llama3-8b-8192",
+                                messages: [{ role: "system", content: systemText }, ...currentHistory],
+                                temperature: 0.1
+                            })
                         });
                         const data = await response.json();
+                        if (!response.ok) throw new Error(data.error?.message || "Groq Service Error");
+                        if (!data.choices || !data.choices[0]) throw new Error("Invalid response format from Groq.");
                         answerText = data.choices[0].message.content;
+
                     } else if (PROVIDER === 'gemini') {
                         const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
                         response = await fetch(url, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: systemText + "\n\nQuestion: " + text }] }] })
+                            body: JSON.stringify({
+                                "system_instruction": { "parts": [{ "text": systemText }] },
+                                "contents": chatContext.length > 0 ? chatContext : [{ role: "user", parts: [{ text: text }] }]
+                            })
                         });
                         const data = await response.json();
+                        if (!response.ok) throw new Error(data.error?.message || "Gemini Service Error");
+                        if (!data.candidates || !data.candidates[0]) throw new Error("Invalid response format from Gemini.");
                         answerText = data.candidates[0].content.parts[0].text;
+
+                    } else if (PROVIDER === 'ollama') {
+                        response = await fetch(`http://localhost:11434/api/chat`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                model: "llama3",
+                                messages: [{ role: "system", content: systemText }, ...currentHistory],
+                                stream: false
+                            })
+                        });
+                        const data = await response.json();
+                        if (!response.ok) throw new Error("Ollama connection failed.");
+                        answerText = data.message.content;
                     }
 
                     removeLoadingIndicator(loadingId);
