@@ -253,28 +253,46 @@
             </div>
 
             <!-- API Key Configuration Modal -->
-            <div id="api-modal" class="hidden" style="position: absolute; inset: 0; background: rgba(10, 15, 26, 0.9); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2rem; border-radius: inherit; backdrop-filter: blur(10px);">
-                    <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">AI Agent Settings</h3>
+            <div id="api-modal" class="hidden" style="position: absolute; inset: 0; background: rgba(10, 15, 26, 0.95); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 1.5rem; border-radius: inherit; backdrop-filter: blur(15px);">
+                <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 24px; text-align: left; max-width: 450px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.6rem; text-align: center; color: #fff;">AI Engine Setup</h3>
                     
-                    <div style="text-align: left; margin-bottom: 1rem;">
-                        <label style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Choose AI Provider:</label>
-                        <select id="ai-provider" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; cursor: pointer;">
-                            <option value="groq">Groq Cloud (Default - Recommended)</option>
-                            <option value="gemini">Google Gemini 1.5 Flash</option>
-                            <option value="ollama">Ollama (Local - No Key Required)</option>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 0.6rem; font-weight: 500;">Select AI Intelligence Provider:</label>
+                        <select id="ai-provider" style="width: 100%; padding: 0.9rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.8); color: white; cursor: pointer; font-family: inherit; font-size: 0.95rem; outline: none; transition: 0.3s;">
+                            <option value="groq">Groq Cloud (Fastest - Free)</option>
+                            <option value="gemini">Google Gemini 1.5 Flash (Free)</option>
+                            <option value="ollama">Ollama (Local - Private & Offline)</option>
                         </select>
                     </div>
 
+                    <!-- Key Config -->
                     <div id="api-key-container">
-                        <input type="password" id="api-key-input" placeholder="Paste API Key here..." style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; margin-bottom: 0.5rem; font-family: inherit;">
-                        <p id="key-hint" style="font-size: 0.75rem; margin-bottom: 1rem;"><a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">Get a free API key here →</a></p>
+                        <label style="font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 0.6rem; font-weight: 500;">Enter API Key:</label>
+                        <input type="password" id="api-key-input" placeholder="Paste your key here..." style="width: 100%; padding: 0.9rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(15, 23, 42, 0.8); color: white; margin-bottom: 0.8rem; font-family: inherit; font-size: 0.95rem;">
+                        <div id="key-hint-box" style="background: rgba(34, 211, 238, 0.1); padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(34, 211, 238, 0.2);">
+                            <p style="font-size: 0.8rem; color: #67e8f9; margin: 0;">
+                                <span><a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: inherit; text-decoration: underline; font-weight: 600;">Get your free key here →</a></span>
+                            </p>
+                        </div>
                     </div>
 
-                    <div id="ollama-container" class="hidden" style="text-align: left; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-dim);">
-                        <p>Requires Ollama running locally at <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">localhost:11434</code>. Recommended model: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">llama3</code></p>
+                    <!-- Ollama Config -->
+                    <div id="ollama-container" class="hidden">
+                        <div style="background: rgba(148, 163, 184, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.2); font-size: 0.85rem; color: #cbd5e1; line-height: 1.5;">
+                            <p style="font-weight: 600; color: white; margin-bottom: 0.5rem;">How to run Ollama locally:</p>
+                            <ol style="padding-left: 1.2rem; margin: 0;">
+                                <li>Download & Install from <a href="https://ollama.com" target="_blank" style="color: var(--accent-cyan);">ollama.com</a></li>
+                                <li>Run <code style="color: white; background: #000; padding: 2px 4px; border-radius: 4px;">ollama run llama3</code> in your terminal</li>
+                                <li>Set environment variable: <code style="color: white; background: #000; padding: 2px 4px; border-radius: 4px;">OLLAMA_ORIGINS="*"</code> to allow browser access</li>
+                                <li>Ensure Ollama is running at <code style="color: white;">localhost:11434</code></li>
+                            </ol>
+                        </div>
                     </div>
 
-                    <button id="save-key-btn" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: none; background: var(--primary-green); color: white; font-weight: 600; cursor: pointer; transition: 0.3s;">Save Settings</button>
+                    <button id="save-key-btn" style="width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #10b981; color: white; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 1.5rem;">Initialize AI Engine</button>
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.75rem; color: #64748b;">Keys are stored locally in your browser.</p>
+                </div>
             </div>
 
             <div class="chat-history" id="chat-history">
@@ -555,15 +573,25 @@
                 console.error('Error:', error);
                 if (loadingMsg.parentNode) chatHistory.removeChild(loadingMsg);
                 
-                let errorHtml = `<span style="color: #fca5a5;">Error: ${error.message}</span>`;
-                if (error.message.includes('key') || error.message.includes('API') || error.message.includes('unauthorized')) {
-                    errorHtml += `<div style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--text-dim);">
-                        To fix this, please click <strong>"Update API Key"</strong> at the top. 
-                        Getting a free key is easy: 
-                        1. Visit <a href="https://console.groq.com/keys" target="_blank" style="color: var(--accent-cyan);">Groq Console</a> or <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--accent-cyan);">Google AI Studio</a>. 
-                        2. Create a free key. 
-                        3. Paste it into the setup window.
-                    </div>`;
+                let errorHtml = `
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1rem; border-radius: 12px; color: #fca5a5;">
+                        <p style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                            AI Service Error
+                        </p>
+                        <p style="font-size: 0.85rem; margin-bottom: 1rem;">${error.message}</p>
+                        <div style="font-size: 0.8rem; border-top: 1px solid rgba(239, 68, 68, 0.2); pt: 0.8rem; margin-top: 0.8rem;">
+                            <p style="margin-bottom: 0.5rem;"><strong>How to fix this:</strong></p>
+                            <ul style="padding-left: 1.2rem; margin: 0;">
+                                <li>Click <strong>"Update API Key"</strong> in the top header.</li>
+                                <li>Ensure you have a valid key from <a href="https://console.groq.com/keys" target="_blank" style="color: #67e8f9;">Groq</a> or <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #67e8f9;">Gemini</a>.</li>
+                                <li>If using Ollama, ensure the service is running locally.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                
+                if (error.message.includes('key') || error.message.includes('API') || error.message.includes('unauthorized') || error.message.includes('Ollama')) {
                     apiModal.classList.remove('hidden');
                     apiModal.style.display = 'flex';
                 }
