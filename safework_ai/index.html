@@ -396,8 +396,15 @@
                                 <div id="os-win" class="os-guide">
                                     <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem;">
                                         <li>Install <a href="https://ollama.com" target="_blank" style="color: #10b981;">ollama.com</a></li>
-                                        <li>Run <code>ollama run llama3</code></li>
-                                        <li>Set <code>$env:OLLAMA_ORIGINS="*"</code> in PS, then restart.</li>
+                                        <li><b>Close Ollama</b> completely from the System Tray.</li>
+                                        <li>Set OLLAMA_ORIGINS (CORS fix):
+                                            <div style="margin-top: 0.2rem; font-size: 0.65rem; color: #94a3b8;">
+                                                • CMD: <code>set OLLAMA_ORIGINS=*</code><br>
+                                                • PS: <code>$env:OLLAMA_ORIGINS="*"</code>
+                                            </div>
+                                        </li>
+                                        <li>Restart and run: <code>ollama run llama3</code></li>
+                                        <li>Verify: <a href="http://localhost:11434" target="_blank" style="color: #10b981;">Check http://localhost:11434</a></li>
                                     </ol>
                                 </div>
                                 <div id="os-mac" class="os-guide hidden">
