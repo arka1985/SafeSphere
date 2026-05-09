@@ -472,19 +472,24 @@
 
         async function loadKnowledge() {
             try {
-                if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
-                    knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
+                // Check window scope for the variable loaded by knowledge.js
+                if (window.KNOWLEDGE_BASE_EMBEDDINGS && window.KNOWLEDGE_BASE_EMBEDDINGS.length > 0) {
+                    knowledgeContext = window.KNOWLEDGE_BASE_EMBEDDINGS;
+                    console.log("Knowledge Base Locked & Loaded. Chunks:", knowledgeContext.length);
+                    
                     if (API_KEY || PROVIDER === 'ollama') {
                         initOverlay.classList.add('hidden');
                         chatInput.disabled = false;
                         sendBtn.disabled = false;
                         chatInput.focus();
+                        console.log("Chat Ready.");
                     }
                 } else {
-                    setTimeout(loadKnowledge, 1000);
+                    // Try again very quickly
+                    setTimeout(loadKnowledge, 500);
                 }
             } catch (err) {
-                console.error("Knowledge Loading Error:", err);
+                console.error("Critical Knowledge Loading Error:", err);
             }
         }
 
