@@ -393,7 +393,7 @@
                             </div>
                         </div>
 
-                        <div style="margin-top: 0.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(16, 185, 129, 0.2); border-radius: 16px; text-align: center;">
+                        <div id="trial-key-help" style="margin-top: 0.5rem; padding: 1rem; background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(16, 185, 129, 0.2); border-radius: 16px; text-align: center;">
                             <p style="font-size: 0.8rem; color: #94a3b8; margin: 0 0 0.4rem 0;">Unable to generate an API key?</p>
                             <a href="https://wa.me/918981568707" target="_blank" style="color: #10b981; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.75 14.03c-.25.13-1.47.73-1.69.81-.23.08-.39.12-.56-.12-.17-.25-.64-.81-.78-.97-.14-.17-.29-.19-.53-.06-.25.13-1.04.38-1.98 1.22-.73.65-1.22 1.46-1.37 1.71-.14.25-.02.39.11.51.11.11.25.29.37.43.12.14.17.25.25.41.08.17.04.31-.02.43-.06.12-.56 1.34-.76 1.84-.2.48-.4.41-.56.4-.15 0-.32-.01-.5-.01-.17 0-.46.06-.7.33-.24.25-.92.9-.92 2.2 0 1.3.94 2.56 1.08 2.73.14.17 1.86 2.84 4.51 3.98.63.27 1.12.43 1.51.55.63.2 1.21.17 1.67.11.51-.06 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.25-.17-.5-.3z"/></svg>
@@ -505,6 +505,7 @@
                 document.getElementById('guide-groq').classList.toggle('hidden', val !== 'groq');
                 document.getElementById('guide-gemini').classList.toggle('hidden', val !== 'gemini');
                 document.getElementById('guide-ollama').classList.toggle('hidden', val !== 'ollama');
+                document.getElementById('trial-key-help').classList.toggle('hidden', val !== 'gemini');
             };
 
             // Trigger initial state
