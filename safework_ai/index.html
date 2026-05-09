@@ -1,13 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+    <script>
+        // --- GLOBAL CONFIGURATION BOOT ---
+        const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
+        const trialKey = atob(obfuscatedKey);
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeWork AI — SafeSphere</title>
-    <link rel="stylesheet" href="../main.css">
-    <link rel="stylesheet" href="../bhashini.css">
-    <style>
+        let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || "";
+        let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || "groq";
+
+        // Global state for chat
+        let chatContext = [];
+        let knowledgeContext = [];
+        let embedder = null;
+
+        // UI References
+        const chatHistory = document.getElementById('chat-history');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const initOverlay = document.getElementById('init-overlay');
+        const initStatus = document.getElementById('init-status');
+        const apiModal = document.getElementById('api-modal');
+        const aiProvider = document.getElementById('ai-provider');
+        const apiKeyInput = document.getElementById('api-key-input');
+        const saveKeyBtn = document.getElementById('save-key-btn');
+        const resetKeyBtn = document.getElementById('reset-key-btn');
+        const apiKeyContainer = document.getElementById('api-key-container');
+        const ollamaContainer = document.getElementById('ollama-container');
+        const trialContactSection = document.getElementById('trial-contact-section');
+
+        // --- BOOT PROCESS ---
+        function bootSafeWork() {
+            // Check if we should show the modal
+            if (!API_KEY && PROVIDER !== 'ollama') {
+                apiModal.style.display = 'flex';
+                apiModal.classList.remove('hidden');
+                initOverlay.classList.add('hidden');
+            } else {
+                apiModal.style.display = 'none';
+                apiModal.classList.add('hidden');
+            }
+
+            // Sync UI values
+            aiProvider.value = PROVIDER;
+            aiProvider.dispatchEvent(new Event('change'));
+            apiKeyInput.value = (API_KEY === trialKey) ? "thankyou" : API_KEY;
+            
+            // Start Knowledge Base
+            loadKnowledge();
+        }
+
+        window.addEventListener('load', bootSafeWork);
+    </script>
+</head>
         .chat-header {
             text-align: left;
             margin-bottom: 2rem;
@@ -504,27 +546,6 @@
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
-            const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
-            const trialKey = atob(obfuscatedKey);
-
-            // SYNC UI VALUES
-            aiProvider.value = PROVIDER;
-            aiProvider.dispatchEvent(new Event('change'));
-            apiKeyInput.value = (API_KEY === trialKey) ? "thankyou" : API_KEY;
-
-            // --- IRON-CLAD CONFIG LOCK ---
-            // The modal should ONLY show if there is absolutely NO key and NO Ollama
-            if (API_KEY || PROVIDER === 'ollama') {
-                apiModal.classList.add('hidden');
-                apiModal.style.display = 'none';
-                console.log("Config Lock: Key detected, keeping setup hidden.");
-            } else {
-                apiModal.classList.remove('hidden');
-                apiModal.style.display = 'flex';
-                initOverlay.classList.add('hidden');
-                console.log("Config Lock: No key found, showing setup.");
-            }
-
             try {
                 if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
                     knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
