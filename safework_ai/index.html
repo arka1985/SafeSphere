@@ -501,7 +501,7 @@
                 }));
 
                 scoredChunks.sort((a, b) => b.score - a.score);
-                const topChunks = scoredChunks.slice(0, 15); // Deep Scan: Increased to 15 snippets
+                const topChunks = scoredChunks.slice(0, 30); // Overdrive Mode: Increased to 30 snippets
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
                 const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide EXHAUSTIVE, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nCRITICAL RULES:\n1. If a user asks for a LIST (e.g., Notifiable Diseases, Duties, or Penalties), you MUST provide the FULL list found in the snippets. Do not summarize or truncate.\n2. If a list is numbered (e.g. 1 to 29), ensure you list EVERY single item found. Do not stop at item 6 or 10.\n3. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n4. Use markdown formatting (bold, lists, tables) to make the answer professional and readable.\n\nRELEVANT SNIPPETS:\n" + searchContext;
