@@ -387,7 +387,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
+            let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'gemini';
             let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
             let knowledgeContext = [];
             let chatContext = [];
@@ -475,16 +475,21 @@
                         score: Array.from(queryVector.data).reduce((sum, val, i) => sum + val * chunk.embedding[i], 0)
                     })).sort((a, b) => b.score - a.score);
 
-                    const searchContext = scoredChunks.slice(0, 8).map(c => `[SOURCE: ${c.source || 'Statutory Code'}]\n${c.text}`).join("\n\n---\n\n");
-                    const systemText = `You are SafeWork AI, an Indian OSH Expert.
-STRICT RULES:
-1. Answer ONLY using the provided STATUTORY CONTEXT. 
-2. PROVIDE FULL LISTS. Do not truncate, summarize, or say "etc."
-3. Cite Section/Rule numbers if present.
-4. If not found, say: "Provision not found in OSHWC 2020."
+                    // Structured Context
+                    const searchContext = scoredChunks.slice(0, 10).map(c => `<PROVISION source="${c.source}">\n${c.text}\n</PROVISION>`).join("\n");
+                    
+                    const systemText = `You are SafeWork AI, a Senior Indian OSH Compliance Expert. 
+Your task is to answer legal queries based ONLY on the provided Statutory Data.
 
-STATUTORY CONTEXT:
-${searchContext}`;
+STRICT OPERATING PROCEDURES:
+1. Use ONLY the data within <STATUTORY_DATA> tags.
+2. CITATION: Always mention the Section/Rule/Schedule found in the provision.
+3. NO HALLUCINATION: If the data does not contain the specific answer, say: "I apologize, but my current legal repository does not contain a specific provision for this query."
+4. NO GENERAL ADVICE: Do not give general safety tips. Give strictly legal answers.
+
+<STATUTORY_DATA>
+${searchContext}
+</STATUTORY_DATA>`;
 
                     let response;
                     let answerText = "";
@@ -517,7 +522,8 @@ ${searchContext}`;
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 "system_instruction": { "parts": [{ "text": systemText }] },
-                                "contents": chatContext.length > 0 ? chatContext : [{ role: "user", parts: [{ text: text }] }]
+                                "contents": chatContext.length > 0 ? chatContext : [{ role: "user", parts: [{ text: text }] }],
+                                "generationConfig": { "temperature": 0, "maxOutputTokens": 4000 }
                             })
                         });
                         const data = await response.json();
