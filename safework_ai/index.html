@@ -327,31 +327,47 @@
 
             async function initAI() {
                 try {
-                    if (API_KEY || PROVIDER === 'ollama') {
-                        apiModal.classList.add('hidden');
-                    } else {
+                    // Show modal if no key
+                    if (!API_KEY && PROVIDER !== 'ollama') {
                         apiModal.classList.remove('hidden');
+                        apiModal.style.display = 'flex';
                     }
 
+                    console.log("Loading AI Engine...");
                     const transformers = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
                     embedder = await transformers.pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-                    loadKnowledge();
+                    console.log("AI Engine Ready.");
+                    
+                    checkReady();
                 } catch (err) {
-                    console.error(err);
+                    console.error("AI Init Error:", err);
                 }
             }
 
             function loadKnowledge() {
-                const data = window.KNOWLEDGE_BASE_EMBEDDINGS;
+                console.log("Checking for Statutory Data...");
+                const data = window.KNOWLEDGE_BASE_EMBEDDINGS || (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' ? KNOWLEDGE_BASE_EMBEDDINGS : null);
+                
                 if (data && data.length > 0) {
                     knowledgeContext = data;
+                    console.log("Statutory Data Active.");
+                    checkReady();
+                } else {
+                    setTimeout(loadKnowledge, 1000);
+                }
+            }
+
+            function checkReady() {
+                // If both Engine AND Data are ready, unlock the UI
+                if (embedder && knowledgeContext.length > 0) {
                     initOverlay.classList.add('hidden');
+                    initOverlay.style.display = 'none';
+                    
                     if (API_KEY || PROVIDER === 'ollama') {
                         chatInput.disabled = false;
                         sendBtn.disabled = false;
+                        chatInput.focus();
                     }
-                } else {
-                    setTimeout(loadKnowledge, 500);
                 }
             }
 
@@ -446,7 +462,10 @@
 
             sendBtn.onclick = handleSend;
             chatInput.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
+            
+            // Ignition - Run both in parallel
             initAI();
+            loadKnowledge();
         });
     </script>
 </body>
