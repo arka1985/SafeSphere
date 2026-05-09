@@ -277,8 +277,8 @@
             </div>
 
             <!-- API Key Configuration Modal -->
-            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); width: 100vw; height: 100vh; overflow: hidden;">
-                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; text-align: left; max-width: 480px; width: 90%; max-height: 85vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 1rem; scrollbar-width: thin; scrollbar-color: #475569 #1e293b;">
+            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); width: 100vw; height: 100vh;">
+                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); padding: 2.5rem; border-radius: 24px; text-align: left; max-width: 480px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; gap: 1rem; scrollbar-width: thin; scrollbar-color: #475569 #1e293b;">
                     <h3 style="margin: 0 0 0.5rem 0; font-size: 1.75rem; text-align: center; color: #fff; font-weight: 700;">AI Engine Setup</h3>
                     
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;">
@@ -381,6 +381,12 @@
                         <p style="margin: 1.2rem 0 0 0; font-size: 0.75rem; color: #10b981; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem;">
                             Verify status at <a href="http://localhost:11434" target="_blank" style="color: #fff; text-decoration: underline;">localhost:11434</a>
                         </p>
+
+                        <!-- Troubleshooting -->
+                        <div style="margin-top: 1rem; padding: 0.8rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 10px; font-size: 0.7rem;">
+                            <strong style="color: #fca5a5;">⚠️ Getting "Bind Error" or "Only one use of each socket address"?</strong>
+                            <p style="margin: 0.3rem 0 0 0; color: #fecaca;">This means Ollama is already running. You <strong>MUST</strong> right-click the Ollama icon in your System Tray (by the clock) and select <strong>Quit</strong> before running the commands above.</p>
+                        </div>
                     </div>
 
                     <button id="save-key-btn" style="width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #10b981; color: white; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 0.5rem; font-size: 1rem;">Save & Initialize</button>
