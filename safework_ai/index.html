@@ -389,6 +389,11 @@
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
+            // SYNC UI with the current provider state
+            aiProvider.value = PROVIDER;
+            aiProvider.dispatchEvent(new Event('change'));
+            apiKeyInput.value = API_KEY;
+
             // Check for Config FIRST
             if (!API_KEY && PROVIDER !== 'ollama') {
                 apiModal.classList.remove('hidden');
