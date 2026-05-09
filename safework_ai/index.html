@@ -538,25 +538,38 @@
             }
         }
 
+        // Save Configuration
         saveKeyBtn.addEventListener('click', () => {
-            const key = apiKeyInput.value.trim();
             const provider = aiProvider.value;
-            
-            if (provider === 'ollama' || key) {
-                localStorage.setItem('SAFEWORK_AI_KEY', key);
-                localStorage.setItem('SAFEWORK_AI_PROVIDER', provider);
-                API_KEY = key;
-                PROVIDER = provider;
-                apiModal.classList.add('hidden');
-                apiModal.style.display = 'none';
-                if (knowledgeContext.length > 0 && embedder) {
-                    initOverlay.classList.add('hidden');
-                    chatInput.disabled = false;
-                    sendBtn.disabled = false;
-                    chatInput.focus();
-                } else {
-                    initOverlay.classList.remove('hidden');
-                }
+            let key = apiKeyInput.value.trim();
+
+            // --- SECRET PASSCODE LOGIC ---
+            const secretPass = "thankyou";
+            const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU="; 
+
+            if (key.toLowerCase() === secretPass.toLowerCase()) {
+                key = atob(obfuscatedKey);
+                alert("Trial Access Unlocked! SafeWork AI is now ready.");
+            }
+
+            if (provider !== 'ollama' && !key) {
+                alert("Please enter a valid API Key or Passcode.");
+                return;
+            }
+
+            localStorage.setItem('SAFEWORK_AI_KEY', key);
+            localStorage.setItem('SAFEWORK_AI_PROVIDER', provider);
+            API_KEY = key;
+            PROVIDER = provider;
+
+            apiModal.classList.add('hidden');
+            apiModal.style.display = 'none';
+
+            if (knowledgeContext.length > 0) {
+                initOverlay.classList.add('hidden');
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                chatInput.focus();
             }
         });
 
