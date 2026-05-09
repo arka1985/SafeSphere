@@ -284,25 +284,36 @@
                         
                         <div style="display: flex; flex-direction: column; gap: 1.2rem;">
                             <section>
-                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">1. Install & Download Model</strong>
-                                <p style="margin: 0;">Download Ollama from <a href="https://ollama.com" target="_blank" style="color: #67e8f9; text-decoration: underline;">ollama.com</a>. Once installed, open your terminal and run:</p>
-                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem; border: 1px solid rgba(255,255,255,0.1);">ollama run llama3</code>
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">1. Install Ollama</strong>
+                                <div style="font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 8px;">
+                                    <strong>Windows:</strong> Download <a href="https://ollama.com/download/OllamaSetup.exe" style="color: #67e8f9;">OllamaSetup.exe</a> and run it.<br>
+                                    <strong>macOS:</strong> Download <a href="https://ollama.com/download/Ollama-darwin.zip" style="color: #67e8f9;">Ollama.zip</a>, unzip, and move to Applications.<br>
+                                    <strong>Linux:</strong> Run <code style="color: #fbbf24;">curl -fsSL https://ollama.com/install.sh | sh</code>
+                                </div>
                             </section>
 
                             <section>
-                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">2. Fix Browser Access (CORS)</strong>
-                                <p style="margin: 0 0 0.5rem 0;">By default, browsers block websites from talking to local apps. You <strong>MUST</strong> enable access:</p>
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">2. Download & Run Model</strong>
+                                <p style="margin: 0;">Open your Terminal or CMD and run:</p>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">ollama run llama3</code>
+                            </section>
+
+                            <section>
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">3. Enable Browser Access (REQUIRED)</strong>
+                                <p style="margin: 0 0 0.5rem 0;">You <strong>MUST</strong> close Ollama completely (from the tray icon) before running these:</p>
                                 
                                 <div style="background: rgba(0,0,0,0.3); padding: 0.8rem; border-radius: 10px; border-left: 3px solid #67e8f9;">
                                     <div style="margin-bottom: 0.8rem;">
+                                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">WINDOWS (Command Prompt / CMD):</span>
+                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px; margin-top: 4px;">set OLLAMA_ORIGINS=* && ollama serve</code>
+                                    </div>
+                                    <div style="margin-bottom: 0.8rem;">
                                         <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">WINDOWS (PowerShell):</span>
-                                        <p style="margin: 4px 0; font-size: 0.8rem;">1. Quit Ollama from System Tray (near clock).<br>2. Run this command:</p>
-                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px;">$env:OLLAMA_ORIGINS="*"; ollama serve</code>
+                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px; margin-top: 4px;">$env:OLLAMA_ORIGINS="*"; ollama serve</code>
                                     </div>
                                     <div>
-                                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">MAC / LINUX:</span>
-                                        <p style="margin: 4px 0; font-size: 0.8rem;">1. Close Ollama app.<br>2. Run this command:</p>
-                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px;">OLLAMA_ORIGINS="*" ollama serve</code>
+                                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">MAC / LINUX (Terminal):</span>
+                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px; margin-top: 4px;">OLLAMA_ORIGINS="*" ollama serve</code>
                                     </div>
                                 </div>
                             </section>
