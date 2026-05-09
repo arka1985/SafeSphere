@@ -397,8 +397,14 @@
                             <p style="font-size: 0.8rem; color: #94a3b8; margin: 0 0 0.4rem 0;">Unable to generate an API key?</p>
                             <a href="https://wa.me/918981568707" target="_blank" style="color: #10b981; font-weight: 800; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.75 14.03c-.25.13-1.47.73-1.69.81-.23.08-.39.12-.56-.12-.17-.25-.64-.81-.78-.97-.14-.17-.29-.19-.53-.06-.25.13-1.04.38-1.98 1.22-.73.65-1.22 1.46-1.37 1.71-.14.25-.02.39.11.51.11.11.25.29.37.43.12.14.17.25.25.41.08.17.04.31-.02.43-.06.12-.56 1.34-.76 1.84-.2.48-.4.41-.56.4-.15 0-.32-.01-.5-.01-.17 0-.46.06-.7.33-.24.25-.92.9-.92 2.2 0 1.3.94 2.56 1.08 2.73.14.17 1.86 2.84 4.51 3.98.63.27 1.12.43 1.51.55.63.2 1.21.17 1.67.11.51-.06 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.07-.1-.25-.17-.5-.3z"/></svg>
-                                Get Trial Key via WhatsApp
+                                WhatsApp Developer
                             </a>
+                            <a href="#" id="show-qr-btn" style="color: #94a3b8; font-size: 0.75rem; text-decoration: underline; margin-top: 0.6rem; display: block;">Or click to scan QR Code</a>
+                            
+                            <div id="qr-container" class="hidden" style="margin-top: 1rem; padding: 1rem; background: white; border-radius: 12px; display: inline-block;">
+                                <img src="trial_qr.png" alt="Scan to WhatsApp" style="width: 150px; height: 150px; display: block;">
+                                <p style="color: #000; font-size: 0.7rem; margin: 0.5rem 0 0 0; font-weight: 700;">SCAN TO MESSAGE</p>
+                            </div>
                         </div>
 
                         <button id="save-key-btn"
@@ -503,6 +509,11 @@
 
             // Trigger initial state
             aiProvider.dispatchEvent(new Event('change'));
+
+            document.getElementById('show-qr-btn').onclick = (e) => {
+                e.preventDefault();
+                document.getElementById('qr-container').classList.toggle('hidden');
+            };
 
             saveKeyBtn.onclick = () => {
                 localStorage.setItem('SAFEWORK_AI_KEY', apiKeyInput.value.trim());
