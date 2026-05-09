@@ -558,7 +558,7 @@
 
             if (key.toLowerCase() === secretPass.toLowerCase()) {
                 key = atob(obfuscatedKey);
-                console.log("Passcode Accepted: Unlocking Trial Access");
+                console.log("Trial Passcode Accepted");
             }
 
             if (provider !== 'ollama' && !key) {
@@ -566,26 +566,18 @@
                 return;
             }
 
+            // FORCE SAVE TO MEMORY
             localStorage.setItem('SAFEWORK_AI_KEY', key);
             localStorage.setItem('SAFEWORK_AI_PROVIDER', provider);
-            API_KEY = key;
-            PROVIDER = provider;
-
-            // Immediately Hide Modal
-            apiModal.classList.add('hidden');
-            apiModal.style.display = 'none';
-
-            if (knowledgeContext.length > 0) {
-                initOverlay.classList.add('hidden');
-                chatInput.disabled = false;
-                sendBtn.disabled = false;
-                chatInput.focus();
-            }
             
-            // Force status update if needed
-            if (key) {
-                console.log("Configuration Saved Successfully");
-            }
+            // UI Feedback
+            saveKeyBtn.innerHTML = "Initializing Engine...";
+            saveKeyBtn.style.background = "#059669";
+            
+            // RELOAD TO APPLY
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         });
 
         function scrollToBottom() {
