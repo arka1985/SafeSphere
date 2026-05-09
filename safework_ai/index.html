@@ -221,33 +221,37 @@
     
     <div class="app-container">
         
-        <header class="chat-header">
-            <a href="../index.html" class="back-nav">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                Back to SafeSphere Hub
+        <header class="chat-header" style="text-align: left; margin-bottom: 2.5rem;">
+            <!-- Back Button -->
+            <a href="../index.html" class="back-nav" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.85rem; margin-bottom: 1.5rem; padding: 0.5rem 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: 0.3s;">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Return to SafeSphere
             </a>
             
-            <div style="margin-top: 1rem; display: flex; align-items: center; gap: 1rem; border-bottom: 2px solid rgba(255,255,255,0.05); padding-bottom: 1.2rem; margin-bottom: 1rem;">
-                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981, #06b6d4); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
-                    <svg viewBox="0 0 24 24" width="28" height="28" fill="white"><path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" /></svg>
+            <!-- Branded Title Section -->
+            <div style="display: flex; align-items: center; gap: 1.2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #06b6d4); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); flex-shrink: 0;">
+                    <svg viewBox="0 0 24 24" width="32" height="32" fill="white"><path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" /></svg>
                 </div>
                 <div style="flex: 1;">
-                    <h1 style="margin: 0; font-size: 2rem; font-weight: 900; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em;">SafeWork AI</h1>
-                    <p style="margin: 0; font-size: 0.8rem; color: #10b981; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;">Statutory Compliance Intelligence</p>
+                    <h1 style="margin: 0; font-size: 2.4rem; font-weight: 900; background: linear-gradient(to right, #ffffff, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.03em; line-height: 1;">SafeWork AI</h1>
+                    <p style="margin: 0.3rem 0 0 0; font-size: 0.85rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Statutory Compliance Intelligence</p>
                 </div>
-                <button id="reset-key-btn" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-dim); padding: 0.5rem 1rem; border-radius: 10px; font-size: 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; transition: 0.3s; align-self: center;">
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    Setup API
+                <button id="reset-key-btn" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; transition: 0.3s;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    ENGINE SETUP
                 </button>
             </div>
 
-            <p class="site-subtitle" style="margin-left:0; font-size: 0.95rem; color: #cbd5e1;">Ask the AI about the <strong>OSHWC Code 2020</strong> and <strong>OSH (Central) Rules</strong>. Answers are grounded in official Indian statutory documents.</p>
+            <!-- Description -->
+            <p style="margin: 1.2rem 0 0 0; font-size: 1rem; color: #94a3b8; line-height: 1.6; max-width: 800px;">
+                Intelligent assistant for the <strong>OSHWC Code 2020</strong> and <strong>OSH (Central) Rules</strong>. Ask questions, verify compliance, and explore legal provisions instantly.
+            </p>
             
-            <div style="margin-top: 0.8rem; padding: 0.7rem 1rem; background: rgba(239, 68, 68, 0.05); border-left: 3px solid #ef4444; border-radius: 6px; font-size: 0.75rem; color: #fca5a5; line-height: 1.5;">
-                <strong>Verification Required:</strong> Outputs may contain errors. Please verify critical compliance data using the original documents in the <strong>National Statutory Repository</strong>.
+            <!-- Verification Alert -->
+            <div style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-size: 0.8rem; color: #fca5a5; display: flex; align-items: center; gap: 0.8rem;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span><strong>Legal Notice:</strong> AI outputs may contain inaccuracies. Always cross-reference with the <strong>National Statutory Repository</strong> for official compliance audits.</span>
             </div>
         </header>
 
