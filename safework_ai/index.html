@@ -575,7 +575,7 @@
                 }));
 
                 scoredChunks.sort((a, b) => b.score - a.score);
-                const topChunks = scoredChunks.slice(0, 15); // Optimized: Reduced from 30 to 15 to stay under Groq TPM limits
+                const topChunks = scoredChunks.slice(0, PROVIDER === 'ollama' ? 5 : 15); // Heavily optimized for Ollama speed
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
                 const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Use the provided SNIPPETS to answer accurately. \n\nCRITICAL RULES:\n1. If a user asks for a LIST, provide the FULL list found in the snippets.\n2. Always cite the Source.\n\nRELEVANT SNIPPETS:\n" + searchContext;
@@ -599,7 +599,7 @@
                                 { role: "system", content: systemText },
                                 ...currentHistory
                             ],
-                            max_tokens: 2048, // Balanced limit to avoid TPM exhaustion
+                            max_tokens: 2048,
                             temperature: 0.1
                         })
                     });
@@ -625,8 +625,8 @@
                     answerText = data.candidates[0].content.parts[0].text;
 
                 } else if (PROVIDER === 'ollama') {
-                    // --- OLLAMA LOCAL ---
-                    console.log("Attempting to connect to local Ollama at http://localhost:11434...");
+                    // --- OLLAMA LOCAL (SPEED OPTIMIZED) ---
+                    console.log("Connecting to Ollama with Optimized Context (Top 5 Snippets)...");
                     const chatUrl = `http://localhost:11434/api/chat`;
                     const currentHistory = chatContext.map(m => ({
                         role: m.role === 'model' ? 'assistant' : m.role,
@@ -641,7 +641,14 @@
                             body: JSON.stringify({
                                 "model": "llama3",
                                 "messages": [{ role: "system", content: systemText }, ...currentHistory],
-                                "stream": false
+                                "stream": false,
+                                "options": {
+                                    "num_ctx": 4096,
+                                    "num_predict": 1024,
+                                    "temperature": 0.1,
+                                    "top_k": 20,
+                                    "top_p": 0.9
+                                }
                             })
                         });
                         
