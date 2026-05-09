@@ -504,43 +504,46 @@
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
-            // IMMEDIATE CONFIG CHECK
             const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
             const trialKey = atob(obfuscatedKey);
 
-            if (API_KEY || PROVIDER === 'ollama') {
-                apiModal.classList.add('hidden');
-                apiModal.style.display = 'none';
-            } else {
-                apiModal.classList.remove('hidden');
-                apiModal.style.display = 'flex';
-                initOverlay.classList.add('hidden');
-            }
-
-            // SYNC UI
+            // SYNC UI VALUES
             aiProvider.value = PROVIDER;
             aiProvider.dispatchEvent(new Event('change'));
             apiKeyInput.value = (API_KEY === trialKey) ? "thankyou" : API_KEY;
 
+            // --- IRON-CLAD CONFIG LOCK ---
+            // The modal should ONLY show if there is absolutely NO key and NO Ollama
+            if (API_KEY || PROVIDER === 'ollama') {
+                apiModal.classList.add('hidden');
+                apiModal.style.display = 'none';
+                console.log("Config Lock: Key detected, keeping setup hidden.");
+            } else {
+                apiModal.classList.remove('hidden');
+                apiModal.style.display = 'flex';
+                initOverlay.classList.add('hidden');
+                console.log("Config Lock: No key found, showing setup.");
+            }
+
             try {
                 if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
                     knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
+                    console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
                     
+                    // Only unlock chat UI if we have a key
                     if (API_KEY || PROVIDER === 'ollama') {
                         initOverlay.classList.add('hidden');
-                        apiModal.style.display = 'none';
                         chatInput.disabled = false;
                         sendBtn.disabled = false;
                         chatInput.focus();
                     }
-                    console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
                 } else {
-                    initStatus.textContent = "Waiting for Knowledge Base Index...";
-                    setTimeout(loadKnowledge, 2000);
+                    initStatus.textContent = "Loading National Statutory Repository...";
+                    setTimeout(loadKnowledge, 1000);
                 }
             } catch (err) {
-                console.error(err);
-                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading knowledge base.</span>`;
+                console.error("AI Init Error:", err);
+                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading AI engine.</span>`;
             }
         }
 
