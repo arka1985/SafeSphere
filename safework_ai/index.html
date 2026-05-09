@@ -322,8 +322,7 @@
                             <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">PROVIDER</label>
                             <select id="ai-provider"
                                 style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white;">
-                                <option value="nvidia">NVIDIA NIM (High Performance)</option>
-                                <option value="groq">Groq Cloud (Fastest)</option>
+                                <option value="groq">Groq Cloud (Fastest - Free Tier)</option>
                                 <option value="gemini">Google Gemini 1.5 Flash</option>
                                 <option value="ollama">Ollama (Local)</option>
                             </select>
@@ -361,7 +360,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
-            let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'nvidia';
+            let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
             let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
             let knowledgeContext = [];
             let chatContext = [];
@@ -470,20 +469,6 @@
                         const data = await response.json();
                         if (!response.ok) throw new Error(data.error?.message || "Groq Service Error");
                         if (!data.choices || !data.choices[0]) throw new Error("Invalid response format from Groq.");
-                        answerText = data.choices[0].message.content;
-
-                    } else if (PROVIDER === 'nvidia') {
-                        response = await fetch("https://integrate.api.nvidia.com/v1/chat/completions", {
-                            method: "POST",
-                            headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                                model: "meta/llama-3.1-8b-instruct",
-                                messages: [{ role: "system", content: systemText }, ...currentHistory],
-                                temperature: 0.1
-                            })
-                        });
-                        const data = await response.json();
-                        if (!response.ok) throw new Error(data.error?.message || "NVIDIA Service Error");
                         answerText = data.choices[0].message.content;
 
                     } else if (PROVIDER === 'gemini') {
