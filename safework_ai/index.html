@@ -437,11 +437,15 @@
                     "system_instruction": {
                         "parts": [
                             {
-                                "text": "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Use the following RELEVANT SNIPPETS from the Statutory Repository to answer the question. Be concise and use markdown formatting.\n\nSNIPPETS:\n" + searchContext
+                                "text": "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide comprehensive, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nGuidelines:\n1. Provide detailed explanations, not just short summaries.\n2. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n3. Use markdown formatting (bold, lists, tables) to make the answer highly readable.\n4. If the information is not in the snippets, clearly state that the repository does not contain that specific detail.\n\nRELEVANT SNIPPETS:\n" + searchContext
                             }
                         ]
                     },
-                    "contents": currentHistory
+                    "contents": currentHistory,
+                    "generationConfig": {
+                        "temperature": 0.4,
+                        "maxOutputTokens": 2048
+                    }
                 };
 
                 const chatResponse = await fetch(chatUrl, {
