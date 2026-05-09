@@ -325,6 +325,15 @@
                                         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                                     </a>
                                 </div>
+                                
+                                <!-- Trial QR Code Section -->
+                                <div id="trial-qr-section" style="margin-top: 0.5rem; background: rgba(16, 185, 129, 0.05); border: 1px dashed rgba(16, 185, 129, 0.3); border-radius: 14px; padding: 1rem; text-align: center;">
+                                    <span style="font-size: 0.75rem; color: #10b981; font-weight: 700; display: block; margin-bottom: 0.5rem;">🎁 TRIAL ACCESS (SCAN TO GET KEY)</span>
+                                    <div style="background: white; padding: 8px; border-radius: 10px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                                        <img src="assets/grok_trial_qr.png" id="trial-qr-img" alt="Trial Key QR Code" style="width: 120px; height: 120px; display: block;">
+                                    </div>
+                                    <p style="font-size: 0.7rem; color: #94a3b8; margin: 0.8rem 0 0 0; line-height: 1.4;">Scan this code with your phone to view the trial Groq Key. <br>Use this if you cannot generate your own key.</p>
+                                </div>
                             </div>
 
                             <!-- Ollama Setup Area -->
@@ -434,15 +443,19 @@
             } else {
                 apiKeyContainer.classList.remove('hidden');
                 ollamaContainer.classList.add('hidden');
+                const trialQrSection = document.getElementById('trial-qr-section');
                 if (aiProvider.value === 'groq') {
                     keyLink.href = "https://console.groq.com/keys";
                     keyLink.innerHTML = 'Get your free API key here <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
+                    trialQrSection.style.display = 'block';
                 } else if (aiProvider.value === 'gemini') {
                     keyLink.href = "https://aistudio.google.com/app/apikey";
                     keyLink.innerHTML = 'Get your free Gemini key here <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
+                    trialQrSection.style.display = 'none';
                 } else if (aiProvider.value === 'openrouter') {
                     keyLink.href = "https://openrouter.ai/keys";
                     keyLink.innerHTML = 'Get your OpenRouter key here <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>';
+                    trialQrSection.style.display = 'none';
                 }
             }
             apiKeyInput.placeholder = "";
