@@ -448,13 +448,23 @@
                         score: Array.from(queryVector.data).reduce((sum, val, i) => sum + val * chunk.embedding[i], 0)
                     })).sort((a, b) => b.score - a.score);
 
-                    const searchContext = scoredChunks.slice(0, 10).map(c => c.text).join("\n\n");
-                    const systemText = `You are SafeWork AI, an Indian OSH expert. Use the following context to answer compliance queries.\n\nCONTEXT:\n${searchContext}`;
+                    const searchContext = scoredChunks.slice(0, 8).map(c => `[SOURCE: ${c.source || 'Statutory Code'}]\n${c.text}`).join("\n\n---\n\n");
+                    const systemText = `You are SafeWork AI, an Indian OSH Expert.
+STRICT RULE: Answer ONLY using the provided STATUTORY CONTEXT. 
+1. Cite Section/Rule numbers if present.
+2. If the context doesn't have the answer, say: "I cannot find a specific provision for this in the OSHWC Code 2020."
+3. Do not hallucinate or use outside knowledge.
+
+STATUTORY CONTEXT:
+${searchContext}`;
 
                     let response;
                     let answerText = "";
-                    const currentHistory = chatContext.map(m => ({ role: m.role === 'model' ? 'assistant' : 'user', content: m.parts[0].text }));
-                    currentHistory.push({ role: "user", content: text });
+                    const recentHistory = chatContext.slice(-6).map(m => ({ 
+                        role: m.role === 'model' ? 'assistant' : 'user', 
+                        content: m.parts[0].text 
+                    }));
+                    recentHistory.push({ role: "user", content: text });
 
                     if (PROVIDER === 'groq') {
                         response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -462,8 +472,9 @@
                             headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
                             body: JSON.stringify({
                                 model: "llama-3.1-8b-instant",
-                                messages: [{ role: "system", content: systemText }, ...currentHistory],
-                                temperature: 0.1
+                                messages: [{ role: "system", content: systemText }, ...recentHistory],
+                                temperature: 0,
+                                max_tokens: 1024
                             })
                         });
                         const data = await response.json();
