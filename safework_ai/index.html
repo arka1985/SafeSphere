@@ -614,7 +614,16 @@
 
         async function handleSend() {
             const text = chatInput.value.trim();
-            if (!text || (!API_KEY && PROVIDER !== 'ollama') || !embedder) return;
+            // Refetch current key to avoid "Ghost" resets
+            const currentKey = localStorage.getItem('SAFEWORK_AI_KEY') || API_KEY;
+            
+            if (!text || (!currentKey && PROVIDER !== 'ollama') || !embedder) {
+                if (!currentKey && PROVIDER !== 'ollama') {
+                    apiModal.classList.remove('hidden');
+                    apiModal.style.display = 'flex';
+                }
+                return;
+            }
 
             chatInput.value = '';
             chatInput.disabled = true;
