@@ -554,8 +554,20 @@
             } catch (error) {
                 console.error('Error:', error);
                 if (loadingMsg.parentNode) chatHistory.removeChild(loadingMsg);
-                addBotMessage(`<span style="color: #fca5a5;">Error: ${error.message}.</span>`);
-                if (error.message.includes('API') || error.message.includes('key')) apiModal.classList.remove('hidden');
+                
+                let errorHtml = `<span style="color: #fca5a5;">Error: ${error.message}</span>`;
+                if (error.message.includes('key') || error.message.includes('API') || error.message.includes('unauthorized')) {
+                    errorHtml += `<div style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--text-dim);">
+                        To fix this, please click <strong>"Update API Key"</strong> at the top. 
+                        Getting a free key is easy: 
+                        1. Visit <a href="https://console.groq.com/keys" target="_blank" style="color: var(--accent-cyan);">Groq Console</a> or <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--accent-cyan);">Google AI Studio</a>. 
+                        2. Create a free key. 
+                        3. Paste it into the setup window.
+                    </div>`;
+                    apiModal.classList.remove('hidden');
+                    apiModal.style.display = 'flex';
+                }
+                addBotMessage(errorHtml);
             } finally {
                 chatInput.disabled = false;
                 sendBtn.disabled = false;
