@@ -507,7 +507,9 @@
             // SYNC UI with the current provider state
             aiProvider.value = PROVIDER;
             aiProvider.dispatchEvent(new Event('change'));
-            apiKeyInput.value = API_KEY;
+            
+            const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
+            apiKeyInput.value = (API_KEY === atob(obfuscatedKey)) ? "thankyou" : API_KEY;
 
             // Check for Config FIRST
             if (!API_KEY && PROVIDER !== 'ollama') {
