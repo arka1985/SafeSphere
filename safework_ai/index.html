@@ -251,13 +251,27 @@
 
             <!-- API Key Configuration Modal -->
             <div id="api-modal" class="hidden" style="position: absolute; inset: 0; background: rgba(10, 15, 26, 0.9); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2rem; border-radius: inherit; backdrop-filter: blur(10px);">
-                <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 20px; text-align: center; max-width: 400px; width: 100%;">
-                    <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">Groq AI Setup</h3>
-                    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.5rem;">Please enter your **Groq API Key**. Groq provides lightning-fast AI for free. Your key is saved <b>only</b> in your browser.</p>
-                    <input type="password" id="api-key-input" placeholder="Paste Groq API Key (gsk_...)" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; margin-bottom: 1rem; font-family: inherit;">
-                    <button id="save-key-btn" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: none; background: var(--primary-green); color: white; font-weight: 600; cursor: pointer; transition: 0.3s;">Save & Continue</button>
-                    <p style="margin-top: 1rem; font-size: 0.75rem;"><a href="https://console.groq.com/keys" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">Get a free Groq API key here →</a></p>
-                </div>
+                    <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">AI Agent Settings</h3>
+                    
+                    <div style="text-align: left; margin-bottom: 1rem;">
+                        <label style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 0.5rem;">Choose AI Provider:</label>
+                        <select id="ai-provider" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; cursor: pointer;">
+                            <option value="groq">Groq Cloud (Default - Recommended)</option>
+                            <option value="gemini">Google Gemini 1.5 Flash</option>
+                            <option value="ollama">Ollama (Local - No Key Required)</option>
+                        </select>
+                    </div>
+
+                    <div id="api-key-container">
+                        <input type="password" id="api-key-input" placeholder="Paste API Key here..." style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; margin-bottom: 0.5rem; font-family: inherit;">
+                        <p id="key-hint" style="font-size: 0.75rem; margin-bottom: 1rem;"><a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">Get a free API key here →</a></p>
+                    </div>
+
+                    <div id="ollama-container" class="hidden" style="text-align: left; margin-bottom: 1rem; font-size: 0.8rem; color: var(--text-dim);">
+                        <p>Requires Ollama running locally at <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">localhost:11434</code>. Recommended model: <code style="background: rgba(0,0,0,0.3); padding: 2px 4px;">llama3</code></p>
+                    </div>
+
+                    <button id="save-key-btn" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: none; background: var(--primary-green); color: white; font-weight: 600; cursor: pointer; transition: 0.3s;">Save Settings</button>
             </div>
 
             <div class="chat-history" id="chat-history">
@@ -296,18 +310,39 @@
         const apiKeyInput = document.getElementById('api-key-input');
         const saveKeyBtn = document.getElementById('save-key-btn');
         const resetKeyBtn = document.getElementById('reset-key-btn');
+        const aiProvider = document.getElementById('ai-provider');
+        const apiKeyContainer = document.getElementById('api-key-container');
+        const ollamaContainer = document.getElementById('ollama-container');
+        const keyLink = document.getElementById('key-link');
 
         // Configuration
+        let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
         let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
         let knowledgeContext = []; 
         let chatContext = []; 
         let embedder;
 
+        // Provider change handler
+        aiProvider.addEventListener('change', () => {
+            const val = aiProvider.value;
+            if (val === 'ollama') {
+                apiKeyContainer.classList.add('hidden');
+                ollamaContainer.classList.remove('hidden');
+            } else {
+                apiKeyContainer.classList.remove('hidden');
+                ollamaContainer.classList.add('hidden');
+                keyLink.href = val === 'groq' ? "https://console.groq.com/keys" : "https://aistudio.google.com/app/apikey";
+                apiKeyInput.placeholder = val === 'groq' ? "Paste Groq API Key (gsk_...)" : "Paste Gemini API Key...";
+            }
+        });
+
         // Reset API Key handler
         resetKeyBtn.addEventListener('click', () => {
             apiModal.classList.remove('hidden');
+            aiProvider.value = PROVIDER;
             apiKeyInput.value = API_KEY;
-            apiKeyInput.focus();
+            aiProvider.dispatchEvent(new Event('change'));
+            apiModal.style.display = 'flex';
         });
 
         // Initialize Local Embedding Model
@@ -325,9 +360,10 @@
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
-            // Check for API key FIRST
-            if (!API_KEY) {
+            // Check for Config FIRST
+            if (!API_KEY && PROVIDER !== 'ollama') {
                 apiModal.classList.remove('hidden');
+                apiModal.style.display = 'flex';
                 initOverlay.classList.add('hidden');
             }
 
@@ -335,8 +371,9 @@
                 if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
                     knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
                     
-                    if (API_KEY) {
+                    if (API_KEY || PROVIDER === 'ollama') {
                         initOverlay.classList.add('hidden');
+                        apiModal.style.display = 'none';
                         chatInput.disabled = false;
                         sendBtn.disabled = false;
                         chatInput.focus();
@@ -344,7 +381,7 @@
                     console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
                 } else {
                     initStatus.textContent = "Waiting for Knowledge Base Index...";
-                    setTimeout(loadKnowledge, 2000); // Retry until knowledge.js is ready
+                    setTimeout(loadKnowledge, 2000);
                 }
             } catch (err) {
                 console.error(err);
@@ -354,10 +391,15 @@
 
         saveKeyBtn.addEventListener('click', () => {
             const key = apiKeyInput.value.trim();
-            if (key) {
+            const provider = aiProvider.value;
+            
+            if (provider === 'ollama' || key) {
                 localStorage.setItem('SAFEWORK_AI_KEY', key);
+                localStorage.setItem('SAFEWORK_AI_PROVIDER', provider);
                 API_KEY = key;
+                PROVIDER = provider;
                 apiModal.classList.add('hidden');
+                apiModal.style.display = 'none';
                 if (knowledgeContext.length > 0 && embedder) {
                     initOverlay.classList.add('hidden');
                     chatInput.disabled = false;
@@ -401,7 +443,7 @@
 
         async function handleSend() {
             const text = chatInput.value.trim();
-            if (!text || !API_KEY || !embedder) return;
+            if (!text || (!API_KEY && PROVIDER !== 'ollama') || !embedder) return;
 
             chatInput.value = '';
             chatInput.disabled = true;
@@ -425,52 +467,79 @@
                 const topChunks = scoredChunks.slice(0, 5);
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
-                // 3. Call Chat API (Groq)
-                const chatUrl = `https://api.groq.com/openai/v1/chat/completions`;
-                
-                const currentHistory = chatContext.map(m => ({
-                    role: m.role === 'model' ? 'assistant' : m.role,
-                    content: m.parts[0].text
-                }));
+                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide comprehensive, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nGuidelines:\n1. Provide detailed explanations, not just short summaries.\n2. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n3. Use markdown formatting (bold, lists, tables) to make the answer highly readable.\n4. If the information is not in the snippets, clearly state that the repository does not contain that specific detail.\n\nRELEVANT SNIPPETS:\n" + searchContext;
 
-                currentHistory.push({
-                    role: "user",
-                    content: text
-                });
+                let answerText = "";
 
-                const systemMessage = {
-                    role: "system",
-                    content: "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide comprehensive, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nGuidelines:\n1. Provide detailed explanations, not just short summaries.\n2. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n3. Use markdown formatting (bold, lists, tables) to make the answer highly readable.\n4. If the information is not in the snippets, clearly state that the repository does not contain that specific detail.\n\nRELEVANT SNIPPETS:\n" + searchContext
-                };
+                if (PROVIDER === 'groq') {
+                    // --- GROQ API ---
+                    const chatUrl = `https://api.groq.com/openai/v1/chat/completions`;
+                    const currentHistory = chatContext.map(m => ({
+                        role: m.role === 'model' ? 'assistant' : m.role,
+                        content: m.parts[0].text
+                    }));
+                    currentHistory.push({ role: "user", content: text });
 
-                const payload = {
-                    "model": "llama-3.3-70b-versatile",
-                    "messages": [systemMessage, ...currentHistory],
-                    "temperature": 0.4,
-                    "max_tokens": 2048
-                };
+                    const response = await fetch(chatUrl, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${API_KEY}`
+                        },
+                        body: JSON.stringify({
+                            "model": "llama-3.3-70b-versatile",
+                            "messages": [{ role: "system", content: systemText }, ...currentHistory],
+                            "temperature": 0.4,
+                            "max_tokens": 2048
+                        })
+                    });
+                    if (!response.ok) throw new Error((await response.json()).error?.message || 'Groq Error');
+                    const data = await response.json();
+                    answerText = data.choices[0].message.content;
 
-                const chatResponse = await fetch(chatUrl, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${API_KEY}`
-                    },
-                    body: JSON.stringify(payload)
-                });
+                } else if (PROVIDER === 'gemini') {
+                    // --- GEMINI API ---
+                    const chatUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+                    const currentHistory = [...chatContext, { "role": "user", "parts": [{"text": text}] }];
+                    const response = await fetch(chatUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            "system_instruction": { "parts": [{ "text": systemText }] },
+                            "contents": currentHistory,
+                            "generationConfig": { "temperature": 0.4, "maxOutputTokens": 2048 }
+                        })
+                    });
+                    if (!response.ok) throw new Error((await response.json()).error?.message || 'Gemini Error');
+                    const data = await response.json();
+                    answerText = data.candidates[0].content.parts[0].text;
 
-                if (!chatResponse.ok) {
-                    const errData = await chatResponse.json();
-                    const errMsg = errData.error?.message || 'Chat API Error';
-                    if (chatResponse.status === 401 || chatResponse.status === 403) apiModal.classList.remove('hidden');
-                    throw new Error(errMsg);
+                } else if (PROVIDER === 'ollama') {
+                    // --- OLLAMA LOCAL ---
+                    const chatUrl = `http://localhost:11434/api/chat`;
+                    const currentHistory = chatContext.map(m => ({
+                        role: m.role === 'model' ? 'assistant' : m.role,
+                        content: m.parts[0].text
+                    }));
+                    currentHistory.push({ role: "user", content: text });
+
+                    const response = await fetch(chatUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            "model": "llama3",
+                            "messages": [{ role: "system", content: systemText }, ...currentHistory],
+                            "stream": false
+                        })
+                    });
+                    if (!response.ok) throw new Error('Ollama Error. Make sure Ollama is running and OLLAMA_ORIGINS="*" is set.');
+                    const data = await response.json();
+                    answerText = data.message.content;
                 }
 
-                const chatData = await chatResponse.json();
                 chatHistory.removeChild(loadingMsg);
                 
-                if (chatData.choices && chatData.choices[0].message.content) {
-                    const answerText = chatData.choices[0].message.content;
+                if (answerText) {
                     chatContext.push({ "role": "user", "parts": [{"text": text}] });
                     chatContext.push({ "role": "model", "parts": [{"text": answerText}] });
                     if (chatContext.length > 10) chatContext = chatContext.slice(-10);
@@ -483,6 +552,7 @@
                 console.error('Error:', error);
                 if (loadingMsg.parentNode) chatHistory.removeChild(loadingMsg);
                 addBotMessage(`<span style="color: #fca5a5;">Error: ${error.message}.</span>`);
+                if (error.message.includes('API') || error.message.includes('key')) apiModal.classList.remove('hidden');
             } finally {
                 chatInput.disabled = false;
                 sendBtn.disabled = false;
