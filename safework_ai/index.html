@@ -199,7 +199,6 @@
             40% { transform: scale(1); }
         }
         
-        /* Initialization overlay */
         #init-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -226,7 +225,6 @@
         }
     </style>
     
-    <!-- Essential Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="knowledge.js"></script>
 </head>
@@ -240,496 +238,215 @@
     
     <div class="app-container">
         
-        <header class="chat-header" style="text-align: left; margin-bottom: 2.5rem;">
-            <!-- Back Button -->
-            <a href="../index.html" class="back-nav" style="display: inline-flex; align-items: center; gap: 0.5rem; color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.85rem; margin-bottom: 1.5rem; padding: 0.5rem 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; transition: 0.3s;">
+        <header class="chat-header">
+            <a href="../index.html" class="back-nav">
                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                 Return to SafeSphere
             </a>
             
-            <!-- Branded Title Section -->
             <div style="display: flex; align-items: center; gap: 1.2rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #06b6d4); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); flex-shrink: 0;">
+                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #10b981, #06b6d4); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                     <svg viewBox="0 0 24 24" width="32" height="32" fill="white"><path d="M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z" /></svg>
                 </div>
                 <div style="flex: 1;">
-                    <h1 style="margin: 0; font-size: 2.4rem; font-weight: 900; background: linear-gradient(to right, #ffffff, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.03em; line-height: 1;">SafeWork AI</h1>
+                    <h1 style="margin: 0; font-size: 2.4rem; font-weight: 900; background: linear-gradient(to right, #ffffff, #22d3ee); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">SafeWork AI</h1>
                     <p style="margin: 0.3rem 0 0 0; font-size: 0.85rem; color: #10b981; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">Statutory Compliance Intelligence</p>
                 </div>
-                <button id="reset-key-btn" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.6rem; transition: 0.3s;">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <button id="reset-key-btn" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981; padding: 0.6rem 1.2rem; border-radius: 12px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: 0.3s;">
                     LLM MODEL SETUP
                 </button>
             </div>
 
-            <!-- Description -->
             <p style="margin: 1.2rem 0 0 0; font-size: 1rem; color: #94a3b8; line-height: 1.6; max-width: 800px;">
-                Intelligent assistant for the <strong>OSHWC Code 2020</strong> and <strong>OSH (Central) Rules</strong>. Ask questions, verify compliance, and explore legal provisions instantly.
+                Intelligent assistant for the <strong>OSHWC Code 2020</strong> and <strong>OSH (Central) Rules</strong>.
             </p>
-            
-            <!-- Pulsing Verification Alert -->
-            <style>
-                @keyframes pulse-red {
-                    0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); transform: scale(1); }
-                    50% { box-shadow: 0 0 20px 0 rgba(239, 68, 68, 0.2); transform: scale(1.01); }
-                    100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); transform: scale(1); }
-                }
-                .notice-pulse {
-                    animation: pulse-red 3s infinite ease-in-out;
-                }
-            </style>
-            
-            <div class="notice-pulse" style="margin-top: 1rem; padding: 0.8rem 1.2rem; background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; font-size: 0.8rem; color: #fca5a5; display: flex; align-items: center; gap: 0.8rem;">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                <span><strong>Legal Notice:</strong> This agent uses <strong>Free-Tier LLM models</strong> (for cost effectiveness). Outputs may be <strong>truncated</strong>, incomplete, or contain errors. Always cross-reference with the <strong>National Statutory Repository</strong> for official compliance audits.</span>
-            </div>
         </header>
 
         <div class="chat-container fade-up" style="position: relative;">
-            
-            <!-- Initialization Overlay -->
             <div id="init-overlay">
                 <div class="loading-dots" style="margin-bottom: 1rem;">
                     <span></span><span></span><span></span>
                 </div>
-                <span id="init-status">Loading National Statutory Repository...</span>
+                <span id="init-status">Loading Statutory Data...</span>
             </div>
 
-            <!-- API Key Configuration Modal -->
-            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: flex-start; justify-content: center; backdrop-filter: blur(20px); width: 100vw; height: 100vh; padding-top: 3vh;">
-                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; text-align: left; max-width: 500px; width: 92%; max-height: 65vh; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; position: relative; margin-bottom: 20px;">
+            <div id="api-modal" class="hidden" style="position: fixed; inset: 0; background: rgba(10, 15, 26, 0.98); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px);">
+                <div style="background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 24px; max-width: 500px; width: 92%; padding: 2rem;">
+                    <h3 style="margin: 0 0 1.5rem 0; font-size: 1.5rem; text-align: center; color: #fff;">LLM Model Setup</h3>
                     
-                    <!-- Modal Header -->
-                    <div style="padding: 1.5rem 2rem; background: #0f172a; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <h3 style="margin: 0; font-size: 1.5rem; text-align: center; color: #fff; font-weight: 800; letter-spacing: -0.5px;">LLM Model Setup</h3>
-                    </div>
-
-                    <!-- Modal Body (Scrollable) -->
-                    <div style="padding: 2rem; overflow-y: auto; flex: 1; scrollbar-width: thin; scrollbar-color: #475569 #1e293b;">
-                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                            
-                            <!-- Provider Select -->
-                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">1. Select Intelligence Provider</label>
-                                <select id="ai-provider" style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; cursor: pointer; font-size: 1rem; outline: none; transition: 0.3s;">
-                                    <option value="groq">Groq Cloud (Fastest - Free)</option>
-                                    <option value="gemini">Google Gemini 1.5 Flash (Free)</option>
-                                    <option value="openrouter">OpenRouter.ai (Universal Models)</option>
-                                    <option value="ollama">Ollama (Local - Private & Offline)</option>
-                                </select>
-                            </div>
-
-                            <!-- Key Config Area -->
-                            <div id="api-key-container" style="display: flex; flex-direction: column; gap: 0.6rem;">
-                                <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">2. Authentication</label>
-                                <input type="text" id="api-key-input" placeholder="Paste your API Key or Enter Passcode..." autocomplete="off" style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white; font-size: 1rem; outline: none; -webkit-text-security: disc; text-security: disc;">
-                                <div style="background: rgba(34, 211, 238, 0.05); padding: 0.8rem 1rem; border-radius: 12px; border: 1px solid rgba(34, 211, 238, 0.15);">
-                                    <a id="key-link" href="https://console.groq.com/keys" target="_blank" style="color: #22d3ee; text-decoration: none; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
-                                        Get your free API key here 
-                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                                    </a>
-                                </div>
-                                
-                                <!-- Developer Contact for Trial -->
-                                <div id="trial-contact-section" style="margin-top: 0.8rem; background: rgba(34, 211, 238, 0.05); border: 1px solid rgba(34, 211, 238, 0.15); border-radius: 14px; padding: 1rem; text-align: center;">
-                                    <span style="font-size: 0.75rem; color: #22d3ee; font-weight: 700; display: block; margin-bottom: 0.4rem;">🔑 NEED TRIAL ACCESS?</span>
-                                    <p style="font-size: 0.75rem; color: #94a3b8; margin: 0 0 0.8rem 0; line-height: 1.4;">If you are unable to generate an API key, you can request a trial passcode from the developer.</p>
-                                    <a href="https://wa.me/918981568707?text=Hello,%20I%20would%20like%20to%20request%20a%20trial%20passcode%20for%20SafeWork%20AI." target="_blank" style="display: inline-flex; align-items: center; gap: 0.5rem; background: #25d366; color: white; padding: 0.6rem 1.2rem; border-radius: 10px; text-decoration: none; font-size: 0.85rem; font-weight: 700; transition: 0.3s;">
-                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.067 2.877 1.215 3.076.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                                        WhatsApp Developer
-                                    </a>
-                                </div>
-                            </div>
-
-                            <!-- Ollama Setup Area -->
-                            <div id="ollama-container" class="hidden" style="display: flex; flex-direction: column; gap: 1.2rem;">
-                                <label style="font-size: 0.85rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">2. Local Server Setup</label>
-                                
-                                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(34, 211, 238, 0.2); border-radius: 16px; padding: 1.2rem; line-height: 1.5;">
-                                    
-                                    <!-- Requirements Badge -->
-                                    <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); padding: 0.8rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.8rem;">
-                                        <div style="color: #f59e0b; font-weight: 800; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
-                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20Z"/></svg>
-                                            RESOURCES REQUIRED
-                                        </div>
-                                        <span style="color: #cbd5e1;">~2.5GB Download • 8GB+ Disk Space • 8GB RAM recommended.</span>
-                                    </div>
-
-                                    <!-- OS Selector -->
-                                    <div style="display: flex; gap: 0.3rem; background: #0a0f1a; padding: 0.3rem; border-radius: 12px; margin-bottom: 1.2rem;">
-                                        <button onclick="window.switchOS('win')" id="btn-win" style="flex: 1; padding: 0.6rem; border: none; border-radius: 9px; background: #334155; color: white; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: 0.2s;">Windows</button>
-                                        <button onclick="window.switchOS('mac')" id="btn-mac" style="flex: 1; padding: 0.6rem; border: none; border-radius: 9px; background: transparent; color: #64748b; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: 0.2s;">macOS</button>
-                                        <button onclick="window.switchOS('linux')" id="btn-linux" style="flex: 1; padding: 0.6rem; border: none; border-radius: 9px; background: transparent; color: #64748b; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: 0.2s;">Linux</button>
-                                    </div>
-
-                                    <!-- Step-by-Step -->
-                                    <div id="os-win" class="os-guide" style="font-size: 0.9rem; color: #e2e8f0;">
-                                        <p style="margin-bottom: 0.8rem;">1. Download & Install <a href="https://ollama.com/download" target="_blank" style="color: #22d3ee; font-weight: 700;">Ollama</a>.</p>
-                                        <p style="margin-bottom: 0.8rem;">2. Pull model (CMD): <code style="background: #000; color: #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px;">ollama pull llama3</code></p>
-                                        <p style="margin-bottom: 0.8rem;">3. <strong>CRITICAL</strong>: Quit Ollama from System Tray, then run in CMD:</p>
-                                        <code style="display: block; background: #000; color: #fbbf24; padding: 0.8rem; border-radius: 8px; font-size: 0.8rem; border: 1px solid rgba(251,191,36,0.2);">set OLLAMA_ORIGINS=* && ollama serve</code>
-                                    </div>
-                                    <!-- (Other OS guides hidden for brevity in this view) -->
-                                    <div id="os-mac" class="os-guide hidden">...</div>
-                                    <div id="os-linux" class="os-guide hidden">...</div>
-
-                                    <!-- Bind Error Tile -->
-                                    <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; font-size: 0.8rem;">
-                                        <div style="color: #fca5a5; font-weight: 800; margin-bottom: 0.3rem;">⚠️ BIND ERROR / ALREADY IN USE?</div>
-                                        <span style="color: #fecaca; line-height: 1.4;">This means Ollama is already running. You <strong>MUST</strong> right-click the Ollama icon in your System Tray and select <strong>Quit</strong> before running Step 3.</span>
-                                    </div>
-                                </div>
-                            </div>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">PROVIDER</label>
+                            <select id="ai-provider" style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white;">
+                                <option value="groq">Groq Cloud (Fastest)</option>
+                                <option value="gemini">Google Gemini 1.5 Flash</option>
+                                <option value="ollama">Ollama (Local)</option>
+                            </select>
                         </div>
-                    </div>
 
-                    <!-- Modal Footer (Fixed) -->
-                    <div style="padding: 1.5rem 2rem; background: #0f172a; border-top: 1px solid rgba(255,255,255,0.05);">
-                        <button id="save-key-btn" style="width: 100%; padding: 1.1rem; border-radius: 16px; border: none; background: #10b981; color: white; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1.1rem; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);">Save & Initialize Engine</button>
-                        <p style="text-align: center; margin-top: 0.8rem; font-size: 0.75rem; color: #64748b; font-weight: 500;">Configuration is stored securely in your browser cache.</p>
+                        <div id="api-key-container" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <label style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">API KEY</label>
+                            <input type="password" id="api-key-input" placeholder="Enter your API key..." style="width: 100%; padding: 1rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); background: #0f172a; color: white;">
+                        </div>
+
+                        <button id="save-key-btn" style="width: 100%; padding: 1.1rem; border-radius: 16px; border: none; background: #10b981; color: white; font-weight: 800; cursor: pointer;">Save & Initialize Engine</button>
                     </div>
                 </div>
             </div>
 
             <div class="chat-history" id="chat-history">
-                <div class="message bot">
-                    Hello! I am SafeWork AI, your serverless interactive assistant for the National Statutory Repository. I have successfully loaded the OSHWC Code 2020 and Central Rules 2026 into my memory. How can I help you today?
-                </div>
+                <div class="message bot">Hello! I am SafeWork AI. I have loaded the OSHWC Code 2020. How can I help you?</div>
             </div>
             
             <div class="chat-input-area">
-                <input type="text" id="chat-input" class="chat-input" placeholder="Type your question here..." autocomplete="off" disabled>
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your question here..." disabled>
                 <button id="send-btn" class="chat-btn" disabled>
                     <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                 </button>
             </div>
         </div>
-
     </div>
 
-    <!-- Master Application Script -->
     <script>
-        // --- GLOBAL STATE ---
-        const obfuscatedKey = "Z3NrX25Ld2VpdFJsZ2dDbWZtcFhEeTcwV0dyeWIzRllIRkdwWG5hcUQ2bkdES292bTJwaHRORTU=";
-        const trialKey = atob(obfuscatedKey);
+        document.addEventListener('DOMContentLoaded', async () => {
+            let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
+            let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
+            let knowledgeContext = [];
+            let chatContext = [];
+            let embedder = null;
 
-        let PROVIDER = localStorage.getItem('SAFEWORK_AI_PROVIDER') || 'groq';
-        let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
-        let knowledgeContext = [];
-        let chatContext = [];
-        let embedder = null;
+            const chatHistory = document.getElementById('chat-history');
+            const chatInput = document.getElementById('chat-input');
+            const sendBtn = document.getElementById('send-btn');
+            const apiModal = document.getElementById('api-modal');
+            const apiKeyInput = document.getElementById('api-key-input');
+            const saveKeyBtn = document.getElementById('save-key-btn');
+            const resetKeyBtn = document.getElementById('reset-key-btn');
+            const aiProvider = document.getElementById('ai-provider');
+            const initOverlay = document.getElementById('init-overlay');
 
-        // UI REFERENCES
-        const chatHistory = document.getElementById('chat-history');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const initOverlay = document.getElementById('init-overlay');
-        const initStatus = document.getElementById('init-status');
-        const apiModal = document.getElementById('api-modal');
-        const apiKeyInput = document.getElementById('api-key-input');
-        const saveKeyBtn = document.getElementById('save-key-btn');
-        const resetKeyBtn = document.getElementById('reset-key-btn');
-        const aiProvider = document.getElementById('ai-provider');
-        const apiKeyContainer = document.getElementById('api-key-container');
-        const ollamaContainer = document.getElementById('ollama-container');
-        const keyLink = document.getElementById('key-link');
-        const trialContactSection = document.getElementById('trial-contact-section');
+            async function initAI() {
+                try {
+                    if (API_KEY || PROVIDER === 'ollama') {
+                        apiModal.classList.add('hidden');
+                    } else {
+                        apiModal.classList.remove('hidden');
+                    }
 
-        // --- INITIALIZATION ---
-        async function initAI() {
-            try {
-                const { pipeline, env } = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
-                env.allowLocalModels = false;
-                
-                initStatus.textContent = "Loading Semantic Search Engine (~22MB)...";
-                embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-                console.log("Embedding model loaded.");
-                loadKnowledge();
-            } catch (err) {
-                console.error("AI Init Error:", err);
-                initStatus.innerHTML = `<span style="color: #ef4444;">Error loading AI engine.</span>`;
-            }
-        }
-
-        async function loadKnowledge() {
-            // Check if the knowledge file is available
-            const data = window.KNOWLEDGE_BASE_EMBEDDINGS || (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' ? KNOWLEDGE_BASE_EMBEDDINGS : null);
-            
-            if (data && data.length > 0) {
-                knowledgeContext = data;
-                console.log("Legal Data Found.");
-                
-                // FORCE HIDE ALL OVERLAYS
-                initOverlay.classList.add('hidden');
-                
-                if (API_KEY || PROVIDER === 'ollama') {
-                    apiModal.classList.add('hidden');
-                    apiModal.style.display = 'none';
-                    chatInput.disabled = false;
-                    sendBtn.disabled = false;
-                    chatInput.focus();
+                    const transformers = await import('https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2');
+                    embedder = await transformers.pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+                    loadKnowledge();
+                } catch (err) {
+                    console.error(err);
                 }
-            } else {
-                // Check again in 500ms
-                setTimeout(loadKnowledge, 500);
-            }
-        }
-
-        // --- EVENT HANDLERS ---
-        aiProvider.addEventListener('change', () => {
-            const isOllama = aiProvider.value === 'ollama';
-            apiKeyContainer.classList.toggle('hidden', isOllama);
-            ollamaContainer.classList.toggle('hidden', !isOllama);
-            trialContactSection.style.display = isOllama ? 'none' : 'block';
-
-            if (!isOllama) {
-                const links = {
-                    groq: { href: "https://console.groq.com/keys", text: "Get your free API key here" },
-                    gemini: { href: "https://aistudio.google.com/app/apikey", text: "Get your free Gemini key here" },
-                    openrouter: { href: "https://openrouter.ai/keys", text: "Get your OpenRouter key here" }
-                };
-                const config = links[aiProvider.value];
-                keyLink.href = config.href;
-                keyLink.innerHTML = `${config.text} <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
-            }
-        });
-
-        saveKeyBtn.addEventListener('click', () => {
-            let key = apiKeyInput.value.trim();
-            const provider = aiProvider.value;
-
-            if (key.toLowerCase() === "thankyou") {
-                key = trialKey;
             }
 
-            if (provider !== 'ollama' && !key) {
-                alert("Please enter a valid API Key or Passcode.");
-                return;
+            function loadKnowledge() {
+                const data = window.KNOWLEDGE_BASE_EMBEDDINGS;
+                if (data && data.length > 0) {
+                    knowledgeContext = data;
+                    initOverlay.classList.add('hidden');
+                    if (API_KEY || PROVIDER === 'ollama') {
+                        chatInput.disabled = false;
+                        sendBtn.disabled = false;
+                    }
+                } else {
+                    setTimeout(loadKnowledge, 500);
+                }
             }
 
-            localStorage.setItem('SAFEWORK_AI_KEY', key);
-            localStorage.setItem('SAFEWORK_AI_PROVIDER', provider);
-            
-            saveKeyBtn.innerHTML = "Saving...";
-            setTimeout(() => window.location.reload(), 500);
-        });
+            saveKeyBtn.onclick = () => {
+                localStorage.setItem('SAFEWORK_AI_KEY', apiKeyInput.value.trim());
+                localStorage.setItem('SAFEWORK_AI_PROVIDER', aiProvider.value);
+                window.location.reload();
+            };
 
-        resetKeyBtn.addEventListener('click', () => {
-            apiModal.classList.remove('hidden');
-            apiModal.style.display = 'flex';
-        });
+            resetKeyBtn.onclick = () => apiModal.classList.remove('hidden');
 
-        // --- CHAT CORE ---
-        async function handleSend() {
-            const text = chatInput.value.trim();
-            const activeKey = localStorage.getItem('SAFEWORK_AI_KEY') || API_KEY;
+            async function handleSend() {
+                const text = chatInput.value.trim();
+                if (!text) return;
 
-            if (!text || (!activeKey && PROVIDER !== 'ollama') || !embedder) return;
+                addMessage(text, 'user');
+                chatInput.value = '';
+                chatInput.disabled = true;
+                sendBtn.disabled = true;
 
-            chatInput.value = '';
-            chatInput.disabled = true;
-            sendBtn.disabled = true;
+                const loadingId = addLoadingIndicator();
 
-            const userDiv = document.createElement('div');
-            userDiv.className = 'message user';
-            userDiv.textContent = text;
-            chatHistory.appendChild(userDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+                try {
+                    const queryVector = await embedder(text, { pooling: 'mean', normalize: true });
+                    const scoredChunks = knowledgeContext.map(chunk => ({
+                        ...chunk,
+                        score: Array.from(queryVector.data).reduce((sum, val, i) => sum + val * chunk.embedding[i], 0)
+                    })).sort((a, b) => b.score - a.score);
 
-            const botDiv = document.createElement('div');
-            botDiv.className = 'message bot';
-            botDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
-            chatHistory.appendChild(botDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+                    const searchContext = scoredChunks.slice(0, 10).map(c => c.text).join("\n\n");
+                    const systemText = `You are SafeWork AI, an Indian OSH expert. Use the following context to answer compliance queries.\n\nCONTEXT:\n${searchContext}`;
 
-            try {
-                const queryVector = await embedder(text, { pooling: 'mean', normalize: true });
-                const scoredChunks = knowledgeContext.map(chunk => ({
-                    ...chunk,
-                    score: dotProduct(Array.from(queryVector.data), chunk.embedding)
-                })).sort((a, b) => b.score - a.score);
-
-                const topChunks = scoredChunks.slice(0, PROVIDER === 'ollama' ? 5 : 25);
-                const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
-
-                    
-                    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                        method: "POST",
-                        headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            model: "llama-3.3-70b-versatile",
-                            messages: [
-                                { role: "system", content: systemText },
-                                ...currentHistory
-                            ],
-                            max_tokens: 4096, // Increased from 2048 to 4096
-                            temperature: 0.1
-                        })
-                    });
-                    if (!response.ok) throw new Error((await response.json()).error?.message || 'Groq Error');
-                    const data = await response.json();
-                    answerText = data.choices[0].message.content;
-
-                } else if (PROVIDER === 'gemini') {
-                    // --- GEMINI API ---
-                    const chatUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-                    const currentHistory = [...chatContext, { "role": "user", "parts": [{"text": text}] }];
-                    const response = await fetch(chatUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            "system_instruction": { "parts": [{ "text": systemText }] },
-                            "contents": currentHistory,
-                            "generationConfig": { "temperature": 0.4, "maxOutputTokens": 4096 }
-                        })
-                    });
-                    if (!response.ok) throw new Error((await response.json()).error?.message || 'Gemini Error');
-                    const data = await response.json();
-                    answerText = data.candidates[0].content.parts[0].text;
-
-                } else if (PROVIDER === 'openrouter') {
-                    // --- OPENROUTER API ---
-                    const currentHistory = chatContext.map(m => ({
-                        role: m.role === 'model' ? 'assistant' : m.role,
-                        content: m.parts[0].text
-                    }));
+                    let response;
+                    let answerText = "";
+                    const currentHistory = chatContext.map(m => ({ role: m.role === 'model' ? 'assistant' : 'user', content: m.parts[0].text }));
                     currentHistory.push({ role: "user", content: text });
 
-                    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-                        method: "POST",
-                        headers: {
-                            "Authorization": `Bearer ${API_KEY}`,
-                            "Content-Type": "application/json",
-                            "HTTP-Referer": window.location.href,
-                            "X-Title": "SafeSphere OSHE"
-                        },
-                        body: JSON.stringify({
-                            "model": "meta-llama/llama-3.1-70b-instruct",
-                            "messages": [
-                                { role: "system", content: systemText },
-                                ...currentHistory
-                            ],
-                            "temperature": 0.3
-                        })
-                    });
-                    if (!response.ok) throw new Error((await response.json()).error?.message || 'OpenRouter Error');
-                    const data = await response.json();
-                    answerText = data.choices[0].message.content;
-
-                } else if (PROVIDER === 'ollama') {
-                    // --- OLLAMA LOCAL (SPEED OPTIMIZED) ---
-                    console.log("Connecting to Ollama with Optimized Context (Top 5 Snippets)...");
-                    const chatUrl = `http://localhost:11434/api/chat`;
-                    const currentHistory = chatContext.map(m => ({
-                        role: m.role === 'model' ? 'assistant' : m.role,
-                        content: m.parts[0].text
-                    }));
-                    currentHistory.push({ role: "user", content: text });
-
-                    try {
-                        const response = await fetch(chatUrl, {
+                    if (PROVIDER === 'groq') {
+                        response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                            method: "POST",
+                            headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
+                            body: JSON.stringify({ model: "llama3-8b-8192", messages: [{ role: "system", content: systemText }, ...currentHistory] })
+                        });
+                        const data = await response.json();
+                        answerText = data.choices[0].message.content;
+                    } else if (PROVIDER === 'gemini') {
+                        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+                        response = await fetch(url, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                "model": "llama3",
-                                "messages": [{ role: "system", content: systemText }, ...currentHistory],
-                                "stream": false,
-                                "options": {
-                                    "num_ctx": 4096,
-                                    "num_predict": 1024,
-                                    "temperature": 0.1,
-                                    "top_k": 20,
-                                    "top_p": 0.9
-                                }
-                            })
+                            body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: systemText + "\n\nQuestion: " + text }] }] })
                         });
-                        
-                        if (!response.ok) {
-                            const errBody = await response.text();
-                            throw new Error(`Ollama Server Error (${response.status}): ${errBody}`);
-                        }
-                        
                         const data = await response.json();
-                        answerText = data.message.content;
-                    } catch (fetchErr) {
-                        console.error("Ollama Fetch Detailed Error:", fetchErr);
-                        if (fetchErr.message.includes('Failed to fetch')) {
-                            throw new Error('Could not connect to Ollama. <br><br><strong>Fix:</strong><br>1. Ensure Ollama is running.<br>2. You MUST set OLLAMA_ORIGINS="*" in your CMD before starting (see Setup Guide).');
-                        }
-                        throw fetchErr;
+                        answerText = data.candidates[0].content.parts[0].text;
                     }
-                }
 
-                chatHistory.removeChild(loadingMsg);
-                
-                if (answerText) {
-                    chatContext.push({ "role": "user", "parts": [{"text": text}] });
-                    chatContext.push({ "role": "model", "parts": [{"text": answerText}] });
-                    if (chatContext.length > 10) chatContext = chatContext.slice(-10);
-                    addBotMessage(marked.parse(answerText));
-                } else {
-                    addBotMessage("Sorry, I could not generate a response.");
-                }
+                    removeLoadingIndicator(loadingId);
+                    addMessage(answerText, 'bot');
+                    chatContext.push({ role: 'user', parts: [{ text }] });
+                    chatContext.push({ role: 'model', parts: [{ text: answerText }] });
 
-            } catch (error) {
-                console.error('Error:', error);
-                if (loadingMsg.parentNode) chatHistory.removeChild(loadingMsg);
-                
-                let errorHtml = `
-                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 1rem; border-radius: 12px; color: #fca5a5;">
-                        <p style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                            AI Service Error
-                        </p>
-                        <p style="font-size: 0.85rem; margin-bottom: 1rem;">${error.message}</p>
-                        <div style="font-size: 0.8rem; border-top: 1px solid rgba(239, 68, 68, 0.2); pt: 0.8rem; margin-top: 0.8rem;">
-                            <p style="margin-bottom: 0.5rem;"><strong>How to fix this:</strong></p>
-                            <ul style="padding-left: 1.2rem; margin: 0;">
-                                <li>Click <strong>"Update API Key"</strong> in the top header.</li>
-                                <li>Ensure you have a valid key from <a href="https://console.groq.com/keys" target="_blank" style="color: #67e8f9;">Groq</a> or <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: #67e8f9;">Gemini</a>.</li>
-                                <li>If using Ollama, ensure the service is running locally.</li>
-                            </ul>
-                        </div>
-                    </div>
-                `;
-                
-                if (error.message.includes('key') || error.message.includes('API') || error.message.includes('unauthorized') || error.message.includes('Ollama')) {
-                    apiModal.classList.remove('hidden');
-                    apiModal.style.display = 'flex';
+                } catch (error) {
+                    removeLoadingIndicator(loadingId);
+                    addMessage("Error: " + error.message, 'bot');
+                } finally {
+                    chatInput.disabled = false;
+                    sendBtn.disabled = false;
                 }
-                addBotMessage(errorHtml);
-            } finally {
-                chatInput.disabled = false;
-                sendBtn.disabled = false;
-                chatInput.focus();
             }
-        }
 
-        // Global key listeners
-        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
-        sendBtn.addEventListener('click', handleSend);
+            function addMessage(text, type) {
+                const msg = document.createElement('div');
+                msg.className = `message ${type}`;
+                msg.innerHTML = type === 'bot' ? marked.parse(text) : text;
+                chatHistory.appendChild(msg);
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+            }
 
-        // Start Init
-        initAI();
+            function addLoadingIndicator() {
+                const id = 'loading-' + Date.now();
+                const msg = document.createElement('div');
+                msg.id = id; msg.className = 'message bot';
+                msg.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+                chatHistory.appendChild(msg);
+                return id;
+            }
 
-        // Start Init
-        initAI();
+            function removeLoadingIndicator(id) {
+                const el = document.getElementById(id);
+                if (el) el.remove();
+            }
 
-        // Initial fade-up animation logic
-        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -40px 0px' };
-        const fadeObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                    fadeObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-up').forEach(el => {
-            el.style.animationPlayState = 'paused';
-            fadeObserver.observe(el);
+            sendBtn.onclick = handleSend;
+            chatInput.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
+            initAI();
         });
     </script>
 </body>
