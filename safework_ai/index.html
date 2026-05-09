@@ -501,10 +501,10 @@
                 }));
 
                 scoredChunks.sort((a, b) => b.score - a.score);
-                const topChunks = scoredChunks.slice(0, 10); // Increased depth to capture full lists
+                const topChunks = scoredChunks.slice(0, 15); // Deep Scan: Increased to 15 snippets
                 const searchContext = topChunks.map(c => `[Source: ${c.source}]\n${c.text}`).join("\n\n---\n\n");
 
-                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide EXHAUSTIVE, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nCRITICAL RULES:\n1. If a user asks for a LIST (e.g., Notifiable Diseases, Duties, or Penalties), you MUST provide the FULL list found in the snippets. Do not summarize or truncate.\n2. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n3. Use markdown formatting (bold, lists, tables) to make the answer professional and readable.\n4. If the information is missing or incomplete in the snippets, explicitly state that you are providing only the available information from the repository.\n\nRELEVANT SNIPPETS:\n" + searchContext;
+                const systemText = "You are SafeWork AI, a professional expert assistant on Indian Occupational Safety and Health. Your goal is to provide EXHAUSTIVE, thorough, and legally accurate answers based ONLY on the provided SNIPPETS. \n\nCRITICAL RULES:\n1. If a user asks for a LIST (e.g., Notifiable Diseases, Duties, or Penalties), you MUST provide the FULL list found in the snippets. Do not summarize or truncate.\n2. If a list is numbered (e.g. 1 to 29), ensure you list EVERY single item found. Do not stop at item 6 or 10.\n3. Always cite the Source (e.g., [OSHWC Code 2020]) for specific provisions.\n4. Use markdown formatting (bold, lists, tables) to make the answer professional and readable.\n\nRELEVANT SNIPPETS:\n" + searchContext;
 
                 let answerText = "";
 
@@ -527,7 +527,7 @@
                             "model": "llama-3.3-70b-versatile",
                             "messages": [{ role: "system", content: systemText }, ...currentHistory],
                             "temperature": 0.4,
-                            "max_tokens": 2048
+                            "max_tokens": 4096
                         })
                     });
                     if (!response.ok) throw new Error((await response.json()).error?.message || 'Groq Error');
@@ -544,7 +544,7 @@
                         body: JSON.stringify({
                             "system_instruction": { "parts": [{ "text": systemText }] },
                             "contents": currentHistory,
-                            "generationConfig": { "temperature": 0.4, "maxOutputTokens": 2048 }
+                            "generationConfig": { "temperature": 0.4, "maxOutputTokens": 4096 }
                         })
                     });
                     if (!response.ok) throw new Error((await response.json()).error?.message || 'Gemini Error');
