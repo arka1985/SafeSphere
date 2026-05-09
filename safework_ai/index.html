@@ -453,22 +453,25 @@
         }
 
         async function loadKnowledge() {
-            console.log("Checking Legal Repository...");
-            if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' && KNOWLEDGE_BASE_EMBEDDINGS.length > 0) {
-                knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
-                console.log("Repository Found. Unlocking UI...");
+            // Check if the knowledge file is available
+            const data = window.KNOWLEDGE_BASE_EMBEDDINGS || (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined' ? KNOWLEDGE_BASE_EMBEDDINGS : null);
+            
+            if (data && data.length > 0) {
+                knowledgeContext = data;
+                console.log("Legal Data Found.");
                 
-                // FORCE UNLOCK
+                // FORCE HIDE ALL OVERLAYS
                 initOverlay.classList.add('hidden');
-                apiModal.classList.add('hidden');
-                apiModal.style.display = 'none';
                 
                 if (API_KEY || PROVIDER === 'ollama') {
+                    apiModal.classList.add('hidden');
+                    apiModal.style.display = 'none';
                     chatInput.disabled = false;
                     sendBtn.disabled = false;
                     chatInput.focus();
                 }
             } else {
+                // Check again in 500ms
                 setTimeout(loadKnowledge, 500);
             }
         }
