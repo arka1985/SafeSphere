@@ -4,7 +4,7 @@ import urllib.request
 import PyPDF2
 import time
 
-API_KEY = "AIzaSyBuwMklEd50b-Ul20vvabN_LEwMMsRM1TM"
+API_KEY = "AIzaSyDhtWIligqT3ekadSvXju_GnfhtTDk1tKY"
 
 def get_gemini_embeddings_batch(texts):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-2:batchEmbedContents?key={API_KEY}"
@@ -53,7 +53,7 @@ def main():
     print(f"Total chunks: {len(all_chunks)}")
     
     knowledge_base = []
-    batch_size = 20 
+    batch_size = 5 
     
     for i in range(0, len(all_chunks), batch_size):
         batch = all_chunks[i:i+batch_size]
@@ -67,8 +67,8 @@ def main():
             embeddings = get_gemini_embeddings_batch(texts)
             if embeddings:
                 break
-            print("Rate limit or error. Waiting 15 seconds...")
-            time.sleep(15)
+            print("Rate limit or error. Waiting 20 seconds...")
+            time.sleep(20)
             retries -= 1
             
         if not embeddings:
@@ -82,8 +82,7 @@ def main():
                 "embedding": emb
             })
             
-        # Wait 10 seconds between batches to stay safely under 15 RPM
-        time.sleep(10)
+        time.sleep(6) # ~10 RPM
             
     js_content = "const KNOWLEDGE_BASE_EMBEDDINGS = " + json.dumps(knowledge_base) + ";"
     with open("safework_ai/knowledge.js", "w", encoding="utf-8") as f:

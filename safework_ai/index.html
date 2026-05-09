@@ -201,6 +201,10 @@
             transition: opacity 0.5s;
         }
         
+        .hidden {
+            display: none !important;
+        }
+        
         #init-overlay.hidden {
             opacity: 0;
             pointer-events: none;
@@ -231,11 +235,23 @@
 
         <div class="chat-container fade-up" style="position: relative;">
             
+            <!-- Initialization Overlay -->
             <div id="init-overlay">
                 <div class="loading-dots" style="margin-bottom: 1rem;">
                     <span></span><span></span><span></span>
                 </div>
-                Loading National Statutory Repository...
+                <span id="init-status">Loading National Statutory Repository...</span>
+            </div>
+
+            <!-- API Key Configuration Modal -->
+            <div id="api-modal" class="hidden" style="position: absolute; inset: 0; background: rgba(10, 15, 26, 0.9); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 2rem; border-radius: inherit; backdrop-filter: blur(10px);">
+                <div style="background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 20px; text-align: center; max-width: 400px; width: 100%;">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">AI Setup Required</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-dim); margin-bottom: 1.5rem;">To keep this tool free and private, please enter your Gemini API Key. It is saved <b>only</b> in your browser.</p>
+                    <input type="password" id="api-key-input" placeholder="Paste Gemini API Key..." style="width: 100%; padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); color: white; margin-bottom: 1rem; font-family: inherit;">
+                    <button id="save-key-btn" style="width: 100%; padding: 0.8rem; border-radius: 10px; border: none; background: var(--primary-green); color: white; font-weight: 600; cursor: pointer; transition: 0.3s;">Save & Continue</button>
+                    <p style="margin-top: 1rem; font-size: 0.75rem;"><a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--accent-cyan); text-decoration: none;">Get a free API key here →</a></p>
+                </div>
             </div>
 
             <div class="chat-history" id="chat-history">
@@ -263,31 +279,56 @@
         const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const initOverlay = document.getElementById('init-overlay');
+        const apiModal = document.getElementById('api-modal');
+        const apiKeyInput = document.getElementById('api-key-input');
+        const saveKeyBtn = document.getElementById('save-key-btn');
 
         // Configuration
-        const API_KEY = 'AIzaSyBuwMklEd50b-Ul20vvabN_LEwMMsRM1TM'; // Provided by user
-        let knowledgeContext = []; // Stores the embedded chunks
-        let chatContext = []; // Store previous messages for chat flow
+        let API_KEY = localStorage.getItem('SAFEWORK_AI_KEY') || '';
+        let knowledgeContext = []; 
+        let chatContext = []; 
 
         // Load the knowledge text on startup
         async function loadKnowledge() {
+            // Check for API key FIRST
+            if (!API_KEY) {
+                apiModal.classList.remove('hidden');
+                initOverlay.classList.add('hidden'); // Hide the loading spinner while setting up key
+            }
+
             try {
                 if (typeof KNOWLEDGE_BASE_EMBEDDINGS !== 'undefined') {
                     knowledgeContext = KNOWLEDGE_BASE_EMBEDDINGS;
-                    // Hide overlay and enable input
-                    initOverlay.classList.add('hidden');
-                    chatInput.disabled = false;
-                    sendBtn.disabled = false;
-                    chatInput.focus();
+                    
+                    if (API_KEY) {
+                        initOverlay.classList.add('hidden');
+                        chatInput.disabled = false;
+                        sendBtn.disabled = false;
+                        chatInput.focus();
+                    }
                     console.log("Knowledge base loaded. Chunks:", knowledgeContext.length);
                 } else {
-                    throw new Error("Knowledge base variable not found");
+                    console.warn("Knowledge base index is still being generated...");
+                    // We don't throw here, just wait for it.
                 }
             } catch (err) {
                 console.error(err);
-                initOverlay.innerHTML = `<span style="color: #ef4444;">Error loading knowledge base. Please try refreshing.</span>`;
+                document.getElementById('init-status').innerHTML = `<span style="color: #ef4444;">Error loading knowledge base.</span>`;
             }
         }
+
+        saveKeyBtn.addEventListener('click', () => {
+            const key = apiKeyInput.value.trim();
+            if (key) {
+                localStorage.setItem('SAFEWORK_AI_KEY', key);
+                API_KEY = key;
+                apiModal.classList.add('hidden');
+                initOverlay.classList.add('hidden');
+                chatInput.disabled = false;
+                sendBtn.disabled = false;
+                chatInput.focus();
+            }
+        });
 
         window.addEventListener('DOMContentLoaded', loadKnowledge);
 
