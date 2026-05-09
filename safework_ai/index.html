@@ -282,48 +282,68 @@
                             Ollama Setup: Step-by-Step Guide
                         </h4>
                         
-                        <div style="display: flex; flex-direction: column; gap: 1.2rem;">
-                            <section>
-                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">1. Install Ollama</strong>
-                                <div style="font-size: 0.8rem; background: rgba(0,0,0,0.2); padding: 0.6rem; border-radius: 8px;">
-                                    <strong>Windows:</strong> Download <a href="https://ollama.com/download/OllamaSetup.exe" style="color: #67e8f9;">OllamaSetup.exe</a> and run it.<br>
-                                    <strong>macOS:</strong> Download <a href="https://ollama.com/download/Ollama-darwin.zip" style="color: #67e8f9;">Ollama.zip</a>, unzip, and move to Applications.<br>
-                                    <strong>Linux:</strong> Run <code style="color: #fbbf24;">curl -fsSL https://ollama.com/install.sh | sh</code>
-                                </div>
-                            </section>
+                        <!-- OS Selector -->
+                        <div style="margin-bottom: 1rem; display: flex; gap: 0.4rem; background: rgba(0,0,0,0.3); padding: 0.3rem; border-radius: 10px;">
+                            <button onclick="window.switchOS('win')" id="btn-win" style="flex: 1; padding: 0.5rem; border: none; border-radius: 8px; background: #334155; color: white; cursor: pointer; font-size: 0.75rem; transition: 0.3s; font-weight: 600;">Windows</button>
+                            <button onclick="window.switchOS('mac')" id="btn-mac" style="flex: 1; padding: 0.5rem; border: none; border-radius: 8px; background: transparent; color: #94a3b8; cursor: pointer; font-size: 0.75rem; transition: 0.3s; font-weight: 600;">macOS</button>
+                            <button onclick="window.switchOS('linux')" id="btn-linux" style="flex: 1; padding: 0.5rem; border: none; border-radius: 8px; background: transparent; color: #94a3b8; cursor: pointer; font-size: 0.75rem; transition: 0.3s; font-weight: 600;">Linux</button>
+                        </div>
 
-                            <section>
-                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">2. Download & Run Model</strong>
-                                <p style="margin: 0;">Open your Terminal or CMD and run:</p>
-                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.6rem; border-radius: 8px; margin-top: 0.5rem;">ollama run llama3</code>
+                        <!-- Windows Guide -->
+                        <div id="os-win" class="os-guide">
+                            <section style="margin-bottom: 1rem;">
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">1. Install</strong>
+                                <p style="margin:0;">Download <a href="https://ollama.com/download/OllamaSetup.exe" style="color: #67e8f9;">OllamaSetup.exe</a> and run it.</p>
                             </section>
-
-                            <section>
-                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">3. Enable Browser Access (REQUIRED)</strong>
-                                <p style="margin: 0 0 0.5rem 0;">You <strong>MUST</strong> close Ollama completely (from the tray icon) before running these:</p>
-                                
-                                <div style="background: rgba(0,0,0,0.3); padding: 0.8rem; border-radius: 10px; border-left: 3px solid #67e8f9;">
-                                    <div style="margin-bottom: 0.8rem;">
-                                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">WINDOWS (Command Prompt / CMD):</span>
-                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px; margin-top: 4px;">set OLLAMA_ORIGINS=* && ollama serve</code>
-                                    </div>
-                                    <div style="margin-bottom: 0.8rem;">
-                                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">WINDOWS (PowerShell):</span>
-                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px; margin-top: 4px;">$env:OLLAMA_ORIGINS="*"; ollama serve</code>
-                                    </div>
-                                    <div>
-                                        <span style="color: #94a3b8; font-size: 0.75rem; font-weight: 700;">MAC / LINUX (Terminal):</span>
-                                        <code style="display: block; color: #fbbf24; background: #000; padding: 4px 8px; border-radius: 4px; margin-top: 4px;">OLLAMA_ORIGINS="*" ollama serve</code>
-                                    </div>
-                                </div>
+                            <section style="margin-bottom: 1rem;">
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">2. Download Model</strong>
+                                <p style="margin: 0 0 0.4rem 0;">Run in CMD or PowerShell:</p>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px;">ollama run llama3</code>
                             </section>
-
-                            <section style="background: rgba(16, 185, 129, 0.1); padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.2);">
-                                <p style="margin: 0; font-size: 0.8rem; color: #a7f3d0;">
-                                    <strong>Success Tip:</strong> Once running, visit <a href="http://localhost:11434" target="_blank" style="color: #fff; text-decoration: underline;">localhost:11434</a> in your browser. If it says <em>"Ollama is running"</em>, you are ready to click <strong>Save</strong> below!
-                                </p>
+                            <section>
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">3. Enable Browser (CMD)</strong>
+                                <p style="font-size: 0.75rem; margin-bottom: 0.4rem;">Close Ollama (Tray), then run in CMD:</p>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px; font-size: 0.75rem;">set OLLAMA_ORIGINS=* && ollama serve</code>
                             </section>
                         </div>
+
+                        <!-- Mac Guide -->
+                        <div id="os-mac" class="os-guide hidden">
+                            <section style="margin-bottom: 1rem;">
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">1. Install</strong>
+                                <p style="margin:0;">Download <a href="https://ollama.com/download/Ollama-darwin.zip" style="color: #67e8f9;">Ollama.zip</a> and move to Applications.</p>
+                            </section>
+                            <section style="margin-bottom: 1rem;">
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">2. Download Model</strong>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px;">ollama run llama3</code>
+                            </section>
+                            <section>
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">3. Enable Browser</strong>
+                                <p style="font-size: 0.75rem; margin-bottom: 0.4rem;">Close Ollama, then run in Terminal:</p>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px; font-size: 0.75rem;">OLLAMA_ORIGINS="*" ollama serve</code>
+                            </section>
+                        </div>
+
+                        <!-- Linux Guide -->
+                        <div id="os-linux" class="os-guide hidden">
+                            <section style="margin-bottom: 1rem;">
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">1. Install</strong>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px;">curl -fsSL https://ollama.com/install.sh | sh</code>
+                            </section>
+                            <section style="margin-bottom: 1rem;">
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">2. Download Model</strong>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px;">ollama run llama3</code>
+                            </section>
+                            <section>
+                                <strong style="color: #fff; display: block; margin-bottom: 0.3rem;">3. Enable Browser</strong>
+                                <p style="font-size: 0.75rem; margin-bottom: 0.4rem;">Run <code style="color:#fff;">sudo systemctl edit ollama.service</code> and add:</p>
+                                <code style="display: block; background: #000; color: #fbbf24; padding: 0.5rem; border-radius: 6px; font-size: 0.75rem;">Environment="OLLAMA_ORIGINS=*"</code>
+                            </section>
+                        </div>
+
+                        <p style="margin: 1.2rem 0 0 0; font-size: 0.75rem; color: #10b981; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.8rem;">
+                            Verify status at <a href="http://localhost:11434" target="_blank" style="color: #fff; text-decoration: underline;">localhost:11434</a>
+                        </p>
                     </div>
 
                     <button id="save-key-btn" style="width: 100%; padding: 1rem; border-radius: 12px; border: none; background: #10b981; color: white; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 0.5rem; font-size: 1rem;">Save & Initialize</button>
@@ -392,6 +412,24 @@
                 apiKeyInput.placeholder = "";
             }
         });
+
+        // OS Switcher for Ollama Guide
+        window.switchOS = function(os) {
+            document.querySelectorAll('.os-guide').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`os-${os}`).classList.remove('hidden');
+            
+            // Update button styles
+            ['win', 'mac', 'linux'].forEach(id => {
+                const btn = document.getElementById(`btn-${id}`);
+                if (id === os) {
+                    btn.style.background = '#334155';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.background = 'transparent';
+                    btn.style.color = '#94a3b8';
+                }
+            });
+        };
 
         // Reset API Key handler
         resetKeyBtn.addEventListener('click', () => {
