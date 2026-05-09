@@ -420,7 +420,7 @@
             </div>
 
             <div class="chat-input-area">
-                <input type="text" id="chat-input" class="chat-input" placeholder="Type your question here..." disabled>
+                <input type="text" id="chat-input" class="chat-input" placeholder="Type your question here...">
                 <button id="send-btn" class="chat-btn" disabled>
                     <svg viewBox="0 0 24 24">
                         <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -487,11 +487,10 @@
                     initOverlay.classList.add('hidden');
                     initOverlay.style.display = 'none';
 
-                    if (API_KEY || PROVIDER === 'ollama') {
-                        chatInput.disabled = false;
-                        sendBtn.disabled = false;
-                        chatInput.focus();
-                    }
+                    // Always enable input to allow interaction
+                    chatInput.disabled = false;
+                    sendBtn.disabled = false;
+                    chatInput.focus();
                 }
             }
 
@@ -527,6 +526,13 @@
             async function handleSend() {
                 const text = chatInput.value.trim();
                 if (!text) return;
+
+                // INTERCEPT: If setup is not complete, open modal instead of sending
+                if (!API_KEY && PROVIDER !== 'ollama') {
+                    apiModal.classList.remove('hidden');
+                    apiModal.style.display = 'flex';
+                    return;
+                }
 
                 addMessage(text, 'user');
                 chatInput.value = '';
