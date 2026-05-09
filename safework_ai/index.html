@@ -256,6 +256,7 @@
 
     <!-- Parse markdown for nice formatting of AI answers -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="knowledge.js"></script>
     
     <script>
         const chatHistory = document.getElementById('chat-history');
@@ -271,16 +272,17 @@
         // Load the knowledge text on startup
         async function loadKnowledge() {
             try {
-                const response = await fetch('knowledge.txt');
-                if (!response.ok) throw new Error("Failed to load knowledge base");
-                knowledgeContext = await response.text();
-                
-                // Hide overlay and enable input
-                initOverlay.classList.add('hidden');
-                chatInput.disabled = false;
-                sendBtn.disabled = false;
-                chatInput.focus();
-                console.log("Knowledge base loaded. Size:", knowledgeContext.length, "chars");
+                if (typeof KNOWLEDGE_BASE_TEXT !== 'undefined') {
+                    knowledgeContext = KNOWLEDGE_BASE_TEXT;
+                    // Hide overlay and enable input
+                    initOverlay.classList.add('hidden');
+                    chatInput.disabled = false;
+                    sendBtn.disabled = false;
+                    chatInput.focus();
+                    console.log("Knowledge base loaded. Size:", knowledgeContext.length, "chars");
+                } else {
+                    throw new Error("Knowledge base variable not found");
+                }
             } catch (err) {
                 console.error(err);
                 initOverlay.innerHTML = `<span style="color: #ef4444;">Error loading knowledge base. Please try refreshing.</span>`;
