@@ -640,3 +640,20 @@ body {
 .fade-up:nth-child(6) { animation-delay: 0.40s; }
 .fade-up:nth-child(7) { animation-delay: 0.47s; }
 .fade-up:nth-child(8) { animation-delay: 0.54s; }
+
+/* ---------- Pulse AI Animation ---------- */
+.pulse-ai {
+    display: inline-block;
+    white-space: nowrap;
+    animation: pulseGlow 2.5s infinite ease-in-out;
+    background: linear-gradient(135deg, var(--primary-green), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 1; filter: brightness(1); }
+    50% { transform: scale(1.03); opacity: 0.9; filter: brightness(1.2); }
+}
