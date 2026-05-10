@@ -585,9 +585,10 @@
                         score: Array.from(queryVector.data).reduce((sum, val, i) => sum + val * chunk.embedding[i], 0)
                     })).sort((a, b) => b.score - a.score);
 
-                    // Structured Context - Optimized for provider speed
-                    const contextLimit = PROVIDER === 'ollama' ? 10 : 30;
-                    const searchContext = scoredChunks.slice(0, contextLimit).map(c => `<PROVISION source="${c.source}">\n${c.text}\n</PROVISION>`).join("\n");
+                    // Optimized Context Strategy: Skip RAG for simple greetings to save local compute
+                    const isGreeting = /^(hi|hello|hey|greetings|thanks|thank you|ok|okay)$/i.test(text);
+                    const contextLimit = isGreeting ? 0 : (PROVIDER === 'ollama' ? 5 : 30);
+                    const searchContext = isGreeting ? "No statutory context needed for greetings." : scoredChunks.slice(0, contextLimit).map(c => `<PROVISION source="${c.source}">\n${c.text}\n</PROVISION>`).join("\n");
                     
                     const topMatchScore = scoredChunks.length > 0 ? scoredChunks[0].score : 0;
                     const confidenceTag = topMatchScore < 0.4 ? " [LOW CONFIDENCE]" : "";
