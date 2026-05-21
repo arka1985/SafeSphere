@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Important Gazettes under OSHWC Code 2020 — SafeSphere</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../bhashini.css">
+    <style>
+        /* ---------- Gazettes Page Specific Styles ---------- */
+        .gazette-header {
+            text-align: left;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .gazette-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-green), #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition-smooth);
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+        }
+
+        .back-nav:hover {
+            color: var(--text-white);
+            background: var(--glass-bg-hover);
+            transform: translateX(-5px);
+        }
+
+        /* ---------- Premium Controls Panel ---------- */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            align-items: center;
+            margin: 2.5rem auto 3.5rem auto;
+            width: 100%;
+            max-width: 680px;
+        }
+
+        /* ---------- Premium Search Bar Styles ---------- */
+        .search-bar-container {
+            position: relative;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .search-bar-container input {
+            width: 100%;
+            padding: 0.95rem 1.5rem 0.95rem 3.4rem;
+            background: rgba(10, 15, 26, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: var(--text-white);
+            font-family: inherit;
+            font-size: 0.96rem;
+            outline: none;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-bar-container input:hover {
+            border-color: var(--glass-border-hover);
+        }
+
+        .search-bar-container input:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
+            background: rgba(10, 15, 26, 0.65);
+        }
+
+        .search-bar-container .search-icon {
+            position: absolute;
+            left: 1.35rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            transition: color var(--transition-smooth);
+        }
+
+        .search-bar-container input:focus + .search-icon {
+            color: var(--primary-green);
+        }
+
+        /* ---------- Premium Tabular Layout Styles ---------- */
+        .gazette-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            background: rgba(10, 15, 26, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin: 1.5rem 0 3.5rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--glass-border) transparent;
+        }
+
+        .gazette-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 800px; /* Prevents squeezing on smaller screens, forcing scroll */
+        }
+
+        .gazette-table th {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .gazette-table td {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.92rem;
+            line-height: 1.5;
+            vertical-align: middle;
+        }
+
+        .gazette-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .gazette-table tr {
+            transition: background var(--transition-smooth);
+        }
+
+        .gazette-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table-doc-title {
+            color: var(--text-white);
+            font-weight: 700;
+            font-size: 0.98rem;
+            margin-bottom: 0.3rem;
+            display: block;
+            transition: color var(--transition-smooth);
+        }
+
+        .gazette-table tr:hover .table-doc-title {
+            color: var(--primary-green);
+        }
+
+        .table-doc-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            display: block;
+            line-height: 1.4;
+        }
+
+        .table-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.3rem 0.7rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.04);
+            white-space: nowrap;
+        }
+
+        .btn-table-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--primary-green);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            transition: all var(--transition-smooth);
+            white-space: nowrap;
+        }
+
+        .btn-table-action:hover {
+            color: #000;
+            background: var(--primary-green);
+            border-color: var(--primary-green);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-table-action svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+        }
+    
+        /* ---------- Dynamic Grouping Toggle Styles ---------- */
+        .group-toggle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.4rem;
+            background: rgba(10, 15, 26, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            width: 100%;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            position: relative;
+        }
+        
+        .toggle-btn {
+            flex: 1;
+            padding: 0.8rem 1.6rem;
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .toggle-btn:hover {
+            color: var(--text-white);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .toggle-btn.active {
+            background: linear-gradient(135deg, var(--primary-green), #06b6d4);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+        }
+        
+        .toggle-btn.active svg {
+            stroke: #000;
+        }
+        
+        .toggle-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            transition: var(--transition-smooth);
+        }
+
+        .gazette-group-container {
+            display: block;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        /* Animation when grouping changes */
+        .fade-out-anim {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .fade-in-anim {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        /* Responsive Layouts */
+        @media (max-width: 768px) {
+            .controls-panel {
+                gap: 0.8rem;
+                margin: 2rem auto;
+            }
+
+            .group-toggle-container {
+                flex-direction: column;
+                border-radius: 16px;
+                padding: 0.8rem;
+                gap: 0.6rem;
+            }
+            
+            .toggle-btn {
+                width: 100%;
+            }
+
+            .gazette-table-wrapper::after {
+                content: 'Swipe left/right to scroll table ↔';
+                display: block;
+                text-align: center;
+                font-size: 0.75rem;
+                color: var(--text-muted);
+                padding: 0.6rem;
+                background: rgba(0, 0, 0, 0.2);
+                border-top: 1px solid rgba(255, 255, 255, 0.05);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-aurora">
+        <div class="aurora-orb aurora-orb--green"></div>
+        <div class="aurora-orb aurora-orb--cyan"></div>
+        <div class="aurora-orb aurora-orb--amber"></div>
+    </div>
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- ═══ SafeSphere Bhashini Multilingual Widget ═══ -->
+    <div class="bhashini-widget-wrapper bhashini-skip-translation">
+        <div class="bhashini-widget" id="bhashini-trigger" title="Translate — Bhashini">
+            <div class="bhashini-logo-text">अ<span>A</span></div>
+        </div>
+
+        <div class="bhashini-menu" id="bhashini-menu">
+            <div class="bhashini-menu__header">
+                <span class="bhashini-menu__title">Select Language</span>
+                <span class="bhashini-menu__source">Powered by Bhashini AI</span>
+            </div>
+            <div class="bhashini-menu__grid">
+                <button class="lang-option" data-lang="en">English</button>
+                <button class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+                <button class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+                <button class="lang-option" data-lang="te">తెలుగు (Telugu)</button>
+                <button class="lang-option" data-lang="mr">मराठी (Marathi)</button>
+                <button class="lang-option" data-lang="ta">தமிழ் (Tamil)</button>
+                <button class="lang-option" data-lang="ur">اردو (Urdu)</button>
+                <button class="lang-option" data-lang="gu">ગુજરાતી (Gujarati)</button>
+                <button class="lang-option" data-lang="ml">മലയാളം (Malayalam)</button>
+                <button class="lang-option" data-lang="kn">ಕನ್ನಡ (Kannada)</button>
+                <button class="lang-option" data-lang="or">ଓଡ଼ିଆ (Odia)</button>
+                <button class="lang-option" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</button>
+                <button class="lang-option" data-lang="as">অসমীয়া (Assamese)</button>
+                <button class="lang-option" data-lang="mai">मैथिली (Maithili)</button>
+                <button class="lang-option" data-lang="sat">संताली (Santali)</button>
+                <button class="lang-option" data-lang="ks">کٲشُر (Kashmiri)</button>
+                <button class="lang-option" data-lang="ne">नेपाली (Nepali)</button>
+                <button class="lang-option" data-lang="kok">कोंकणी (Konkani)</button>
+                <button class="lang-option" data-lang="sd">سنڌي (Sindhi)</button>
+                <button class="lang-option" data-lang="doi">डोगरी (Dogri)</button>
+                <button class="lang-option" data-lang="mni">মৈতেইলোন (Manipuri)</button>
+                <button class="lang-option" data-lang="brx">बोडो (Bodo)</button>
+                <button class="lang-option" data-lang="sa">संस्कृतम् (Sanskrit)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Official Bhashini Bridge -->
+    <div id="bhashini-plugin-utility" class="bhashini-plugin-container"></div>
+    <script src="https://translation-plugin.bhashini.co.in/v3/website_translation_utility.js?v=1.3.1"
+        language-icon-color="#10b981"></script>
+    <script src="../main.js"></script>
+
+    <div class="app-container">
+
+        <header class="gazette-header">
+            <a href="index.html" class="back-nav">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to National Statutory Repository
+            </a>
+            <h1 class="gazette-title">Important Gazettes under OSHWC Code 2020</h1>
+            <p class="site-subtitle" style="margin-left:0;">Comprehensive centralized index of official notifications gazetted under the Occupational Safety, Health and Working Conditions Code, 2020</p>
+        </header>
+
+        <!-- Premium Controls Panel -->
+        <div class="controls-panel">
+            <!-- Premium Filter / Grouping Pills Toggle -->
+            <div class="group-toggle-container">
+                <button class="toggle-btn active" id="group-by-subject" onclick="changeGrouping('subject')">
+                    <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7" stroke-linecap="round" stroke="currentColor" stroke-width="2.5"/></svg>
+                    Group by Subject / Category
+                </button>
+                <button class="toggle-btn" id="group-by-establishment" onclick="changeGrouping('establishment')">
+                    <svg viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m3 0h5m0 0V11m0 10V9" stroke-linecap="round" stroke="currentColor" stroke-width="2.5"/></svg>
+                    Group by Establishment
+                </button>
+            </div>
+
+            <!-- Dynamic Premium Search Bar -->
+            <div class="search-bar-container">
+                <input type="text" id="gazette-search-input" placeholder="Search by title, description, badge, or keyword..." oninput="handleSearch(event)">
+                <span class="search-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        <!-- Dynamic Grouping Targets Container -->
+        <div id="dynamic-gazette-groups" class="fade-in-anim">
+            <!-- Rendered Dynamically via JS -->
+        </div>
+
+    </div>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <div class="dev-label">Developed By</div>
+            <div class="dev-name bhashini-skip-translation">Dr. Arkaprabha Sau</div>
+            <div class="dev-creds">
+                MBBS, MD (Gold Medalist), DPH, Dip. Geriatric Medicine, CCEBDM<br>
+                PhD (Computer Science &amp; Engineering)
+            </div>
+            <div class="disclaimer">
+                Documents hosted here are for educational and research purposes. Please verify against official gazette notifications. Access Date: 2026-05-22.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ═══ Scripts ═══ -->
+    <script>
+        // Comprehensive database of all 22 official gazette notifications
+        const GAZETTE_DOCUMENTS = [
+            {
+                filename: "Appellate Authority for registration under the OSH and WC Code 2020.pdf",
+                title: "Appellate Authority for Registration under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 constituting and designating the competent Appellate Authority to hear appeals, resolve disputes, and adjudicate legal grievances specifically governing establishment registration procedures.",
+                subject: "⚖️ Appellate Authorities",
+                establishment: "🏢 General Central Establishments",
+                tag: "Appellate Authority"
+            },
+            {
+                filename: "Appellate Authority in case of CLC under the OSH and WC Code 2020.pdf",
+                title: "Appellate Authority in case of CLC under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 constituting and designating the competent Appellate Authority to hear appeals, resolve disputes, and adjudicate legal grievances within the Chief Labour Commissioner (Central) jurisdiction.",
+                subject: "⚖️ Appellate Authorities",
+                establishment: "🏛️ Chief Labour Commissioner (CLC)",
+                tag: "Appellate Authority"
+            },
+            {
+                filename: "Appellate Authority in case of major ports under the OSH and WC Code 2020.pdf",
+                title: "Appellate Authority in case of Major Ports under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 constituting and designating the competent Appellate Authority to hear appeals, resolve disputes, and adjudicate legal grievances specifically for major ports and maritime dock operations across national jurisdictions.",
+                subject: "⚖️ Appellate Authorities",
+                establishment: "⚓ Major Ports & Maritime Docks",
+                tag: "Appellate Authority"
+            },
+            {
+                filename: "Appellate Authority in the case of mines for the purpose of OSH and WC Code 2020.pdf",
+                title: "Appellate Authority in the case of Mines for the purpose of OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 constituting and designating the competent Appellate Authority to hear appeals, resolve disputes, and adjudicate legal grievances specifically for mines and mining operations across the country.",
+                subject: "⚖️ Appellate Authorities",
+                establishment: "⛏️ Mines & Mining Operations",
+                tag: "Appellate Authority"
+            },
+            {
+                filename: "Renaming_DGFASLI_DGOSH.pdf",
+                title: "Renaming of DGFASLI to DGOSH",
+                desc: "Official gazette notification of the Ministry of Labour and Employment renaming the Directorate General Factory Advice Service and Labour Institutes (DGFASLI) to the Directorate General of Occupational Safety and Health (DGOSH), reorganizing national administrative bodies for occupational safety.",
+                subject: "📋 Administrative Appointments & Inspectorates",
+                establishment: "🏢 General Central Establishments",
+                tag: "Administrative Update"
+            },
+            {
+                filename: "appointment of Inspector Cum Facilitator in case of CLC under the OSH and WC Code 2020.pdf",
+                title: "Inspector-cum-Facilitator (CLC) Appointments",
+                desc: "Official gazette notification under the OSHWC Code 2020 appointing and designating Inspector-cum-Facilitator officers for the Chief Labour Commissioner (Central) organization, defining their jurisdiction and enforcement authority.",
+                subject: "📋 Administrative Appointments & Inspectorates",
+                establishment: "🏛️ Chief Labour Commissioner (CLC)",
+                tag: "Appointment"
+            },
+            {
+                filename: "Appointment of Chief Inspector cum Facilitator in case of CLC under the OSH and WC Code 2020.pdf",
+                title: "Appointment of Chief Inspector Cum Facilitator in case of CLC under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 designating and appointing key administrative enforcement officers within the Chief Labour Commissioner (Central) jurisdiction.",
+                subject: "📋 Administrative Appointments & Inspectorates",
+                establishment: "🏛️ Chief Labour Commissioner (CLC)",
+                tag: "Appointment"
+            },
+            {
+                filename: "appointment of Chief Inspector and Inspector Cum Facilitator in case of major ports under the OSH and WC Code 2020.pdf",
+                title: "Appointment of Chief Inspector and Inspector Cum Facilitator in case of Major Ports under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 designating and appointing key administrative enforcement officers specifically for major ports and maritime dock operations across national jurisdictions.",
+                subject: "📋 Administrative Appointments & Inspectorates",
+                establishment: "⚓ Major Ports & Maritime Docks",
+                tag: "Appointment"
+            },
+            {
+                filename: "appointment of Chief Inspector cum Facilitator of mines under the OSH and WC Code 2020.pdf",
+                title: "Appointment of Chief Inspector Cum Facilitator of Mines under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 designating and appointing key administrative enforcement officers specifically for mines and mining operations across the country.",
+                subject: "📋 Administrative Appointments & Inspectorates",
+                establishment: "⛏️ Mines & Mining Operations",
+                tag: "Appointment"
+            },
+            {
+                filename: "appointment of Inspector cum Facilitator of mines under the OSH and WC Code 2020.pdf",
+                title: "Appointment of Inspector Cum Facilitator of Mines under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 designating and appointing key administrative enforcement officers specifically for mines and mining operations across the country.",
+                subject: "📋 Administrative Appointments & Inspectorates",
+                establishment: "⛏️ Mines & Mining Operations",
+                tag: "Appointment"
+            },
+            {
+                filename: "officer to impose penalty under the Code in case of Mines.pdf",
+                title: "Penalty Imposition Officers for Mines",
+                desc: "Official gazette notification under the OSHWC Code 2020 designating competent administrative officers empowered to impose penalties and adjudicate safety compliance violations in respect of mines across the country.",
+                subject: "🛡️ Enforcement, Penalties & Compounding",
+                establishment: "⛏️ Mines & Mining Operations",
+                tag: "Enforcement"
+            },
+            {
+                filename: "Officer to impose penalty in case of major ports under the OSH and WC Code 2020..pdf",
+                title: "Officer to Impose Penalty in case of Major Ports under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 appointing competent administrative officers empowered to impose penalties and adjudicate safety compliance violations specifically for major ports and maritime dock operations across national jurisdictions.",
+                subject: "🛡️ Enforcement, Penalties & Compounding",
+                establishment: "⚓ Major Ports & Maritime Docks",
+                tag: "Enforcement"
+            },
+            {
+                filename: "officer to impose penalty in case of CLC under the OSH and WC Code 2020.pdf",
+                title: "Officer to Impose Penalty in case of CLC under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 appointing competent administrative officers empowered to impose penalties and adjudicate safety compliance violations within the Chief Labour Commissioner (Central) jurisdiction.",
+                subject: "🛡️ Enforcement, Penalties & Compounding",
+                establishment: "🏛️ Chief Labour Commissioner (CLC)",
+                tag: "Enforcement"
+            },
+            {
+                filename: "Officer for composition of offences in case of Mines under the OSH and WC Code 2020.pdf",
+                title: "Officer for Composition of Offences in case of Mines under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 appointing competent compounding officers authorized to compound, settle, and resolve compliance offenses and statutory violations specifically for mines and mining operations across the country.",
+                subject: "🛡️ Enforcement, Penalties & Compounding",
+                establishment: "⛏️ Mines & Mining Operations",
+                tag: "Compounding Officer"
+            },
+            {
+                filename: "officer for composition of offences in case of CLC under the OSH and WC Code 2020.pdf",
+                title: "Officer for Composition of Offences in case of CLC under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 appointing competent compounding officers authorized to compound, settle, and resolve compliance offenses and statutory violations within the Chief Labour Commissioner (Central) jurisdiction.",
+                subject: "🛡️ Enforcement, Penalties & Compounding",
+                establishment: "🏛️ Chief Labour Commissioner (CLC)",
+                tag: "Compounding Officer"
+            },
+            {
+                filename: "officer for composition of offences in case of major ports under the OSH and WC Code 2020.pdf",
+                title: "Officer for Composition of Offences in case of Major Ports under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 appointing competent compounding officers authorized to compound, settle, and resolve compliance offenses and statutory violations specifically for major ports and maritime dock operations across national jurisdictions.",
+                subject: "🛡️ Enforcement, Penalties & Compounding",
+                establishment: "⚓ Major Ports & Maritime Docks",
+                tag: "Compounding Officer"
+            },
+            {
+                filename: "Designated Authority under clause a sub section 2 of section 57 of the OSH and WC Code 2020.pdf",
+                title: "Designated Authority under Clause A Sub Section 2 of Section 57 of the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 authorizing competent administrative bodies and Designated Authorities to manage statutory licensing and compliance structures to streamline enforcement and regulatory compliance across all establishments.",
+                subject: "🔑 Licensing, Registration & Statutory Authorities",
+                establishment: "🏢 General Central Establishments",
+                tag: "Statutory Authority"
+            },
+            {
+                filename: "appointment of Designated Authority for license under the OSH and WC Code 2020.pdf",
+                title: "Appointment of Designated Authority for License under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 authorizing competent administrative bodies and Designated Authorities to manage statutory licensing and compliance structures specifically governing licensing processes for contractors and industrial establishments.",
+                subject: "🔑 Licensing, Registration & Statutory Authorities",
+                establishment: "🏢 General Central Establishments",
+                tag: "Designated Authority"
+            },
+            {
+                filename: "Registering Officer under the OSH and WC Code 2020.pdf",
+                title: "Registering Officer under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 designating Registering Officers to oversee registration, renewal, and documentation compliance for commercial and industrial establishments to streamline enforcement and regulatory compliance across all establishments.",
+                subject: "🔑 Licensing, Registration & Statutory Authorities",
+                establishment: "🏢 General Central Establishments",
+                tag: "Registering Officer"
+            },
+            {
+                filename: "Notification regarding hours of work for establishment under the OSH and WC Code 2020.pdf",
+                title: "Notification Regarding Hours of Work for Establishment under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 notifying regulated hours of work, rest intervals, and overtime limits to ensure worker health, safety, and operational welfare to streamline enforcement and regulatory compliance across all establishments.",
+                subject: "⏱️ Hours of Work & Remuneration Guidelines",
+                establishment: "🏢 General Central Establishments",
+                tag: "Operational Guideline"
+            },
+            {
+                filename: "hours of work for mines under the OSH and WC Code 2020.pdf",
+                title: "Hours of Work for Mines under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 notifying regulated hours of work, rest intervals, and overtime limits to ensure worker health, safety, and operational welfare specifically for mines and mining operations across the country.",
+                subject: "⏱️ Hours of Work & Remuneration Guidelines",
+                establishment: "⛏️ Mines & Mining Operations",
+                tag: "Operational Guideline"
+            },
+            {
+                filename: "monetary ceiling i.e. the maximum remuneration amount up to which a person will be considered an audio visual worker under the OSH and WC Code 2020.pdf",
+                title: "Monetary Ceiling for Audio Visual Workers under the OSH and WC Code 2020",
+                desc: "Official gazette notification under the OSHWC Code 2020 defining the maximum remuneration and monetary limits for determining statutory worker classifications and benefit eligibility specifically for audio-visual and media industry workers.",
+                subject: "⏱️ Hours of Work & Remuneration Guidelines",
+                establishment: "🎬 Audio-Visual & Media Establishments",
+                tag: "Worker Guidelines"
+            }
+        ];
+
+        let activeGroupingMode = "subject";
+        let searchQuery = "";
+
+        // Determine color schemes based on tag categories
+        function getTagColor(tag) {
+            if (tag === "Appellate Authority") return "#f59e0b"; // amber
+            if (["Enforcement", "Compounding Officer"].includes(tag)) return "#ef4444"; // red
+            if (["Statutory Authority", "Designated Authority", "Registering Officer"].includes(tag)) return "#06b6d4"; // cyan
+            if (["Operational Guideline", "Worker Guidelines"].includes(tag)) return "#a855f7"; // purple
+            return "#10b981"; // green
+        }
+
+        // Main dynamic rendering function
+        function renderDocuments(groupByKey) {
+            const dynamicContent = document.getElementById("dynamic-gazette-groups");
+            if (!dynamicContent) return;
+
+            // Apply fade-out animation
+            dynamicContent.classList.add("fade-out-anim");
+            dynamicContent.classList.remove("fade-in-anim");
+
+            setTimeout(() => {
+                dynamicContent.innerHTML = "";
+
+                // Filter the documents based on search query
+                const filteredDocs = GAZETTE_DOCUMENTS.filter(doc => {
+                    if (!searchQuery) return true;
+                    return doc.title.toLowerCase().includes(searchQuery) ||
+                           doc.desc.toLowerCase().includes(searchQuery) ||
+                           doc.subject.toLowerCase().includes(searchQuery) ||
+                           doc.establishment.toLowerCase().includes(searchQuery) ||
+                           doc.tag.toLowerCase().includes(searchQuery);
+                });
+
+                // Check if no results found
+                if (filteredDocs.length === 0) {
+                    dynamicContent.innerHTML = `
+                        <div class="fade-up" style="text-align: center; padding: 5rem 2rem; color: var(--text-dim); background: rgba(10, 15, 26, 0.45); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 16px; width: 100%; max-width: 800px; margin: 2rem auto; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--primary-amber); margin-bottom: 1.5rem; opacity: 0.85;">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <h3 style="color: var(--text-white); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;">No Gazette Notifications Found</h3>
+                            <p style="font-size: 0.92rem; max-width: 450px; margin: 0 auto; color: var(--text-dim); line-height: 1.6;">We couldn't find any official gazette documents matching <strong style="color: var(--primary-amber);">"${escapeHtml(searchQuery)}"</strong>. Try refining your keywords or searching by administrative officer type.</p>
+                        </div>
+                    `;
+                    dynamicContent.classList.remove("fade-out-anim");
+                    dynamicContent.classList.add("fade-in-anim");
+                    return;
+                }
+
+                // Group the documents
+                const grouped = {};
+                filteredDocs.forEach(doc => {
+                    const key = doc[groupByKey];
+                    if (!grouped[key]) grouped[key] = [];
+                    grouped[key].push(doc);
+                });
+
+                // Sort grouped keys for consistency
+                const sortedKeys = Object.keys(grouped).sort();
+
+                // Build HTML
+                sortedKeys.forEach(groupName => {
+                    const groupContainer = document.createElement("div");
+                    groupContainer.className = "gazette-group-container";
+
+                    // Section header
+                    const header = `
+                        <div class="section-header" style="margin-top: 3.5rem; width: 100%;">
+                            <span class="section-header__line"></span>
+                            <span class="section-header__title" style="font-size: 1.25rem; font-weight: 700; color: var(--text-white); background: rgba(10, 15, 26, 0.7); padding: 0.6rem 1.6rem; border-radius: 50px; border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.15);">${groupName}</span>
+                            <span class="section-header__line" style="background: linear-gradient(to left, var(--glass-border), transparent);"></span>
+                        </div>
+                    `;
+
+                    // Choose columns based on active filter group
+                    const targetColumnHeader = groupByKey === "subject" ? "Establishment Type" : "Subject Category";
+
+                    // Responsive Table HTML
+                    let tableHTML = `
+                        <div class="gazette-table-wrapper fade-up" style="animation-play-state: running;">
+                            <table class="gazette-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 55%;">Document Details</th>
+                                        <th style="width: 20%;">${targetColumnHeader}</th>
+                                        <th style="width: 13%;">Classification</th>
+                                        <th style="width: 12%; text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    // Render each row
+                    grouped[groupName].forEach(doc => {
+                        const tagColor = getTagColor(doc.tag);
+                        const displayBadgeVal = groupByKey === "subject" ? doc.establishment : doc.subject;
+                        
+                        // Highlight matches
+                        const highlightedTitle = highlightText(doc.title, searchQuery);
+                        const highlightedDesc = highlightText(doc.desc, searchQuery);
+                        const highlightedBadge = highlightText(displayBadgeVal, searchQuery);
+                        const highlightedTag = highlightText(doc.tag, searchQuery);
+
+                        tableHTML += `
+                            <tr>
+                                <td>
+                                    <span class="table-doc-title">${highlightedTitle}</span>
+                                    <span class="table-doc-desc">${highlightedDesc}</span>
+                                </td>
+                                <td>
+                                    <span style="color: var(--text-white); font-weight: 500; font-size: 0.88rem;">${highlightedBadge}</span>
+                                </td>
+                                <td>
+                                    <span class="table-badge" style="color: ${tagColor}; border: 1px solid ${tagColor}33; background: ${searchQuery && doc.tag.toLowerCase().includes(searchQuery) ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.04)'};">${highlightedTag}</span>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="./${doc.filename}" target="_blank" class="btn-table-action">
+                                        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                                        View PDF
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    tableHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+                    groupContainer.innerHTML = header + tableHTML;
+                    dynamicContent.appendChild(groupContainer);
+                });
+
+                // Set entry fade-in animations
+                dynamicContent.classList.remove("fade-out-anim");
+                dynamicContent.classList.add("fade-in-anim");
+
+                // Rerun Entrance animations observer
+                setupObserver();
+
+            }, 300);
+        }
+
+        // Handle typing in the search box
+        function handleSearch(event) {
+            searchQuery = event.target.value.toLowerCase().trim();
+            renderDocuments(activeGroupingMode);
+        }
+
+        // Toggle button switching logic
+        function changeGrouping(mode) {
+            activeGroupingMode = mode;
+            const btnSubject = document.getElementById("group-by-subject");
+            const btnEstablishment = document.getElementById("group-by-establishment");
+
+            if (mode === "subject") {
+                btnSubject.classList.add("active");
+                btnEstablishment.classList.remove("active");
+                renderDocuments("subject");
+            } else {
+                btnSubject.classList.remove("active");
+                btnEstablishment.classList.add("active");
+                renderDocuments("establishment");
+            }
+        }
+
+        // Simple HTML Escaper
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // Highlight matching text helper
+        function highlightText(text, search) {
+            if (!search) return text;
+            const escapedSearch = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const regex = new RegExp(`(${escapedSearch})`, 'gi');
+            return text.replace(regex, '<mark style="background: rgba(16, 185, 129, 0.35); color: #fff; padding: 0.1rem 0.2rem; border-radius: 4px;">$1</mark>');
+        }
+
+        // Observer setup for newly injected elements
+        function setupObserver() {
+            const observerOptions = { threshold: 0.05, rootMargin: '0px 0px -20px 0px' };
+            const fadeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                        fadeObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                fadeObserver.observe(el);
+            });
+        }
+
+        // Initialize on page load
+        window.addEventListener("DOMContentLoaded", () => {
+            renderDocuments("subject");
+        });
+
+        // ---------- Floating Particles ----------
+        (function () {
+            const canvas = document.getElementById('particles-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w, h, particles = [];
+            const PARTICLE_COUNT = 40;
+            const COLORS = ['rgba(16,185,129,', 'rgba(6,182,212,', 'rgba(245,158,11,', 'rgba(59,130,246,'];
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function createParticle() {
+                return {
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    r: Math.random() * 2 + 0.5,
+                    dx: (Math.random() - 0.5) * 0.3,
+                    dy: (Math.random() - 0.5) * 0.3,
+                    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    alpha: Math.random() * 0.4 + 0.1,
+                    pulse: Math.random() * Math.PI * 2,
+                    pulseSpeed: Math.random() * 0.01 + 0.005,
+                };
+            }
+
+            function init() {
+                resize();
+                particles = [];
+                for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(createParticle());
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+                particles.forEach(p => {
+                    p.pulse += p.pulseSpeed;
+                    const a = p.alpha * (0.6 + 0.4 * Math.sin(p.pulse));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + a + ')';
+                    ctx.fill();
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.x < -10) p.x = w + 10;
+                    if (p.x > w + 10) p.x = -10;
+                    if (p.y < -10) p.y = h + 10;
+                    if (p.y > h + 10) p.y = -10;
+                });
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            draw();
+        })();
+    </script>
+</body>
+
+</html>
