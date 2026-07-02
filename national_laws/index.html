@@ -330,6 +330,7 @@
                         <option value="tn">Tamil Nadu</option>
                         <option value="wb">West Bengal</option>
                         <option value="up">Uttar Pradesh</option>
+                        <option value="rj">Rajasthan</option>
                     </select>
                 </div>
             </div>
@@ -415,7 +416,10 @@
 
         // ---------- State Dropdown Interaction ----------
         document.getElementById('state-rules-dropdown').addEventListener('change', function() {
-            if (this.value) {
+            if (this.value === 'rj') {
+                window.open('./Rajasthan Occupational Safety, Health and Working Conditions Rules, 2026.pdf', '_blank');
+                this.value = '';
+            } else if (this.value) {
                 alert('State-specific PDF repository for ' + this.options[this.selectedIndex].text + ' will be activated once files are uploaded to the server.');
                 this.value = ''; // Reset for placeholder behavior
             }
