@@ -324,13 +324,15 @@
                     <select class="state-select" id="state-rules-dropdown">
                         <option value="" selected disabled>Select State Jurisdiction...</option>
                         <option value="central">Central Jurisdiction</option>
-                        <option value="mh">Maharashtra</option>
+                        <option value="br">Bihar</option>
                         <option value="gj">Gujarat</option>
                         <option value="ka">Karnataka</option>
-                        <option value="tn">Tamil Nadu</option>
-                        <option value="wb">West Bengal</option>
-                        <option value="up">Uttar Pradesh</option>
+                        <option value="mh">Maharashtra</option>
+                        <option value="pb">Punjab</option>
                         <option value="rj">Rajasthan</option>
+                        <option value="tn">Tamil Nadu</option>
+                        <option value="up">Uttar Pradesh</option>
+                        <option value="wb">West Bengal</option>
                     </select>
                 </div>
             </div>
@@ -415,9 +417,19 @@
         })();
 
         // ---------- State Dropdown Interaction ----------
+        const stateRulesMap = {
+            'br': './BIHAR_STATE_RULES_UNDER_OSHWCCODE_2020.pdf',
+            'gj': './GUJARAT_STATE_RULES_UNDER_OSHWCCODE_2020.pdf',
+            'pb': './PUNJAB_STATE_RULES_UNDER_OSHWCCODE_2020.pdf',
+            'rj': './Rajasthan Occupational Safety, Health and Working Conditions Rules, 2026.pdf',
+            'up': './UTTAR_PRADESH_STATE_RULES_UNDER_OSHWCCODE_2020.pdf',
+            'central': './CENTRAL_RULES_2026.pdf'
+        };
+
         document.getElementById('state-rules-dropdown').addEventListener('change', function() {
-            if (this.value === 'rj') {
-                window.open('./Rajasthan Occupational Safety, Health and Working Conditions Rules, 2026.pdf', '_blank');
+            const pdfUrl = stateRulesMap[this.value];
+            if (pdfUrl) {
+                window.open(pdfUrl, '_blank');
                 this.value = '';
             } else if (this.value) {
                 alert('State-specific PDF repository for ' + this.options[this.selectedIndex].text + ' will be activated once files are uploaded to the server.');
